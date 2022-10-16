@@ -1,0 +1,25 @@
+#include "pch.h"
+
+using namespace JK;
+
+Sphere::Sphere(const std::vector<Vector3>& InVertices)
+{
+	size_t cnt = InVertices.size();
+	if (cnt == 0)
+	{
+		return;
+	}
+
+	Vector3 sum;
+	for (const auto& v : InVertices)
+	{
+		sum += v;
+	}
+
+	Center = sum / (float)cnt;
+	Radius = (*std::max_element(InVertices.begin(), InVertices.end(),
+		[&](Vector3 const& lhs, Vector3 const& rhs)
+		{
+			return (Center - lhs).SizeSquared() < (Center - rhs).SizeSquared();
+		})).Size();
+}

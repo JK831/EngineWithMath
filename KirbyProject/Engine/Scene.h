@@ -1,9 +1,6 @@
 #pragma once
 
-//class GameObject;
 
-namespace JK
-{
 	namespace DD
 	{
 		class Scene
@@ -25,5 +22,3 @@ namespace JK
 		};
 	}
 	
-
-}

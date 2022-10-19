@@ -1,7 +1,5 @@
 #pragma once
 
-namespace JK
-{
 	struct Rectangle
 	{
 	public:
@@ -86,4 +84,3 @@ namespace JK
 		OutExtent = GetExtent();
 		OutCenter = Min + OutExtent;
 	}
-}

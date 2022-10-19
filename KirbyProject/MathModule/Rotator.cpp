@@ -1,6 +1,5 @@
 #include "pch.h"
 
-using namespace JK;
 
 const Rotator Rotator::Identity(0.f, 0.f, 0.f);
 

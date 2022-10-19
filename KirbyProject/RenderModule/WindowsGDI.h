@@ -1,7 +1,6 @@
 #pragma once
 
-namespace JK
-{
+
 	class WindowsGDI
 	{
 	public:
@@ -98,4 +97,3 @@ namespace JK
 		Color32 bufferColor = *(dest + GetScreenBufferIndex(InPos));
 		return LinearColor(bufferColor);
 	}
-}

@@ -3,7 +3,6 @@
 #include "Engine.h"
 #include "Camera.h"
 
-using namespace JK::DD;
 
 Transform::Transform() : Component(COMPONENT_TYPE::TRANSFORM)
 {

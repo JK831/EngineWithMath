@@ -1,8 +1,7 @@
 #pragma once
 #include "Component.h"
 
-namespace JK
-{
+
 
 	class MonoBehaviour : public Component
 	{
@@ -13,5 +12,3 @@ namespace JK
 	public:
 
 	};
-
-}

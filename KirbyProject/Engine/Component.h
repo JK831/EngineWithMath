@@ -1,8 +1,7 @@
 #pragma once
 #include "Object.h"
 
-namespace JK
-{
+
 
 	enum class COMPONENT_TYPE : uint8
 	{
@@ -53,5 +52,3 @@ namespace JK
 			weak_ptr<GameObject> _gameObject;
 		};
 	}
-
-}

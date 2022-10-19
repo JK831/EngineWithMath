@@ -1,12 +1,12 @@
 #pragma once
 #include "Component.h"
 
-namespace JK
-{
+
+	class Material;
 	namespace DD
 	{
 		class Mesh;
-		class Material;
+		
 
 		class MeshRenderer : public Component
 		{
@@ -26,4 +26,3 @@ namespace JK
 			shared_ptr<Material> _material;
 		};
 	}
-}

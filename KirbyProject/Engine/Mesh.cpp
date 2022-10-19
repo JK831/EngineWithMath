@@ -2,7 +2,6 @@
 #include "Mesh.h"
 #include "Engine.h"
 
-using namespace JK::DD;
 
 Mesh::Mesh() : Object(OBJECT_TYPE::MESH)
 {
@@ -14,7 +13,7 @@ Mesh::~Mesh()
 
 }
 
-void Mesh::Init(const vector<Vector2>& inVertices, const vector<uint32>& inIndices)
+void Mesh::Init(const vector<Vertex>& inVertices, const vector<uint32>& inIndices)
 {
 	_vertexBuffer = inVertices;
 	_indexBuffer = inIndices;

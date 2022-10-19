@@ -1,7 +1,5 @@
 #pragma once
 
-namespace JK
-{
 	namespace DD
 	{
 		class GameObject : public Object, public enable_shared_from_this<GameObject>
@@ -29,4 +27,3 @@ namespace JK
 			vector<shared_ptr<MonoBehaviour>> _scripts;
 		};
 	}
-}

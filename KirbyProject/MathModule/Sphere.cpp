@@ -1,6 +1,5 @@
 #include "pch.h"
 
-using namespace JK;
 
 Sphere::Sphere(const std::vector<Vector3>& InVertices)
 {

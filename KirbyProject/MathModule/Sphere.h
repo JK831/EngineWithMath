@@ -1,7 +1,6 @@
 #pragma once
 
-namespace JK
-{
+
 	struct Sphere
 	{
 	public:
@@ -27,4 +26,3 @@ namespace JK
 		float radiusSum = Radius + InCircle.Radius;
 		return (Center - InCircle.Center).SizeSquared() <= (radiusSum * radiusSum);
 	}
-}

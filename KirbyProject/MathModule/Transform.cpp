@@ -1,6 +1,5 @@
 #include "pch.h"
 
-using namespace JK;
 
 Transform::Transform(const Matrix4x4& InMatrix)
 {

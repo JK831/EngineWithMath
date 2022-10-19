@@ -1,7 +1,6 @@
 #pragma once
 
-namespace JK
-{
+
 	struct LinearColor
 	{
 	public:
@@ -162,4 +161,3 @@ namespace JK
 			(Math::Abs(this->B - InColor.B) < InTolerance) &&
 			(Math::Abs(this->A - InColor.A) < InTolerance);
 	}
-}

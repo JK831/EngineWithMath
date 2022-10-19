@@ -1,8 +1,7 @@
 #pragma once
 
 //class Scene; // 전방선언
-namespace JK
-{
+
 	class SceneManager
 	{
 		DECLARE_SINGLE(SceneManager);
@@ -21,5 +20,3 @@ namespace JK
 	private:
 		shared_ptr<DD::Scene> _activeScene;
 	};
-
-}

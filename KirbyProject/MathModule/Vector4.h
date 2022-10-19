@@ -1,7 +1,6 @@
 #pragma once
 
-namespace JK
-{
+
 	struct Vector4
 	{
 	public:
@@ -183,4 +182,3 @@ namespace JK
 	{
 		return X * InVector.X + Y * InVector.Y + Z * InVector.Z + W * InVector.W;
 	}
-}

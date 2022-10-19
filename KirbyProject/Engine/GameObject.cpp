@@ -4,7 +4,6 @@
 #include "Camera.h"
 #include "MonoBehaviour.h"
 
-using namespace JK::DD;
 
 GameObject::GameObject() : Object(OBJECT_TYPE::GAMEOBJECT)
 {

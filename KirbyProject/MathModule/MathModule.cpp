@@ -3,7 +3,6 @@
 
 #include "pch.h"
 
-using namespace JK;
 
 //const float Math::PI = 3.14159265358979323846f;
 //const float Math::TwoPI = 2.f * PI;

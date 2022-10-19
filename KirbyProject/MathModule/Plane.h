@@ -1,7 +1,6 @@
 #pragma once
 
-namespace JK
-{
+
 	struct Plane
 	{
 	public:
@@ -37,4 +36,3 @@ namespace JK
 	{
 		return Distance(InPoint) > 0.f;
 	}
-}

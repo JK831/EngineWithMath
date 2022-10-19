@@ -1,7 +1,5 @@
 #pragma once
 
-namespace JK
-{
 
 	enum class KEY_TYPE
 	{
@@ -53,5 +51,3 @@ namespace JK
 		HWND _hwnd;
 		vector<KEY_STATE> _states;
 	};
-
-}

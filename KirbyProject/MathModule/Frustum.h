@@ -1,7 +1,6 @@
 #pragma once
 
-namespace JK
-{
+
 	struct Frustum
 	{
 		// »ý¼ºÀÚ
@@ -97,5 +96,4 @@ namespace JK
 
 		return false;
 	}
-}
 

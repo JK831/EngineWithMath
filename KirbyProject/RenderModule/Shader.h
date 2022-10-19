@@ -1,7 +1,6 @@
 #pragma once
 
-namespace JK
-{
+
 	namespace DD
 	{
 
@@ -22,4 +21,3 @@ namespace JK
 		}
 
 	}
-}

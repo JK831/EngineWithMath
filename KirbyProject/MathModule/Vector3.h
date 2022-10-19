@@ -1,7 +1,6 @@
 #pragma once
 
-namespace JK
-{
+
 	struct Vector3
 	{
 	public:
@@ -196,4 +195,3 @@ namespace JK
 			Z * InVector.X - X * InVector.Z,
 			X * InVector.Y - Y * InVector.X);
 	}
-}

@@ -1,7 +1,6 @@
 #pragma once
 
-namespace JK
-{
+
 	struct Matrix3x3
 	{
 	public:
@@ -104,4 +103,3 @@ namespace JK
 	{
 		return Matrix2x2(Raws[0].ToVector2(), Raws[1].ToVector2());
 	}
-}

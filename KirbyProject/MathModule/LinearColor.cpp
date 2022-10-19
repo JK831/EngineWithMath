@@ -1,6 +1,5 @@
 #include "pch.h"
 
-using namespace JK;
 
 const LinearColor LinearColor::Error(1.f, 0.f, 1.f, 1.f);
 const LinearColor LinearColor::White(1.f, 1.f, 1.f, 1.f);

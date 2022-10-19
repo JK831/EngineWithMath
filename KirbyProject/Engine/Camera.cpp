@@ -6,7 +6,6 @@
 #include "GameObject.h"
 #include "Engine.h"
 
-using namespace JK::DD;
 
 Matrix3x3 Camera::S_MatView;
 Matrix3x3 Camera::S_MatProjection;

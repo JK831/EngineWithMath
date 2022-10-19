@@ -6,9 +6,8 @@
 #include "stb_image.h"
 #pragma warning( pop )
 
-using namespace JK;
 
-Texture::Texture() : Object(OBJECT_TYPE::TEXTURE)
+Texture::Texture() : JK::Object(JK::OBJECT_TYPE::TEXTURE)
 {
 
 }

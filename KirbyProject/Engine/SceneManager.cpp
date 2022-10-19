@@ -8,8 +8,6 @@
 
 #include "Resources.h"
 
-using namespace JK;
-
 void SceneManager::Update()
 {
 	if (_activeScene == nullptr)

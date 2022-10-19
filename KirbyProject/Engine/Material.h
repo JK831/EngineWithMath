@@ -1,15 +1,14 @@
 #pragma once
 #include "Object.h"
 
-namespace JK
-{
-	class Shader;
-	class Texture;
 
 	enum
 	{
 		MATERIAL_TEXTURE_COUNT = 5,
 	};
+
+	class Texture;
+	class Shader;
 
 	class Material : public Object
 	{
@@ -21,11 +20,11 @@ namespace JK
 
 		void SetShader(shared_ptr<Shader> shader) { _shader = shader; }
 		void SetTexture(uint8 index, shared_ptr<Texture> texture) { _textures[index] = texture; }
-		
+		const array<shared_ptr<Texture>, MATERIAL_TEXTURE_COUNT>& GetTexture() { return _textures; }
+
 		uint16 Update();
 
 	private:
 		shared_ptr<Shader> _shader;
 		array<shared_ptr<Texture>, MATERIAL_TEXTURE_COUNT> _textures;
 	};
-}

@@ -1,7 +1,6 @@
 #pragma once
 
-namespace JK
-{
+
 	struct Quaternion
 	{
 	public:
@@ -291,4 +290,3 @@ namespace JK
 
 		return result;
 	}
-}

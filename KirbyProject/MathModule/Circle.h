@@ -1,7 +1,6 @@
 #pragma once
 
-namespace JK
-{
+
 	struct Circle
 	{
 	public:
@@ -27,4 +26,3 @@ namespace JK
 		float twoRadiusSum = Radius + InCircle.Radius;
 		return (Center - InCircle.Center).SizeSquared() <= (twoRadiusSum * twoRadiusSum);
 	}
-}

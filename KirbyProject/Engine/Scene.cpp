@@ -2,8 +2,6 @@
 #include "Scene.h"
 #include "GameObject.h"
 
-using namespace JK::DD;
-
 void Scene::Awake()
 {
 	for (const shared_ptr<GameObject>& gameObject : _gameObjects)

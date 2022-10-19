@@ -10,5 +10,3 @@
 #include <Windows.h>
 #include "WindowsGDI.h"
 #include "WindowsRSI.h"
-
-using namespace JK;

@@ -1,7 +1,6 @@
 #pragma once
 
-namespace JK
-{
+
 	class Timer
 	{
 		DECLARE_SINGLE(Timer);
@@ -23,5 +22,3 @@ namespace JK
 		float _frameTime = 0.f;
 		uint32 _fps = 0;
 	};
-
-}

@@ -6,8 +6,7 @@
 #include "Shader.h"
 #include "Texture.h"
 
-namespace JK
-{
+
 	class Resources
 	{
 		DECLARE_SINGLE(Resources);
@@ -96,4 +95,3 @@ namespace JK
 		else
 			return OBJECT_TYPE::NONE;
 	}
-}

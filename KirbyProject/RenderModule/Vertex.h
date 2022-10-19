@@ -1,7 +1,6 @@
 #pragma once
 
-namespace JK
-{
+
 namespace DD
 {
 	struct Vertex2D
@@ -34,5 +33,4 @@ namespace DD
 		LinearColor Color;
 		Vector2 UV;
 	};
-}
 }

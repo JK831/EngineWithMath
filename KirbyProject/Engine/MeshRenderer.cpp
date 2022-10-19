@@ -4,7 +4,6 @@
 #include "Material.h"
 #include "Transform.h"
 
-using namespace JK::DD;
 
 MeshRenderer::MeshRenderer() : Component(COMPONENT_TYPE::MESH_RENDERER)
 {

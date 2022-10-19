@@ -1,6 +1,5 @@
 #include "pch.h"
 
-using namespace JK;
 
 Plane::Plane(const Vector3& InPoint1, const Vector3& InPoint2, const Vector3& InPoint3)
 {

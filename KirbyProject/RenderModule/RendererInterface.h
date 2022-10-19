@@ -1,7 +1,5 @@
 #pragma once
 
-namespace JK
-{
 	class RendererInterface
 	{
 	public:
@@ -27,4 +25,3 @@ namespace JK
 		virtual void PushStatisticText(std::string&& InText) = 0;
 		virtual void PushStatisticTexts(std::vector<std::string>&& InTexts) = 0;
 	};
-}

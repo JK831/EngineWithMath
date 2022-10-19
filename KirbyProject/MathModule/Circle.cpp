@@ -1,6 +1,5 @@
 #include "pch.h"
 
-using namespace JK;
 
 Circle::Circle(const std::vector<Vector2> InVertices)
 {

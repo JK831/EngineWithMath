@@ -1,7 +1,6 @@
 #pragma once
 
-namespace JK
-{
+
 	struct Matrix2x2
 	{
 	public:
@@ -86,5 +85,4 @@ namespace JK
 			Raws[1].Dot(InVector)
 		);
 	}
-}
 

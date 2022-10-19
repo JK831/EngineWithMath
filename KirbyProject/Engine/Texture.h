@@ -1,8 +1,7 @@
 #pragma once
+#include "Object.h"
 
-namespace JK
-{
-	class Texture : Object
+	class Texture : JK::Object
 	{
 	public:
 		Texture();
@@ -14,9 +13,9 @@ namespace JK
 	public:
 		void Release();
 		bool IsIntialized() const { return (_Buffer.size() > 0); }
-		UINT32 GetWidth() const { return _Width; }
-		UINT32 GetHeight() const { return _Height; }
-		UINT32 GetSize() const { return _Width * _Height; }
+		uint32 GetWidth() const { return _Width; }
+		uint32 GetHeight() const { return _Height; }
+		uint32 GetSize() const { return _Width * _Height; }
 		LinearColor GetSample(Vector2 InUV) const;
 		TextureFilterMode GetMagFilterMode() const { return _MagFilter; }
 		TextureFilterMode GetMinFilterMode() const { return _MinFilter; }
@@ -29,9 +28,9 @@ namespace JK
 
 	private:
 		static constexpr BYTE _Channel = 4;
-		std::vector<LinearColor> _Buffer;
-		UINT32 _Width = 0;
-		UINT32 _Height = 0;
+		::std::vector<LinearColor> _Buffer;
+		uint32 _Width = 0;
+		uint32 _Height = 0;
 
 		TextureFilterMode _MagFilter = TextureFilterMode::Nearest;
 		TextureFilterMode _MinFilter = TextureFilterMode::Nearest;
@@ -39,4 +38,3 @@ namespace JK
 		bool _AnisotropyEnable = false;
 		float _MaxAnisotropy = 16.0f;
 	};
-}

@@ -1,8 +1,7 @@
 #include "pch.h"
 #include "Material.h"
 
-namespace JK
-{
+
 	Material::Material() : Object(OBJECT_TYPE::MATERIAL)
 	{
 
@@ -17,4 +16,3 @@ namespace JK
 	{
 		return GEngine->GetRenderQueue()->PushMaterial();
 	}
-}

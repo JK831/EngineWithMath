@@ -1,7 +1,6 @@
 #pragma once
 
-namespace JK
-{
+
 struct Vector2
 {
 public:
@@ -38,7 +37,12 @@ public:
 	}
 
 	FORCEINLINE Vector2 operator*(const Vector3& InVector) const;
-	
+	FORCEINLINE Vector2& operator=(const Vector3& InVector)
+	{
+		X = InVector.X;
+		Y = InVector.Y;
+		return *this;
+	}
 
 	// ¸â¹öÇÔ¼ö 
 	FORCEINLINE float Size() const;
@@ -198,4 +202,3 @@ FORCEINLINE constexpr Vector2 Vector2::ToCartesianCoordinate() const
 	return Vector2(X * cos, X * sin);
 }
 
-}

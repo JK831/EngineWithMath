@@ -1,6 +1,7 @@
 #pragma once
 
-#include "pch.h"
+class RendererInterface;
+class RenderQueue;
 
 class Engine
 {
@@ -24,8 +25,8 @@ private:
 	void ShowFps();
 
 private:
-
+	std::unique_ptr <RendererInterface> _RSIPtr;
 	WindowInfo _window;
-	RenderQueue _renderQueue;
+	shared_ptr<RenderQueue> _renderQueue;
 	
 };

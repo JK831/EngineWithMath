@@ -1,7 +1,6 @@
 #pragma once
 
-namespace JK
-{
+
 	struct Math
 	{
 		static constexpr float PI = { 3.14159265358979323846f };
@@ -223,4 +222,3 @@ namespace JK
 			return temp;
 		}
 	};
-}

@@ -1,7 +1,6 @@
 #pragma once
 
-namespace JK
-{
+
 	struct Rotator
 	{
 	public:
@@ -45,4 +44,3 @@ namespace JK
 		float Roll = 0.f;
 		float Pitch = 0.f;
 	};
-}

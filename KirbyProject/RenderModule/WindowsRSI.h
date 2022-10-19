@@ -1,7 +1,6 @@
 #pragma once
 
-namespace JK
-{
+
 	class WindowsRSI : public WindowsGDI, public RendererInterface
 	{
 	public:
@@ -42,4 +41,3 @@ namespace JK
 	{
 		SetPixelOpaque(InPos, InColor);
 	}
-}

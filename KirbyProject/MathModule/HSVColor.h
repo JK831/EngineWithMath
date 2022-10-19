@@ -1,7 +1,6 @@
 #pragma once
 
-namespace JK
-{
+
     struct HSVColor
     {
     public:
@@ -34,4 +33,3 @@ namespace JK
         float S = 1.f;
         float V = 1.f;
     };
-}

@@ -1,6 +1,5 @@
 #include "pch.h"
 
-using namespace JK;
 
 const Vector3 Vector3::UnitX(1.f, 0.f, 0.f);
 const Vector3 Vector3::UnitY(0.f, 1.f, 0.f);

@@ -1,7 +1,6 @@
 #pragma once
 
-namespace JK
-{
+
 	struct Box
 	{
 	public:
@@ -96,5 +95,4 @@ namespace JK
 		OutExtent = GetExtent();
 		OutCenter = Min + OutExtent;
 	}
-}
 

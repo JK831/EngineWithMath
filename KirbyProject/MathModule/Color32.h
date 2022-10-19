@@ -1,7 +1,5 @@
 #pragma once
 
-namespace JK
-{
 	struct Color32
 	{
 	public:
@@ -47,4 +45,3 @@ namespace JK
 		B = (BYTE)Math::Clamp((BYTE)B + (BYTE)InC.B, 0, 255);
 		A = (BYTE)Math::Clamp((BYTE)A + (BYTE)InC.A, 0, 255);
 	}
-}

@@ -1,8 +1,7 @@
 #pragma once
 #include "Component.h"
 
-namespace JK
-{
+
 	namespace DD
 	{
 		class Transform : public Component
@@ -46,5 +45,4 @@ namespace JK
 
 			weak_ptr<Transform> _parent;
 	}
-}
 

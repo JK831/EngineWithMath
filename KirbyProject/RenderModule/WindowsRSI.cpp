@@ -4,9 +4,9 @@ WindowsRSI::~WindowsRSI()
 {
 }
 
-bool WindowsRSI::Init(const ScreenPoint& InScreenSize)
+bool WindowsRSI::Init(const WindowInfo& InWindowInfo)
 {
-	return InitializeGDI(InScreenSize);
+	return InitializeGDI(InWindowInfo);
 }
 
 void WindowsRSI::Shutdown()
@@ -31,12 +31,12 @@ void WindowsRSI::EndFrame()
 
 void WindowsRSI::DrawFullVerticalLine(int InX, const LinearColor& InColor)
 {
-	if (InX < 0 || InX >= _ScreenSize.X)
+	if (InX < 0 || InX >= _window.width)
 	{
 		return;
 	}
 
-	for (int y = 0; y < _ScreenSize.Y; ++y)
+	for (int y = 0; y < _window.height; ++y)
 	{
 		SetPixel(ScreenPoint(InX, y), InColor);
 	}
@@ -44,12 +44,12 @@ void WindowsRSI::DrawFullVerticalLine(int InX, const LinearColor& InColor)
 
 void WindowsRSI::DrawFullHorizontalLine(int InY, const LinearColor& InColor)
 {
-	if (InY < 0 || InY >= _ScreenSize.Y)
+	if (InY < 0 || InY >= _window.height)
 	{
 		return;
 	}
 
-	for (int x = 0; x < _ScreenSize.X; ++x)
+	for (int x = 0; x < _window.width; ++x)
 	{
 		SetPixel(ScreenPoint(x, InY), InColor);
 	}
@@ -57,7 +57,7 @@ void WindowsRSI::DrawFullHorizontalLine(int InY, const LinearColor& InColor)
 
 void WindowsRSI::DrawPoint(const Vector2& InVectorPos, const LinearColor& InColor)
 {
-	SetPixel(ScreenPoint::ToScreenCoordinate(_ScreenSize, InVectorPos), InColor);
+	SetPixel(ScreenPoint::ToScreenCoordinate(_window, InVectorPos), InColor);
 }
 
 void WindowsRSI::DrawPoint(const ScreenPoint& InScreenPos, const LinearColor& InColor)
@@ -212,7 +212,7 @@ void WindowsRSI::DrawLine(const Vector2& InStartPos, const Vector2& InEndPos, co
 {
 	Vector2 clippedStart = InStartPos;
 	Vector2 clippedEnd = InEndPos;
-	Vector2 screenExtend = Vector2(_ScreenSize.X, _ScreenSize.Y) * 0.5f;
+	Vector2 screenExtend = Vector2(_window.width, _window.height) * 0.5f;
 	Vector2 minScreen = -screenExtend;
 	Vector2 maxScreen = screenExtend;
 	if (!CohenSutherlandLineClip(clippedStart, clippedEnd, minScreen, maxScreen))
@@ -220,8 +220,8 @@ void WindowsRSI::DrawLine(const Vector2& InStartPos, const Vector2& InEndPos, co
 		return;
 	}
 
-	ScreenPoint startPosition = ScreenPoint::ToScreenCoordinate(_ScreenSize, clippedStart);
-	ScreenPoint endPosition = ScreenPoint::ToScreenCoordinate(_ScreenSize, clippedEnd);
+	ScreenPoint startPosition = ScreenPoint::ToScreenCoordinate(_window, clippedStart);
+	ScreenPoint endPosition = ScreenPoint::ToScreenCoordinate(_window, clippedEnd);
 
 	int width = endPosition.X - startPosition.X;
 	int height = endPosition.Y - startPosition.Y;

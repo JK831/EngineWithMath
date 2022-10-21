@@ -1,7 +1,6 @@
 #pragma once
 
-	namespace DD
-	{
+
 		class GameObject : public Object, public enable_shared_from_this<GameObject>
 		{
 		public:
@@ -26,4 +25,3 @@
 			array<shared_ptr<Component>, FIXED_COMPONENT_COUNT> _components;
 			vector<shared_ptr<MonoBehaviour>> _scripts;
 		};
-	}

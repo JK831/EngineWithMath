@@ -21,8 +21,7 @@
 	class GameObject;
 	class Transform;
 
-	namespace DD
-	{
+
 		class Component : public Object
 		{
 		public:
@@ -51,4 +50,3 @@
 			COMPONENT_TYPE _type;
 			weak_ptr<GameObject> _gameObject;
 		};
-	}

@@ -1,7 +1,7 @@
 #pragma once
 #include "Object.h"
 
-	class Texture : JK::Object
+	class Texture : Object
 	{
 	public:
 		Texture();

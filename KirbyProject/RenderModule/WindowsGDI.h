@@ -8,7 +8,7 @@
 		~WindowsGDI();
 
 	public:
-		bool InitializeGDI(const ScreenPoint& InScreenSize);
+		bool InitializeGDI(const WindowInfo& windowInfo);
 		void ReleaseGDI();
 
 		void FillBuffer(Color32 InColor);
@@ -25,6 +25,8 @@
 		void DrawStatisticTexts();
 
 		void SwapBuffer();
+
+		const WindowInfo& GetWindow() { return _window; }
 
 	protected:
 		FORCEINLINE bool IsInScreen(const ScreenPoint& InPos) const;
@@ -45,6 +47,9 @@
 
 		ScreenPoint _ScreenSize;
 		std::vector<std::string> _StatisticTexts;
+
+		WindowInfo _window;
+
 	};
 
 	FORCEINLINE void WindowsGDI::SetPixelOpaque(const ScreenPoint& InPos, const LinearColor& InColor)

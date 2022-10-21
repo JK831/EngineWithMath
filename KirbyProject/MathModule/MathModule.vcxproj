@@ -78,6 +78,7 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental>true</LinkIncremental>
+    <OutDir>$(SolutionDir)Output\</OutDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <LinkIncremental>false</LinkIncremental>
@@ -174,7 +175,6 @@
     <ClInclude Include="Rotator.h" />
     <ClInclude Include="ScreenPoint.h" />
     <ClInclude Include="Sphere.h" />
-    <ClInclude Include="Transform.h" />
     <ClInclude Include="Vector2.h" />
     <ClInclude Include="Vector3.h" />
     <ClInclude Include="Vector4.h" />
@@ -201,7 +201,6 @@
     <ClCompile Include="Rectangle.cpp" />
     <ClCompile Include="Rotator.cpp" />
     <ClCompile Include="Sphere.cpp" />
-    <ClCompile Include="Transform.cpp" />
     <ClCompile Include="Vector2.cpp" />
     <ClCompile Include="Vector3.cpp" />
     <ClCompile Include="Vector4.cpp" />

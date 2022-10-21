@@ -1,14 +1,12 @@
 #pragma once
 
 
+
 	class WindowsRSI : public WindowsGDI, public RendererInterface
 	{
-	public:
-		WindowsRSI() = default;
-		~WindowsRSI();
 
 	public:
-		virtual bool Init(const ScreenPoint& InScreenSize) override;
+		virtual bool Init(const WindowInfo& windowInfo) override;
 		virtual void Shutdown() override;
 		virtual bool IsInitialized() const { return _GDIInitialized; }
 

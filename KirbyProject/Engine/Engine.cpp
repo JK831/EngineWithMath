@@ -11,7 +11,6 @@ void Engine::Init(const WindowInfo& info)
 {
 	_window = info;
 
-	
 }
 
 void Engine::Update()

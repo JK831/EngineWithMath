@@ -42,8 +42,6 @@ using uint64 = unsigned __int64;
 
 #include "Quaternion.h"
 
-#include "Transform.h"
-
 #include "Plane.h"
 
 #include "Circle.h"

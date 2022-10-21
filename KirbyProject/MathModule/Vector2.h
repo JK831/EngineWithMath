@@ -8,7 +8,6 @@ public:
 	FORCEINLINE explicit constexpr Vector2(int InX, int InY) : X((float)InX), Y((float)InY) { }
 	FORCEINLINE explicit constexpr Vector2(float InX, float InY) : X(InX), Y(InY) { }
 
-	FORCEINLINE explicit constexpr Vector2(float InX, float InY) : X(InX), Y(InY) { }
 
 	// ¿¬»êÀÚ 
 	FORCEINLINE constexpr float operator[](BYTE InIndex) const;

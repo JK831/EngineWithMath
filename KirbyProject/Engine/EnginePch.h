@@ -1,11 +1,11 @@
 #pragma once
 
-#include <Windows.h>
+#include "MathHeaders.h" // string, vector, array included
+#include "RendererHeaders.h"
+
 #include <tchar.h>
 #include <memory>
-#include <string>
-#include <vector>
-#include <array>
+
 #include <list>
 #include <map>
 
@@ -14,8 +14,6 @@ using namespace std;
 #include <filesystem>
 namespace fs = std::filesystem;
 
-#include "MathHeaders.h"
-#include "RendererHeaders.h"
 
 enum class OBJECT_TYPE : uint8
 {
@@ -61,15 +59,15 @@ struct Vertex
 {
 	Vertex() {}
 
-	Vertex(JK::Vector3 p, JK::Vector2 u, JK::Vector3 n, JK::Vector3 t)
+	Vertex(Vector3 p, Vector2 u, Vector3 n, Vector3 t)
 		: pos(p), uv(u), normal(n), tangent(t)
 	{
 	}
 
-	JK::Vector3 pos;
-	JK::Vector2 uv;
-	JK::Vector3 normal;
-	JK::Vector3 tangent;
+	Vector3 pos;
+	Vector2 uv;
+	Vector3 normal;
+	Vector3 tangent;
 };
 
 enum class TextureFilterMode : UINT32
@@ -85,13 +83,11 @@ enum class TextureAddressMode : UINT32
 	Clamp
 };
 
-struct WindowInfo
+enum
 {
-	HWND hwnd; // 출력 윈도우
-	int32 width; // 너비
-	int32 height; // 높이
-	bool windowed; // 창모드 or FUllScreen
+	MAIN_TEXTURE_NUM = 0
 };
+
 
 #define DECLARE_SINGLE(type)	\
 private:						\

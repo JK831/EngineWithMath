@@ -4,7 +4,7 @@ WindowsGDI::~WindowsGDI()
 {
 }
 
-bool WindowsGDI::InitializeGDI(const ScreenPoint& InScreenSize)
+bool WindowsGDI::InitializeGDI(const WindowInfo& windowInfo)
 {
 	ReleaseGDI();
 
@@ -37,7 +37,7 @@ bool WindowsGDI::InitializeGDI(const ScreenPoint& InScreenSize)
 		return false;
 	}
 
-	_ScreenSize = InScreenSize;
+	_window = windowInfo;
 
 	// Color & Bitmap Setting
 	BITMAPINFO bmi;

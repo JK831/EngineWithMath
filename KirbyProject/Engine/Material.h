@@ -1,14 +1,12 @@
 #pragma once
 #include "Object.h"
-
+#include "Shader.h"
+#include "Texture.h"
 
 	enum
 	{
 		MATERIAL_TEXTURE_COUNT = 5,
 	};
-
-	class Texture;
-	class Shader;
 
 	class Material : public Object
 	{

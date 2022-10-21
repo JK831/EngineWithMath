@@ -1,7 +1,8 @@
 #pragma once
 
-class RendererInterface;
-class RenderQueue;
+#include "Mesh.h"
+#include "Texture.h"
+#include "RenderQueue.h"
 
 class Engine
 {
@@ -11,7 +12,6 @@ public:
 	void Update();
 
 public:
-	const WindowInfo& GetWindow() { return _window; }
 	shared_ptr<RenderQueue> GetRenderQueue() { return _renderQueue; }
 
 public:
@@ -25,7 +25,6 @@ private:
 	void ShowFps();
 
 private:
-	std::unique_ptr <RendererInterface> _RSIPtr;
 	WindowInfo _window;
 	shared_ptr<RenderQueue> _renderQueue;
 	

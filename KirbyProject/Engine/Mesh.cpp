@@ -25,7 +25,7 @@ void Mesh::Render(shared_ptr<Matrix3x3> InMatrix, uint16 InBufferIndex)
 	CMD_LIST->DrawIndexedInstance(&_vertexBuffer, &_indexBuffer, &InMatrix, InBufferIndex);
 }
 
-void Mesh::CreateVertexBuffer(const vector<Vector2>& buffer)
+void Mesh::CreateVertexBuffer(const vector<Vertex>& buffer)
 {
 	_vertexBuffer = buffer;
 	_vertexCount = static_cast<uint32>(buffer.size());

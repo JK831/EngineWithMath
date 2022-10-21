@@ -1,8 +1,7 @@
 #pragma once
 
 
-	namespace DD
-	{
+
 		class Scene
 		{
 		public:
@@ -20,5 +19,4 @@
 		private:
 			vector<shared_ptr<GameObject>> _gameObjects;
 		};
-	}
 	

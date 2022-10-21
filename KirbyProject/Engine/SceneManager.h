@@ -1,6 +1,6 @@
 #pragma once
 
-//class Scene; // 穿号識情
+class Scene; // 穿号識情
 
 	class SceneManager
 	{
@@ -12,11 +12,11 @@
 		void LoadScene(wstring sceneName);
 
 	public:
-		shared_ptr<DD::Scene> GetActiveScene() { return _activeScene; }
+		shared_ptr<Scene> GetActiveScene() { return _activeScene; }
 
 	private:
-		shared_ptr<DD::Scene> LoadTestScene();
+		shared_ptr<Scene> LoadTestScene();
 
 	private:
-		shared_ptr<DD::Scene> _activeScene;
+		shared_ptr<Scene> _activeScene;
 	};

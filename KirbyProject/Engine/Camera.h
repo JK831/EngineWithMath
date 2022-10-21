@@ -8,8 +8,7 @@ enum class PROJECTION_TYPE
 	ORTHOGRAPHIC,
 };
 
-	namespace DD
-	{
+
 		class Camera : public Component
 		{
 		public:
@@ -35,4 +34,3 @@ enum class PROJECTION_TYPE
 			static Matrix3x3 S_MatView;
 			static Matrix3x3 S_MatProjection;
 		};
-	}

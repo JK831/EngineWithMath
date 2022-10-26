@@ -12,7 +12,7 @@ public:
 	RenderQueue();
 	~RenderQueue();
 	std::vector<Vertex> VertexShading(const::std::vector<Vertex>& InVertexBuffer, const Matrix3x3& InMatrix);
-	LinearColor PixelShading(LinearColor UVColor, LinearColor InDefaultColor);
+	LinearColor PixelShading(LinearColor UVColor);
 	void DrawMesh();
 	void DrawTriangle2D(const ::std::vector<Vertex>& InTvs, shared_ptr<Shader> InShader, shared_ptr<Texture> InTexture);
 	uint16 PushMaterial(::std::shared_ptr<Material> InMaterial);

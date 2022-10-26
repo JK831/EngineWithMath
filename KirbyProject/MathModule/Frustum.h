@@ -27,16 +27,16 @@
 		{
 			if (p.IsOutside(InPoint))
 			{
-				return BoundCheckResult::Outside;
+				return BoundCheckResult::OUTSIDE;
 			}
 			else if (Math::EqualsInTolerance(p.Distance(InPoint), 0.f))
 			{
-				return BoundCheckResult::Intersect;
+				return BoundCheckResult::INTERSECT;
 			}
 
 		}
 
-		return BoundCheckResult::Inside;
+		return BoundCheckResult::INSIDE;
 	}
 
 	FORCEINLINE constexpr BoundCheckResult Frustum::CheckBound(const Sphere& InSphere) const
@@ -45,16 +45,16 @@
 		{
 			if (p.Distance(InSphere.Center) > InSphere.Radius)
 			{
-				return BoundCheckResult::Outside;
+				return BoundCheckResult::OUTSIDE;
 			}
 			else if (Math::Abs(p.Distance(InSphere.Center)) <= InSphere.Radius)
 			{
-				return BoundCheckResult::Intersect;
+				return BoundCheckResult::INTERSECT;
 			}
 
 		}
 
-		return BoundCheckResult::Inside;
+		return BoundCheckResult::INSIDE;
 	}
 
 	FORCEINLINE constexpr BoundCheckResult Frustum::CheckBound(const Box& InBox) const
@@ -68,15 +68,15 @@
 
 			if (p.Distance(nPoint) > 0.f)
 			{
-				return BoundCheckResult::Outside;
+				return BoundCheckResult::OUTSIDE;
 			}
 			if (p.Distance(nPoint) <= 0.f && p.Distance(pPoint) >= 0.f)
 			{
-				return BoundCheckResult::Intersect;
+				return BoundCheckResult::INTERSECT;
 			}
 		}
 
-		return BoundCheckResult::Inside;
+		return BoundCheckResult::INSIDE;
 	}
 
 	FORCEINLINE constexpr bool Frustum::IsIntersect(const Box& InBox) const

@@ -57,7 +57,7 @@ void WindowsRSI::DrawFullHorizontalLine(int InY, const LinearColor& InColor)
 
 void WindowsRSI::DrawPoint(const Vector2& InVectorPos, const LinearColor& InColor)
 {
-	SetPixel(ScreenPoint::ToScreenCoordinate(_window, InVectorPos), InColor);
+	SetPixel(ScreenPoint::ToScreenCoordinate(_window.ToScreenPoint(), InVectorPos), InColor);
 }
 
 void WindowsRSI::DrawPoint(const ScreenPoint& InScreenPos, const LinearColor& InColor)
@@ -220,8 +220,8 @@ void WindowsRSI::DrawLine(const Vector2& InStartPos, const Vector2& InEndPos, co
 		return;
 	}
 
-	ScreenPoint startPosition = ScreenPoint::ToScreenCoordinate(_window, clippedStart);
-	ScreenPoint endPosition = ScreenPoint::ToScreenCoordinate(_window, clippedEnd);
+	ScreenPoint startPosition = ScreenPoint::ToScreenCoordinate(_window.ToScreenPoint(), clippedStart);
+	ScreenPoint endPosition = ScreenPoint::ToScreenCoordinate(_window.ToScreenPoint(), clippedEnd);
 
 	int width = endPosition.X - startPosition.X;
 	int height = endPosition.Y - startPosition.Y;

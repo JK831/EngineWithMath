@@ -14,11 +14,15 @@
 		FORCEINLINE Vector2& operator[](BYTE InIndex);
 		FORCEINLINE Matrix2x2 operator*(float InScalar) const;
 		FORCEINLINE Matrix2x2 operator*(const Matrix2x2& InMatrix) const;
-		FORCEINLINE Vector2 operator*(const Vector2& InVector) const;
+		FORCEINLINE friend Vector2 operator*(Vector2& InVector, const Matrix2x2& InMatrix)
+		{
+			return Vector2(InVector.X * InMatrix.Raws[0].X + InVector.Y * InMatrix.Raws[0].Y,
+				InVector.X * InMatrix.Raws[1].X + InVector.Y * InMatrix.Raws[1].Y);
+		}
 
 		FORCEINLINE friend Vector2 operator*=(Vector2& InVector, const Matrix2x2& InMatrix)
 		{
-			InVector = InMatrix * InVector;
+			InVector = InVector * InMatrix;
 			return InVector;
 		}
 
@@ -78,11 +82,11 @@
 		);
 	}
 
-	FORCEINLINE Vector2 Matrix2x2::operator*(const Vector2& InVector) const
+	/*FORCEINLINE Vector2 Matrix2x2::operator*(const Vector2& InVector) const
 	{
 		return Vector2(
 			Raws[0].Dot(InVector),
 			Raws[1].Dot(InVector)
 		);
-	}
+	}*/
 

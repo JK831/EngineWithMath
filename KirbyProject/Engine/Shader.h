@@ -9,27 +9,27 @@ public:
 
 	void Init(const wstring& path);
 	void Update();
-	std::vector<Vertex> VertexShading(const::std::vector<Vertex>& InVertexBuffer, const Matrix3x3& InMatrix);
+	void VertexShading(::std::vector<Vertex>& InVertexBuffer, const Matrix3x3& InMatrix);
 	LinearColor PixelShading(LinearColor UVColor);
 
 private:
 	void CreateShader(const wstring& path, const string& name, const string& version);
-	void CreateVertexShader(const wstring& path, const string& name, const string& version);
-	void CreatePixelShader(const wstring& path, const string& name, const string& version);
+	void CreateVertexShader(const wstring& path, const string& name, const string& version = "VS_0_0");
+	void CreatePixelShader(const wstring& path, const string& name, const string& version = "PS_0_0");
 
 private:
-	std::vector<Vertex>(*_vertexFunction) (const::std::vector<Vertex>& InVertexBuffer, const Matrix3x3& InMatrix);
+	std::vector<Vertex>(*_vertexFunction) (::std::vector<Vertex>& InVertexBuffer, const Matrix3x3& InMatrix);
 	LinearColor(*_pixelFunction) (LinearColor UVColor);
 };
 
 
 // 정점 변환 코드
-FORCEINLINE void VertexShader2D(std::vector<Vertex2D>& InVertices, const Matrix3x3& InMatrix)
+FORCEINLINE void VertexShader2D(std::vector<Vertex>& InVertices, const Matrix3x3& InMatrix)
 {
 	// 위치 값에 최종 행렬을 적용해 변환
-	for (Vertex2D& v : InVertices)
+	for (Vertex& v : InVertices)
 	{
-		v.Position = InMatrix * v.Position;
+		v.pos = InMatrix * v.pos;
 	}
 }
 

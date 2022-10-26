@@ -16,9 +16,22 @@
 		FORCEINLINE Matrix3x3 operator*(const Matrix3x3& InMatrix) const;
 		FORCEINLINE Vector3 operator*(const Vector3& InVector) const;
 		
+		FORCEINLINE friend Vector2 operator*(Vector2& InVector2, const Matrix3x3& InMatrix)
+		{
+			return InVector2 * InMatrix.ToMatrix2x2();
+		}
+
+		FORCEINLINE friend Vector3 operator*(Vector3& InVector3, const Matrix3x3& InMatrix)
+		{
+			Matrix3x3 transposedMatrix = InMatrix.Transpose();
+			return Vector3(InVector3.X * transposedMatrix.Raws[0].X + InVector3.Y * transposedMatrix.Raws[0].Y + InVector3.Z * transposedMatrix.Raws[0].Z,
+				InVector3.X * transposedMatrix.Raws[1].X + InVector3.Y * transposedMatrix.Raws[1].Y + InVector3.Z * transposedMatrix.Raws[1].Z,
+				InVector3.X * transposedMatrix.Raws[2].X + InVector3.Y * transposedMatrix.Raws[2].Y + InVector3.Z * transposedMatrix.Raws[2].Z);
+		}
+
 		FORCEINLINE friend Vector2& operator*=(Vector2& InVector, const Matrix3x3& InMatrix)
 		{
-			InVector = InVector * InMatrix;
+			InVector = InVector * InMatrix.ToMatrix2x2();
 			return InVector;
 		}
 

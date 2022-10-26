@@ -9,7 +9,12 @@ struct WindowInfo
 	int32 width; // 너비
 	int32 height; // 높이
 	bool windowed; // 창모드 or FUllScreen
+
+public:
+	ScreenPoint ToScreenPoint() { return ScreenPoint(width, height); }
 };
+
+
 
 class RendererInterface
 {

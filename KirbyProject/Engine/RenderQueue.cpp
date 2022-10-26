@@ -3,12 +3,12 @@
 
 RenderQueue::RenderQueue()
 {
-	_RSIPtr = new WindowsRSI();
+	_RSIPtr = make_unique<WindowsRSI>();
 }
 
 RenderQueue::~RenderQueue()
 {
-	delete _RSIPtr;
+	_RSIPtr.reset();
 }
 
 uint16 RenderQueue::PushMaterial(std::shared_ptr<Material> InMaterial)
@@ -65,8 +65,8 @@ void RenderQueue::DrawTriangle2D(const ::std::vector<Vertex>& InTvs, shared_ptr<
 
 	float invDenominator = 1.f / denominator;
 
-	ScreenPoint lowerLeftPoint = ScreenPoint::ToScreenCoordinate(GEngine->GetWindow().width, minPos);
-	ScreenPoint upperRightPoint = ScreenPoint::ToScreenCoordinate(GEngine->GetWindow().height, maxPos);
+	ScreenPoint lowerLeftPoint = ScreenPoint::ToScreenCoordinate(_RSIPtr->GetWindow().width, minPos);
+	ScreenPoint upperRightPoint = ScreenPoint::ToScreenCoordinate(_RSIPtr->GetWindow().height, maxPos);
 
 	// 두 점이 화면 밖을 벗어나는 경우 클리핑 처리
 	lowerLeftPoint.X = Math::Max((int32)0, lowerLeftPoint.X);
@@ -80,7 +80,7 @@ void RenderQueue::DrawTriangle2D(const ::std::vector<Vertex>& InTvs, shared_ptr<
 		for (int y = upperRightPoint.Y; y <= lowerLeftPoint.Y; ++y)
 		{
 			ScreenPoint fragment = ScreenPoint(x, y);
-			Vector2 pointToTest = fragment.ToCartesianCoordinate(GetWindow());
+			Vector2 pointToTest = fragment.ToCartesianCoordinate(_RSIPtr->GetWindow());
 			Vector2 w = pointToTest - InTvs[0].pos;
 			float wdotu = w.Dot(u);
 			float wdotv = w.Dot(v);

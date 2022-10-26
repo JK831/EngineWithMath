@@ -4,6 +4,9 @@
 
 	class WindowsRSI : public WindowsGDI, public RendererInterface
 	{
+	public:
+		WindowsRSI() = default;
+		~WindowsRSI();
 
 	public:
 		virtual bool Init(const WindowInfo& windowInfo) override;

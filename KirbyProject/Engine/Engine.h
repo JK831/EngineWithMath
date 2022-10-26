@@ -25,7 +25,6 @@ private:
 	void ShowFps();
 
 private:
-	WindowInfo _window;
 	shared_ptr<RenderQueue> _renderQueue;
 	
 };

@@ -23,16 +23,7 @@
 		FORCEINLINE constexpr Vector3& operator+=(const Vector3& InVector);
 		FORCEINLINE constexpr Vector3& operator-=(const Vector3& InVector);
 
-		FORCEINLINE constexpr Vector3 operator*(const Matrix3x3& InMatrix)
-		{
-			Matrix3x3 transposedMatrix = InMatrix.Transpose();
-			return Vector3(X * transposedMatrix.Raws[0].X + Y * transposedMatrix.Raws[0].Y + Z * transposedMatrix.Raws[0].Z,
-				X * transposedMatrix.Raws[1].X + Y * transposedMatrix.Raws[1].Y + Z * transposedMatrix.Raws[1].Z,
-				X * transposedMatrix.Raws[2].X + Y * transposedMatrix.Raws[2].Y + Z * transposedMatrix.Raws[2].Z);
-		}
-
-		
-		FORCEINLINE Vector2 operator*(const Vector2& InVector) const;
+		FORCEINLINE constexpr Vector2 operator*(const Vector2& InVector) const;
 
 
 		// ¸â¹öÇÔ¼ö 

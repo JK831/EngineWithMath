@@ -23,26 +23,9 @@ public:
 	FORCEINLINE constexpr Vector2& operator+=(const Vector2& InVector);
 	FORCEINLINE constexpr Vector2& operator-=(const Vector2& InVector);
 
-	FORCEINLINE constexpr Vector2 operator*(const Matrix2x2& InMatrix)
-	{
-		Matrix2x2 transposedMatrix = InMatrix.Transpose();
-		return Vector2(X * transposedMatrix.Raws[0].X + Y * transposedMatrix.Raws[0].Y, X* transposedMatrix.Raws[1].X + Y * transposedMatrix.Raws[1].Y);
-	}
 
-	FORCEINLINE constexpr Vector2 operator*(const Matrix3x3& InMatrix)
-	{
-		Matrix3x3 transposedMatrix = InMatrix.Transpose();
-		return Vector2(X * transposedMatrix.Raws[0].X + Y * transposedMatrix.Raws[0].Y, X * transposedMatrix.Raws[1].X + Y * transposedMatrix.Raws[1].Y);
-	}
 
-	FORCEINLINE Vector2 operator*(const Vector3& InVector) const;
-	FORCEINLINE Vector2& operator=(const Vector3& InVector)
-	{
-		X = InVector.X;
-		Y = InVector.Y;
-		return *this;
-	}
-
+	//FORCEINLINE Vector2& operator=(const Vector3& InVector);
 	// ¸â¹öÇÔ¼ö 
 	FORCEINLINE float Size() const;
 	FORCEINLINE constexpr float SizeSquared() const;
@@ -161,6 +144,7 @@ FORCEINLINE constexpr Vector2& Vector2::operator-=(const Vector2& InVector)
 	Y -= InVector.Y;
 	return *this;
 }
+
 
 FORCEINLINE constexpr bool Vector2::EqualsInTolerance(const Vector2& InVector, float InTolerance) const
 {

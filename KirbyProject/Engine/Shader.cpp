@@ -23,9 +23,9 @@ void Shader::Update()
 
 }
 
-void Shader::VertexShading(std::vector<Vertex>& InVertexBuffer, const Matrix3x3& InMatrix)
+std::vector<Vertex> Shader::VertexShading(const std::vector<Vertex>& InVertexBuffer, const Matrix3x3& InMatrix)
 {
-	_vertexFunction(InVertexBuffer, InMatrix);
+	return _vertexFunction(InVertexBuffer, InMatrix);
 }
 
 LinearColor Shader::PixelShading(LinearColor UVColor)
@@ -45,5 +45,5 @@ void Shader::CreateVertexShader(const wstring& path, const string& name, const s
 
 void Shader::CreatePixelShader(const wstring& path, const string& name, const string& version = "PS_0_0")
 {
-	_pixelFunction = VertexShader2D;
+	_pixelFunction = FragmentShader2D;
 }

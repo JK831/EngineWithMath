@@ -9,7 +9,7 @@
 
 void Engine::Init(const WindowInfo& info)
 {
-	_renderQueue->
+	
 }
 
 void Engine::Update()

@@ -7,8 +7,7 @@
 #include "Engine.h"
 
 
-Matrix3x3 Camera::S_MatView;
-Matrix3x3 Camera::S_MatProjection;
+
 
 void Camera::FinalUpdate()
 {
@@ -22,8 +21,6 @@ void Camera::FinalUpdate()
 	else
 		_matProjection = ::XMMatrixOrthographicLH(width * _scale, height * _scale, _near, _far);
 
-	S_MatView = _matView;
-	S_MatProjection = _matProjection;
 }
 
 void Camera::Render()

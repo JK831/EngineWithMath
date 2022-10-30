@@ -1,15 +1,27 @@
 #include "pch.h"
+#include "Engine.h"
 #include "RenderQueue.h"
+#include "SceneManager.h"
 
 RenderQueue::RenderQueue()
 {
-	_RSIPtr = make_unique<WindowsRSI>();
-	_RSIPtr->Init();
+	
 }
 
 RenderQueue::~RenderQueue()
 {
 	_RSIPtr.reset();
+}
+
+void RenderQueue::Init(const WindowInfo& info)
+{
+	_RSIPtr = make_unique<WindowsRSI>();
+	_RSIPtr->Init(info);
+}
+
+void RenderQueue::Render()
+{
+	GET_SINGLE(SceneManager)->Render();
 }
 
 uint16 RenderQueue::PushMaterial(std::shared_ptr<Material> InMaterial)
@@ -21,7 +33,7 @@ uint16 RenderQueue::PushMaterial(std::shared_ptr<Material> InMaterial)
 	return indexNum;
 }
 
-void RenderQueue::DrawIndexedInstance(const::std::vector<Vertex>& InVertexBuffer, const::std::vector<uint32>& InIndexBuffer, const Matrix3x3& InMatrix, uint16 InBufferIndex)
+void RenderQueue::DrawIndexedInstance(const ::std::vector<Vertex>& InVertexBuffer, const ::std::vector<uint32>& InIndexBuffer, const Matrix3x3& InMatrix, uint16 InBufferIndex)
 {
 	size_t indexCount = InIndexBuffer.size();
 	size_t triangleCount = indexCount / 3;
@@ -66,8 +78,8 @@ void RenderQueue::DrawTriangle2D(const ::std::vector<Vertex>& InTvs, shared_ptr<
 
 	float invDenominator = 1.f / denominator;
 
-	ScreenPoint lowerLeftPoint = ScreenPoint::ToScreenCoordinate(_RSIPtr->GetWindow().width, minPos);
-	ScreenPoint upperRightPoint = ScreenPoint::ToScreenCoordinate(_RSIPtr->GetWindow().height, maxPos);
+	ScreenPoint lowerLeftPoint = ScreenPoint::ToScreenCoordinate(_RSIPtr->GetWindow().ToScreenPoint(), minPos);
+	ScreenPoint upperRightPoint = ScreenPoint::ToScreenCoordinate(_RSIPtr->GetWindow().ToScreenPoint(), maxPos);
 
 	// 두 점이 화면 밖을 벗어나는 경우 클리핑 처리
 	lowerLeftPoint.X = Math::Max((int32)0, lowerLeftPoint.X);
@@ -81,7 +93,7 @@ void RenderQueue::DrawTriangle2D(const ::std::vector<Vertex>& InTvs, shared_ptr<
 		for (int y = upperRightPoint.Y; y <= lowerLeftPoint.Y; ++y)
 		{
 			ScreenPoint fragment = ScreenPoint(x, y);
-			Vector2 pointToTest = fragment.ToCartesianCoordinate(_RSIPtr->GetWindow());
+			Vector2 pointToTest = fragment.ToCartesianCoordinate(_RSIPtr->GetWindow().ToScreenPoint());
 			Vector2 w = pointToTest - InTvs[0].pos.ToVector2();
 			float wdotu = w.Dot(u);
 			float wdotv = w.Dot(v);
@@ -92,7 +104,7 @@ void RenderQueue::DrawTriangle2D(const ::std::vector<Vertex>& InTvs, shared_ptr<
 			if (((s >= 0.f) && (s <= 1.f)) && ((t >= 0.f) && (t <= 1.f)) && ((oneMinusST >= 0.f) && (oneMinusST <= 1.f)))
 			{
 				Vector2 targetUV = InTvs[0].uv * oneMinusST + InTvs[1].uv * s + InTvs[2].uv * t;
-				_RSIPtr->DrawPoint(fragment, InShader->PixelShading(InTexture->GetSample(targetUV), LinearColor::White));
+				_RSIPtr->DrawPoint(fragment, InShader->PixelShading(InTexture->GetSample(targetUV)));
 			}
 		}
 	}

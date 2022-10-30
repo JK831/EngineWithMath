@@ -9,7 +9,8 @@
 
 void Engine::Init(const WindowInfo& info)
 {
-	
+	_renderQueue = make_shared<RenderQueue>();
+	_renderQueue->Init(info);
 }
 
 void Engine::Update()
@@ -18,7 +19,7 @@ void Engine::Update()
 	GET_SINGLE(Timer)->Update();
 	GET_SINGLE(SceneManager)->Update();
 
-	Render();
+	_renderQueue->Render();
 
 	ShowFps();
 }
@@ -37,6 +38,11 @@ void Engine::RenderEnd()
 
 void Engine::ResizeWindow(int32 width, int32 height)
 {
+}
+
+WindowInfo& Engine::GetWindow()
+{
+	return _renderQueue->GetWindow();
 }
 
 void Engine::ShowFps()

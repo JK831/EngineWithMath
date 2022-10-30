@@ -23,7 +23,7 @@ void SceneManager::Render()
 	if (_activeScene == nullptr)
 		return;
 
-	const vector<shared_ptr<DD::GameObject>>& gameObjects = _activeScene->GetGameObjects();
+	const vector<shared_ptr<GameObject>>& gameObjects = _activeScene->GetGameObjects();
 	for (auto& gameObject : gameObjects)
 	{
 		if (gameObject->GetCamera() == nullptr)

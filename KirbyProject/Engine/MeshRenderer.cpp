@@ -17,7 +17,7 @@ MeshRenderer::~MeshRenderer()
 
 void MeshRenderer::Render()
 {
-	shared_ptr<Matrix3x3> modelingMatrix = GetTransform()->GetMatrix();
+	const Matrix3x3& modelingMatrix = GetTransform()->GetLocalToWorldMatrix();
 	uint16 bufferIndex = _material->Update();
 	_mesh->Render(modelingMatrix, bufferIndex);
 }

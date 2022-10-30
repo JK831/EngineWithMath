@@ -1,5 +1,7 @@
 #pragma once
 
+namespace DD
+{
 	struct Rectangle
 	{
 	public:
@@ -84,3 +86,4 @@
 		OutExtent = GetExtent();
 		OutCenter = Min + OutExtent;
 	}
+}

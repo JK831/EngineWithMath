@@ -102,7 +102,7 @@ public:							\
 
 #define GET_SINGLE(type) type::GetInstance()
 
-#define CMD_LIST		GEngine->GetRenderQueue
+#define CMD_LIST		GEngine->GetRenderQueue()
 
 #define INPUT		GET_SINGLE(Input)
 #define DELTA_TIME	GET_SINGLE(Timer)->GetDeltaTime()

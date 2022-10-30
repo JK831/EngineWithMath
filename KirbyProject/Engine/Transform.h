@@ -1,47 +1,45 @@
 #pragma once
 #include "Component.h"
 
-	namespace DD
-	{
-		class Transform : public Component
-		{
-		public:
-			Transform();
-			virtual ~Transform();
 
-			virtual void FinalUpdate() override;
-			void PushData();
+class Transform : public Component
+{
+public:
+	Transform();
+	virtual ~Transform();
 
-		public:
-			// Parent 기준
-			const Vector2& GetLocalPosition() { return _localPosition; }
-			const Vector2& GetLocalRotation() { return _localRotation; }
-			const Vector2& GetLocalScale() { return _localScale; }
+	virtual void FinalUpdate() override;
+	void PushData();
 
-			const Matrix3x3& GetLocalToWorldMatrix() { return _matWorld; }
-			const Vector2& GetWorldPosition() { return _matWorld.Translation(); }
+public:
+	// Parent 기준
+	const Vector2& GetLocalPosition() { return _localPosition; }
+	const Vector2& GetLocalRotation() { return _localRotation; }
+	const Vector2& GetLocalScale() { return _localScale; }
 
-			Vector2 GetRight() { return _matWorld.Right(); }
-			Vector2 GetUp() { return _matWorld.Up(); }
-			Vector2 GetLook() { return _matWorld.Backward(); }
+	const Matrix3x3& GetLocalToWorldMatrix() { return _matWorld; }
+	const Vector2& GetWorldPosition() { return _matWorld.Translation(); }
 
-			void SetLocalPosition(const Vector2& position) { _localPosition = position; }
-			void SetLocalRotation(const Vector2& rotation) { _localRotation = rotation; }
-			void SetLocalScale(const Vector2& scale) { _localScale = scale; }
+	Vector2 GetRight() { return _matWorld.Right(); }
+	Vector2 GetUp() { return _matWorld.Up(); }
+	Vector2 GetLook() { return -Vector3::UnitZ.ToVector2(); } // = 0 vector
 
-		public:
-			void SetParent(shared_ptr<Transform> parent) { _parent = parent; }
-			weak_ptr<Transform> GetParent() { return _parent; }
+	void SetLocalPosition(const Vector2& position) { _localPosition = position; }
+	void SetLocalRotation(const Vector2& rotation) { _localRotation = rotation; }
+	void SetLocalScale(const Vector2& scale) { _localScale = scale; }
 
-		private:
-			// Parent 기준
-			Vec3 _localPosition = {};
-			Vec3 _localRotation = {};
-			Vec3 _localScale = { 1.f, 1.f, 1.f };
+public:
+	void SetParent(shared_ptr<Transform> parent) { _parent = parent; }
+	weak_ptr<Transform> GetParent() { return _parent; }
 
-			Matrix3x3 _matLocal = {};
-			Matrix3x3 _matWorld = {};
+private:
+	// Parent 기준
+	Vector2 _localPosition = {};
+	Vector2 _localRotation = {};
+	Vector2 _localScale = Vector2(1.f, 1.f);
 
-			weak_ptr<Transform> _parent;
-		};
-	}
+	Matrix3x3 _matLocal = {};
+	Matrix3x3 _matWorld = {};
+
+	weak_ptr<Transform> _parent;
+};

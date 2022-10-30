@@ -26,7 +26,7 @@
 
 		void SwapBuffer();
 
-		const WindowInfo& GetWindow() { return _window; }
+		WindowInfo& GetWindow() { return _window; }
 
 	protected:
 		FORCEINLINE bool IsInScreen(const ScreenPoint& InPos) const;

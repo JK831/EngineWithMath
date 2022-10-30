@@ -45,6 +45,13 @@
 		FORCEINLINE Matrix2x2 ToMatrix2x2() const;
 		FORCEINLINE void SetIdentity();
 		FORCEINLINE Matrix3x3 Transpose() const;
+		FORCEINLINE Matrix3x3 Invert() const;
+		FORCEINLINE Vector2 Translation() const noexcept;
+		FORCEINLINE void Translation(Vector2& InVector) { Raws[2].X = InVector.X; Raws[2].Y = InVector.Y; }
+		FORCEINLINE Vector2 Up() const noexcept { return Vector2(Raws[1].X, Raws[1].Y); };
+		FORCEINLINE void Up(Vector2& InVector) { Raws[1].X = InVector.X; Raws[1].Y = InVector.Y; }
+		FORCEINLINE Vector2 Right() const noexcept { return Vector2(Raws[0].X, Raws[0].Y); };
+		FORCEINLINE void Right(Vector2& InVector) { Raws[0].X = InVector.X; Raws[0].Y = InVector.Y; };
 
 		std::vector<std::string> ToStrings() const;
 
@@ -68,6 +75,11 @@
 			Vector3(Raws[0].Y, Raws[1].Y, Raws[2].Y),
 			Vector3(Raws[0].Z, Raws[1].Z, Raws[2].Z)
 		);
+	}
+
+	FORCEINLINE Vector2 Matrix3x3::Translation() const noexcept
+	{
+		return Vector2(Raws[2].X, Raws[2].Y);
 	}
 
 	FORCEINLINE const Vector3& Matrix3x3::operator[](BYTE InIndex) const

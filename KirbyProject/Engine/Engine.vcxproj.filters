@@ -29,6 +29,9 @@
     <Filter Include="Resource\2D">
       <UniqueIdentifier>{48f5ec90-31d9-483d-bb6c-5054b1877a1d}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Object\Test">
+      <UniqueIdentifier>{693e3e45-882f-4da2-8d5a-03789629eb09}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="pch.h">
@@ -90,6 +93,7 @@
     <ClInclude Include="Shader.h">
       <Filter>Object\2D</Filter>
     </ClInclude>
+    <ClInclude Include="TestCameraScript.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Engine.cpp">
@@ -148,5 +152,6 @@
     <ClCompile Include="Shader.cpp">
       <Filter>Object\2D</Filter>
     </ClCompile>
+    <ClCompile Include="TestCameraScript.cpp" />
   </ItemGroup>
 </Project>

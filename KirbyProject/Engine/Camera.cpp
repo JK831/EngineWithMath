@@ -4,6 +4,7 @@
 #include "Scene.h"
 #include "SceneManager.h"
 #include "GameObject.h"
+#include "MeshRenderer.h"
 #include "Engine.h"
 
 

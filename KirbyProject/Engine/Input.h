@@ -8,6 +8,9 @@
 		LEFT = VK_LEFT,
 		RIGHT = VK_RIGHT,
 
+		Q = 'Q',
+		E = 'E',
+
 		A = 'A',
 		S = 'S',
 		D = 'D',

@@ -17,10 +17,7 @@ void Camera::FinalUpdate()
 	float width = static_cast<float>(GEngine->GetWindow().width);
 	float height = static_cast<float>(GEngine->GetWindow().height);
 
-	if (_type == PROJECTION_TYPE::PERSPECTIVE)
-		_matProjection = ::XMMatrixPerspectiveFovLH(_fov, width / height, _near, _far);
-	else
-		_matProjection = ::XMMatrixOrthographicLH(width * _scale, height * _scale, _near, _far);
+	S_MatView = _matView;
 
 }
 

@@ -93,7 +93,9 @@
     <ClInclude Include="Shader.h">
       <Filter>Object\2D</Filter>
     </ClInclude>
-    <ClInclude Include="TestCameraScript.h" />
+    <ClInclude Include="TestCameraScript.h">
+      <Filter>Object\Test</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Engine.cpp">
@@ -152,6 +154,8 @@
     <ClCompile Include="Shader.cpp">
       <Filter>Object\2D</Filter>
     </ClCompile>
-    <ClCompile Include="TestCameraScript.cpp" />
+    <ClCompile Include="TestCameraScript.cpp">
+      <Filter>Object\Test</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

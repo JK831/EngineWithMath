@@ -59,15 +59,15 @@ struct Vertex
 {
 	Vertex() {}
 
-	Vertex(Vector3 p, Vector2 u, Vector3 n, Vector3 t)
+	Vertex(Vector2 p, Vector2 u, Vector2 n, Vector2 t)
 		: pos(p), uv(u), normal(n), tangent(t)
 	{
 	}
 
-	Vector3 pos;
+	Vector2 pos;
 	Vector2 uv;
-	Vector3 normal;
-	Vector3 tangent;
+	Vector2 normal;
+	Vector2 tangent;
 };
 
 enum class TextureFilterMode : UINT32

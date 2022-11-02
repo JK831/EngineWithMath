@@ -19,7 +19,7 @@ private:
 
 private:
 	std::vector<Vertex>(*_vertexFunction) (const std::vector<Vertex>& InVertexBuffer, const Matrix3x3& InMatrix);
-	LinearColor(*_pixelFunction) (LinearColor UVColor);
+	LinearColor(*_pixelFunction) (LinearColor& UVColor, const LinearColor& InColorParam);
 };
 
 

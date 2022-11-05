@@ -1,6 +1,5 @@
 #include "pch.h"
 #include "Scene.h"
-#include "GameObject.h"
 
 void Scene::Awake()
 {

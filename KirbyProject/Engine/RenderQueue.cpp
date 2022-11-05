@@ -5,7 +5,7 @@
 
 RenderQueue::RenderQueue()
 {
-	
+	_materialQueue.reserve(100);
 }
 
 RenderQueue::~RenderQueue()
@@ -24,13 +24,21 @@ void RenderQueue::Render()
 	GET_SINGLE(SceneManager)->Render();
 }
 
-uint16 RenderQueue::PushMaterial(std::shared_ptr<Material> InMaterial)
+uint16 RenderQueue::PushMaterial(uint16 InIndexNum, Material& InMaterial)
 {
 	// 멀쓰 환경에선? static number or 고유 번호 발급해주는 기능 가지고
 	// 해당 번호를 index로 하여 material 저장?
-	_materialQueue.push_back(InMaterial);
-	uint16 indexNum = _materialQueue.size();
-	return indexNum;
+	if (InIndexNum == 0)
+	{
+		uint16 indexNum;
+		_materialQueue.push_back(make_shared<Material>(InMaterial));
+		indexNum = (uint16)_materialQueue.size();
+		InMaterial.SetIndexNum(indexNum);
+		return indexNum;
+	}
+	else
+		return InIndexNum - 1;
+
 }
 
 void RenderQueue::DrawIndexedInstance(const ::std::vector<Vertex>& InVertexBuffer, const ::std::vector<uint32>& InIndexBuffer, const Matrix3x3& InMatrix, uint16 InBufferIndex)
@@ -61,8 +69,8 @@ void RenderQueue::DrawTriangle2D(const ::std::vector<Vertex>& InTvs, shared_ptr<
 	Vector2 maxPos(Math::Max3(InTvs[0].pos.X, InTvs[1].pos.X, InTvs[2].pos.X), Math::Max3(InTvs[0].pos.Y, InTvs[1].pos.Y, InTvs[2].pos.Y));
 
 	// 무게중심좌표를 위해 점을 벡터로 변환
-	Vector2 u = (InTvs[1].pos - InTvs[0].pos).ToVector2();
-	Vector2 v = (InTvs[2].pos - InTvs[0].pos).ToVector2();
+	Vector2 u = (InTvs[1].pos - InTvs[0].pos);
+	Vector2 v = (InTvs[2].pos - InTvs[0].pos);
 
 	// 공통 분모 값 ( uv * uv - uu * vv )
 	float udotv = u.Dot(v);
@@ -94,7 +102,7 @@ void RenderQueue::DrawTriangle2D(const ::std::vector<Vertex>& InTvs, shared_ptr<
 		{
 			ScreenPoint fragment = ScreenPoint(x, y);
 			Vector2 pointToTest = fragment.ToCartesianCoordinate(_RSIPtr->GetWindow().ToScreenPoint());
-			Vector2 w = pointToTest - InTvs[0].pos.ToVector2();
+			Vector2 w = pointToTest - InTvs[0].pos;
 			float wdotu = w.Dot(u);
 			float wdotv = w.Dot(v);
 

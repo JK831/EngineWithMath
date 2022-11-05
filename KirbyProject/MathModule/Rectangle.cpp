@@ -1,7 +1,6 @@
 #include "pch.h"
 
-
-Rectangle::Rectangle(const std::vector<Vector2> InVertices)
+DD::Rectangle::Rectangle(const std::vector<Vector2> InVertices)
 {
 	for (const auto& v : InVertices)
 	{

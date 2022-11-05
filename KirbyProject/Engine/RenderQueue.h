@@ -17,7 +17,7 @@ public:
 	LinearColor PixelShading(LinearColor UVColor);
 	void DrawMesh();
 	void DrawTriangle2D(const ::std::vector<Vertex>& InTvs, shared_ptr<Shader> InShader, shared_ptr<Texture> InTexture);
-	uint16 PushMaterial(::std::shared_ptr<Material> InMaterial);
+	uint16 PushMaterial(uint16 InIndexNum, Material& InMaterial);
 	void DrawIndexedInstance(const ::std::vector<Vertex>& InVertexBuffer, const std::vector<uint32>& InIndexBuffer, const Matrix3x3& InMatrix, uint16 InBufferIndex);
 
 	WindowInfo& GetWindow() { return _RSIPtr->GetWindow(); }

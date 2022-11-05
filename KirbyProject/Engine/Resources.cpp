@@ -12,10 +12,10 @@ shared_ptr<Mesh> Resources::LoadRectangleMesh()
 
 	vector<Vertex> vertices(4);
 
-	vertices[0] = Vertex(Vector2(-halfWidth, -halfHeight), Vector2(0.f, 0.f), Vector2(0.f, 0.f), Vector2(0.f, 0.f));
-	vertices[1] = Vertex(Vector2(halfWidth, -halfHeight), Vector2(0.f, 0.f), Vector2(0.f, 0.f), Vector2(0.f, 0.f));
+	vertices[0] = Vertex(Vector2(-halfWidth, -halfHeight), Vector2(0.f, 1.f), Vector2(0.f, 0.f), Vector2(0.f, 0.f));
+	vertices[1] = Vertex(Vector2(halfWidth, -halfHeight), Vector2(1.f, 1.f), Vector2(0.f, 0.f), Vector2(0.f, 0.f));
 	vertices[2] = Vertex(Vector2(-halfWidth, halfHeight), Vector2(0.f, 0.f), Vector2(0.f, 0.f), Vector2(0.f, 0.f));
-	vertices[3] = Vertex(Vector2(halfWidth, halfHeight), Vector2(0.f, 0.f), Vector2(0.f, 0.f), Vector2(0.f, 0.f));
+	vertices[3] = Vertex(Vector2(halfWidth, halfHeight), Vector2(1.f, 0.f), Vector2(0.f, 0.f), Vector2(0.f, 0.f));
 
 	vector<uint32> idx(6);
 

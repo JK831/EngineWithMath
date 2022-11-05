@@ -59,23 +59,31 @@ shared_ptr<Scene> SceneManager::LoadTestScene()
 #pragma endregion
 
 #pragma region Rectangle
-	shared_ptr<GameObject> rectangle = make_shared<GameObject>();
-	rectangle->AddComponent(make_shared<Transform>());
-	rectangle->GetTransform()->SetLocalScale(Vector2(1.f, 1.f));
-	rectangle->GetTransform()->SetLocalPosition(Vector2(0.f, 0.f));
-
-	shared_ptr<MeshRenderer> meshRenderer = make_shared<MeshRenderer>();
 	{
-		shared_ptr<Mesh> rectangleMesh = GET_SINGLE(Resources)->LoadRectangleMesh();
-		meshRenderer->SetMesh(rectangleMesh);
-	}
-	{
-		shared_ptr<Shader> shader = make_shared<Shader>();
-		shared_ptr<Texture> texture = make_shared<Texture>();
-		shader->Init(L"Default 2D Shader");
-		texture->Init(L"..\\Resources\\Texture\\kirby.jpg");
+		shared_ptr<GameObject> rectangle = make_shared<GameObject>();
+		rectangle->AddComponent(make_shared<Transform>());
+		rectangle->GetTransform()->SetLocalScale(Vector2(1.f, 1.f));
+		rectangle->GetTransform()->SetLocalPosition(Vector2(0.f, 0.f));
 
+		shared_ptr<MeshRenderer> meshRenderer = make_shared<MeshRenderer>();
+		{
+			shared_ptr<Mesh> rectangleMesh = GET_SINGLE(Resources)->LoadRectangleMesh();
+			meshRenderer->SetMesh(rectangleMesh);
+		}
+		{
+			shared_ptr<Shader> shader = make_shared<Shader>();
+			shared_ptr<Texture> texture = make_shared<Texture>();
+			shader->Init(L"Default 2D Shader");
+			texture->Init(L"..\\Resources\\Texture\\kirby.png");
+			shared_ptr<Material> material = make_shared<Material>();
+			material->SetShader(shader);
+			material->SetTexture(0, texture);
+			meshRenderer->SetMaterial(material);
+		}
+		rectangle->AddComponent(meshRenderer);
+		scene->AddGameObject(rectangle);
 	}
+#pragma endregion
 
 	return scene;
 }

@@ -15,5 +15,5 @@
 
 	uint16 Material::Update()
 	{
-		return GEngine->GetRenderQueue()->PushMaterial();
+		return GEngine->GetRenderQueue()->PushMaterial(_indexNum, *this);
 	}

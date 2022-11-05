@@ -18,6 +18,7 @@ private:
 	void CreatePixelShader(const wstring& path, const string& name, const string& version = "PS_0_0");
 
 private:
+	LinearColor _ownColor = LinearColor::White;
 	std::vector<Vertex>(*_vertexFunction) (const std::vector<Vertex>& InVertexBuffer, const Matrix3x3& InMatrix);
 	LinearColor(*_pixelFunction) (LinearColor& UVColor, const LinearColor& InColorParam);
 };

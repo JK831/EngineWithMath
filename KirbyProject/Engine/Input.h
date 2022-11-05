@@ -45,7 +45,7 @@
 		// when key pressed down once
 		bool GetButtonDown(KEY_TYPE key) { return GetState(key) == KEY_STATE::DOWN; }
 		// when key pressed up after pressed down
-		bool GetButtonDown(KEY_TYPE key) { return GetState(key) == KEY_STATE::UP; }
+		bool GetButtonUp(KEY_TYPE key) { return GetState(key) == KEY_STATE::UP; }
 
 	private:
 		inline KEY_STATE GetState(KEY_TYPE key) { return _states[static_cast<uint8>(key)]; }

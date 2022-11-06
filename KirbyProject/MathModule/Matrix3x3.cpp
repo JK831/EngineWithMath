@@ -24,6 +24,16 @@ Matrix3x3 Matrix3x3::Invert() const
 	}
 }
 
+Matrix3x3 Matrix3x3::CreateRotationZ(float InRadian)
+{
+	float sinVal = 0;
+	float cosVal = 0;
+
+	Math::GetSinCos(sinVal, cosVal, InRadian);
+
+	return Matrix3x3(Vector3(cosVal, sinVal, 0), Vector3(sinVal, -cosVal, 0), Vector3::UnitZ);
+}
+
 std::vector<std::string> Matrix3x3::ToStrings() const
 {
 	std::vector<std::string> result;

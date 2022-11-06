@@ -126,7 +126,7 @@
       <PrecompiledHeader>Use</PrecompiledHeader>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
       <LanguageStandard>stdcpp17</LanguageStandard>
-      <AdditionalIncludeDirectories>$(SolutionDir)\Library\Stb\;$(SolutionDir)\MathModule\;$(SolutionDir)\RenderModule\;$(SolutionDIr)\Engine\</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)\Library\Stb\;$(SolutionDir)\MathModule\;$(SolutionDir)\RenderModule\;$(SolutionDIr)\Engine\;$(SolutionDir)\Output\</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>

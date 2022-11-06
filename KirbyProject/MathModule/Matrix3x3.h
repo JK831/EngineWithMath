@@ -14,6 +14,7 @@
 
 		FORCEINLINE Matrix3x3 operator*(float InScalar) const;
 		FORCEINLINE Matrix3x3 operator*(const Matrix3x3& InMatrix) const;
+		FORCEINLINE Matrix3x3& operator*=(const Matrix3x3& InMatrix);
 		FORCEINLINE Vector3 operator*(const Vector3& InVector) const;
 		
 		FORCEINLINE friend Vector2 operator*(Vector2& InVector2, const Matrix3x3& InMatrix)
@@ -52,8 +53,14 @@
 		FORCEINLINE void Up(Vector2& InVector) { Raws[1].X = InVector.X; Raws[1].Y = InVector.Y; }
 		FORCEINLINE Vector2 Right() const noexcept { return Vector2(Raws[0].X, Raws[0].Y); };
 		FORCEINLINE void Right(Vector2& InVector) { Raws[0].X = InVector.X; Raws[0].Y = InVector.Y; };
+		
+
 
 		std::vector<std::string> ToStrings() const;
+
+		static Matrix3x3 CreateRotationZ(float InRadian);
+		static Matrix3x3 CreateTranslation(Vector2 InPosition);
+		static Matrix3x3 CreateScale(Vector2 InScale) { return Matrix3x3(Vector3(InScale.X, 0, 0), Vector3(0, InScale.Y, 0), Vector3::Zero); }
 
 		// 정적멤버변수 
 		static const Matrix3x3 Identity;
@@ -112,6 +119,16 @@
 			Vector3(Raws[0].Dot(transposedMatrix[2]), Raws[1].Dot(transposedMatrix[2]), Raws[2].Dot(transposedMatrix[2]))
 		);
 
+	}
+
+	FORCEINLINE Matrix3x3& Matrix3x3::operator*=(const Matrix3x3& InMatrix)
+	{
+		Matrix3x3 transposedMatrix = InMatrix.Transpose();
+		Raws[0] = Vector3(Raws[0].Dot(transposedMatrix[0]), Raws[1].Dot(transposedMatrix[0]), Raws[2].Dot(transposedMatrix[0]));
+		Raws[1] = Vector3(Raws[0].Dot(transposedMatrix[1]), Raws[1].Dot(transposedMatrix[1]), Raws[2].Dot(transposedMatrix[1]));
+		Raws[2] = Vector3(Raws[0].Dot(transposedMatrix[2]), Raws[1].Dot(transposedMatrix[2]), Raws[2].Dot(transposedMatrix[2]));
+
+		return *this;
 	}
 
 	FORCEINLINE Vector3 Matrix3x3::operator*(const Vector3& InVector) const

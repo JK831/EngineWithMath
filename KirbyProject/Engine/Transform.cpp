@@ -17,9 +17,8 @@ Transform::~Transform()
 void Transform::FinalUpdate()
 {
 	Matrix3x3 matScale = Matrix3x3::CreateScale(_localScale);
-	Matrix3x3 matRotation = Matrix3x3::CreateRotationX(_localRotation.x);
-	matRotation *= Matrix3x3::CreateRotationY(_localRotation.y);
-	matRotation *= Matrix3x3::CreateRotationZ(_localRotation.z);
+	Matrix3x3 matRotation = Matrix3x3::CreateRotationZ(_localRotation);
+
 	Matrix3x3 matTranslation = Matrix3x3::CreateTranslation(_localPosition);
 
 	_matLocal = matScale * matRotation * matTranslation;
@@ -34,6 +33,6 @@ void Transform::FinalUpdate()
 
 void Transform::PushData()
 {
-	Matrix3x3 matWVP = _matWorld * Camera::S_MatView * Camera::S_MatProjection;
-	CONST_BUFFER(CONSTANT_BUFFER_TYPE::TRANSFORM)->PushData(&matWVP, sizeof(matWVP));
+	Matrix3x3 matWV = _matWorld * Camera::S_MatView;
+
 }

@@ -14,7 +14,7 @@ public:
 public:
 	// Parent 기준
 	const Vector2& GetLocalPosition() { return _localPosition; }
-	const Vector2& GetLocalRotation() { return _localRotation; }
+	float GetLocalRotation() { return _localRotation; }
 	const Vector2& GetLocalScale() { return _localScale; }
 
 	const Matrix3x3& GetLocalToWorldMatrix() { return _matWorld; }
@@ -25,7 +25,7 @@ public:
 	Vector2 GetLook() { return -Vector3::UnitZ.ToVector2(); } // = 0 vector
 
 	void SetLocalPosition(const Vector2& position) { _localPosition = position; }
-	void SetLocalRotation(const Vector2& rotation) { _localRotation = rotation; }
+	void SetLocalRotation(float rotation) { _localRotation = rotation; }
 	void SetLocalScale(const Vector2& scale) { _localScale = scale; }
 
 public:
@@ -35,7 +35,7 @@ public:
 private:
 	// Parent 기준
 	Vector2 _localPosition = {};
-	Vector2 _localRotation = {};
+	float _localRotation = 0;
 	Vector2 _localScale = Vector2(1.f, 1.f);
 
 	Matrix3x3 _matLocal = {};

@@ -34,15 +34,15 @@ void TestCameraScript::LateUpdate()
 
 	if (INPUT->GetButton(KEY_TYPE::Q))
 	{
-		Vector2 rotation = GetTransform()->GetLocalRotation();
-		rotation.X += DELTA_TIME * 0.5f;
+		float rotation = GetTransform()->GetLocalRotation();
+		rotation += DELTA_TIME * 0.5f;
 		GetTransform()->SetLocalRotation(rotation);
 	}
 
 	if (INPUT->GetButton(KEY_TYPE::E))
 	{
-		Vector2 rotation = GetTransform()->GetLocalRotation();
-		rotation.X -= DELTA_TIME * 0.5f;
+		float rotation = GetTransform()->GetLocalRotation();
+		rotation -= DELTA_TIME * 0.5f;
 		GetTransform()->SetLocalRotation(rotation);
 	}
 

@@ -1,7 +1,7 @@
 #pragma once
 
 
-	struct LinearColor
+	class LinearColor
 	{
 	public:
 		FORCEINLINE constexpr LinearColor() = default;

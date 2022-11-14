@@ -1,7 +1,7 @@
 #pragma once
 
 
-	struct Box
+	class Box
 	{
 	public:
 		FORCEINLINE constexpr Box() = default;

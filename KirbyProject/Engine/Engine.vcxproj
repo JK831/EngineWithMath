@@ -78,7 +78,9 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental>true</LinkIncremental>
-    <OutDir>$(SolutionDir)Output\</OutDir>
+    <OutDir>$(SolutionDir)Library\Lib</OutDir>
+    <IncludePath>$(SolutionDir)Library\Include\;$(IncludePath)</IncludePath>
+    <LibraryPath>$(SolutionDir)Library\Lib\;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <LinkIncremental>false</LinkIncremental>
@@ -126,7 +128,7 @@
       <PrecompiledHeader>Use</PrecompiledHeader>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
       <LanguageStandard>stdcpp17</LanguageStandard>
-      <AdditionalIncludeDirectories>$(SolutionDir)\Library\Stb\;$(SolutionDir)\MathModule\;$(SolutionDir)\RenderModule\;$(SolutionDIr)\Engine\;$(SolutionDir)\Output\</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)Library\Stb\;$(SolutionDir)MathModule\;$(SolutionDir)RenderModule\;$(SolutionDIr)Engine\;$(SolutionDir)Output\;$(SolutionDir)MathModule\x64\Debug\;$(SolutionDir)RenderModule\x64\Debug\</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>

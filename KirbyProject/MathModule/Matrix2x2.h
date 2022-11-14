@@ -1,7 +1,7 @@
 #pragma once
 
 
-	struct Matrix2x2
+	class Matrix2x2
 	{
 	public:
 		// »ı¼ºÀÚ 

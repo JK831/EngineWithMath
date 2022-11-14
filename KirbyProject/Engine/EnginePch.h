@@ -14,6 +14,8 @@ using namespace std;
 #include <filesystem>
 namespace fs = std::filesystem;
 
+#pragma comment(lib, "MathModule.lib")
+#pragma comment(lib, "RenderModule.lib")
 
 enum class OBJECT_TYPE : uint8
 {

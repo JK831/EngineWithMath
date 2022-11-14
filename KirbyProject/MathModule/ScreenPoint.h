@@ -1,7 +1,7 @@
 #pragma once
 
 
-	struct ScreenPoint
+	class ScreenPoint
 	{
 	public:
 		FORCEINLINE constexpr ScreenPoint() = default;

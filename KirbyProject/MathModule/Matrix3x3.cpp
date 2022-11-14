@@ -3,26 +3,26 @@
 
 const Matrix3x3 Matrix3x3::Identity(Vector3(1.f, 0.f, 0.f), Vector3(0.f, 1.f, 0.f), Vector3(0.f, 0.f, 1.f));
 
-Matrix3x3 Matrix3x3::Invert() const
-{
-	float d = Raws[0][0] * (Raws[1][1] * Raws[2][2] - Raws[2][1] * Raws[1][2]) - Raws[0][1] * (Raws[1][0] * Raws[2][2] - Raws[1][2] * Raws[2][0]) + Raws[0][2] * (Raws[1][0] * Raws[2][1] - Raws[1][1] * Raws[2][0]);
-	if (d != 0.)
-	{
-		Matrix3x3 invertedMatrix;
-		float id = 1 / d;
-		invertedMatrix.Raws[0][0] = (Raws[1][1] * Raws[2][2] - Raws[2][1] * Raws[1][2]) * id;
-		invertedMatrix.Raws[0][1] = (Raws[0][2] * Raws[2][1] - Raws[0][1] * Raws[2][2]) * id;
-		invertedMatrix.Raws[0][2] = (Raws[0][1] * Raws[1][2] - Raws[0][2] * Raws[1][1]) * id;
-		invertedMatrix.Raws[1][0] = (Raws[1][2] * Raws[2][0] - Raws[1][0] * Raws[2][2]) * id;
-		invertedMatrix.Raws[1][1] = (Raws[0][0] * Raws[2][2] - Raws[0][2] * Raws[2][0]) * id;
-		invertedMatrix.Raws[1][2] = (Raws[1][0] * Raws[0][2] - Raws[0][0] * Raws[1][2]) * id;
-		invertedMatrix.Raws[2][0] = (Raws[1][0] * Raws[2][1] - Raws[2][0] * Raws[1][1]) * id;
-		invertedMatrix.Raws[2][1] = (Raws[2][0] * Raws[0][1] - Raws[0][0] * Raws[2][1]) * id;
-		invertedMatrix.Raws[2][2] = (Raws[0][0] * Raws[1][1] - Raws[1][0] * Raws[0][1]) * id;
-
-		return invertedMatrix;
-	}
-}
+//Matrix3x3 Matrix3x3::Invert() const
+//{
+//	float d = Raws[0][0] * (Raws[1][1] * Raws[2][2] - Raws[2][1] * Raws[1][2]) - Raws[0][1] * (Raws[1][0] * Raws[2][2] - Raws[1][2] * Raws[2][0]) + Raws[0][2] * (Raws[1][0] * Raws[2][1] - Raws[1][1] * Raws[2][0]);
+//	if (d != 0.)
+//	{
+//		Matrix3x3 invertedMatrix;
+//		float id = 1 / d;
+//		invertedMatrix.Raws[0][0] = (Raws[1][1] * Raws[2][2] - Raws[2][1] * Raws[1][2]) * id;
+//		invertedMatrix.Raws[0][1] = (Raws[0][2] * Raws[2][1] - Raws[0][1] * Raws[2][2]) * id;
+//		invertedMatrix.Raws[0][2] = (Raws[0][1] * Raws[1][2] - Raws[0][2] * Raws[1][1]) * id;
+//		invertedMatrix.Raws[1][0] = (Raws[1][2] * Raws[2][0] - Raws[1][0] * Raws[2][2]) * id;
+//		invertedMatrix.Raws[1][1] = (Raws[0][0] * Raws[2][2] - Raws[0][2] * Raws[2][0]) * id;
+//		invertedMatrix.Raws[1][2] = (Raws[1][0] * Raws[0][2] - Raws[0][0] * Raws[1][2]) * id;
+//		invertedMatrix.Raws[2][0] = (Raws[1][0] * Raws[2][1] - Raws[2][0] * Raws[1][1]) * id;
+//		invertedMatrix.Raws[2][1] = (Raws[2][0] * Raws[0][1] - Raws[0][0] * Raws[2][1]) * id;
+//		invertedMatrix.Raws[2][2] = (Raws[0][0] * Raws[1][1] - Raws[1][0] * Raws[0][1]) * id;
+//
+//		return invertedMatrix;
+//	}
+//}
 
 Matrix3x3 Matrix3x3::CreateRotationZ(float InRadian)
 {
@@ -32,6 +32,11 @@ Matrix3x3 Matrix3x3::CreateRotationZ(float InRadian)
 	Math::GetSinCos(sinVal, cosVal, InRadian);
 
 	return Matrix3x3(Vector3(cosVal, sinVal, 0), Vector3(sinVal, -cosVal, 0), Vector3::UnitZ);
+}
+
+Matrix3x3 Matrix3x3::CreateTranslation(Vector2 InPosition)
+{
+	return Matrix3x3(Vector3::Zero, Vector3::Zero, Vector3(InPosition));
 }
 
 std::vector<std::string> Matrix3x3::ToStrings() const

@@ -2,7 +2,7 @@
 
 namespace DD
 {
-	struct Rectangle
+	class Rectangle
 	{
 	public:
 		FORCEINLINE constexpr Rectangle() = default;

@@ -1,7 +1,7 @@
 #pragma once
 
 
-	struct Plane
+	class Plane
 	{
 	public:
 		FORCEINLINE constexpr Plane() = default;

@@ -74,7 +74,7 @@ shared_ptr<Scene> SceneManager::LoadTestScene()
 			shared_ptr<Shader> shader = make_shared<Shader>();
 			shared_ptr<Texture> texture = make_shared<Texture>();
 			shader->Init(L"Default 2D Shader");
-			texture->Init(L"..\\Resources\\Texture\\kirby.png");
+			texture->Init(L"..\\Resources\\Texture\\Kirby.png");
 			shared_ptr<Material> material = make_shared<Material>();
 			material->SetShader(shader);
 			material->SetTexture(0, texture);

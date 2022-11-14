@@ -1,7 +1,7 @@
 #pragma once
 
 
-	struct Rotator
+	class Rotator
 	{
 	public:
 		FORCEINLINE constexpr Rotator() = default;

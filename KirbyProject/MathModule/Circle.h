@@ -1,7 +1,7 @@
 #pragma once
 
 
-	struct Circle
+	class Circle
 	{
 	public:
 		FORCEINLINE constexpr Circle() = default;

@@ -1,7 +1,7 @@
 #pragma once
 
 
-	struct Quaternion
+	class Quaternion
 	{
 	public:
 		FORCEINLINE constexpr Quaternion() = default;

@@ -1,6 +1,6 @@
 #pragma once
 
-	struct Color32
+	class Color32
 	{
 	public:
 		FORCEINLINE constexpr Color32() : R(0), G(0), B(0), A(0) { }

@@ -1,7 +1,7 @@
 #pragma once
 
 
-    struct HSVColor
+    class HSVColor
     {
     public:
         FORCEINLINE constexpr HSVColor() = default;

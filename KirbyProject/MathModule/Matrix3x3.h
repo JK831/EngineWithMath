@@ -1,7 +1,7 @@
 #pragma once
 
 
-	struct Matrix3x3
+	class Matrix3x3
 	{
 	public:
 		// »ý¼ºÀÚ 
@@ -46,7 +46,27 @@
 		FORCEINLINE Matrix2x2 ToMatrix2x2() const;
 		FORCEINLINE void SetIdentity();
 		FORCEINLINE Matrix3x3 Transpose() const;
-		FORCEINLINE Matrix3x3 Invert() const;
+		FORCEINLINE Matrix3x3 Invert() const
+		{
+			float d = Raws[0][0] * (Raws[1][1] * Raws[2][2] - Raws[2][1] * Raws[1][2]) - Raws[0][1] * (Raws[1][0] * Raws[2][2] - Raws[1][2] * Raws[2][0]) + Raws[0][2] * (Raws[1][0] * Raws[2][1] - Raws[1][1] * Raws[2][0]);
+			if (d != 0.)
+			{
+				Matrix3x3 invertedMatrix;
+				float id = 1 / d;
+				invertedMatrix.Raws[0][0] = (Raws[1][1] * Raws[2][2] - Raws[2][1] * Raws[1][2]) * id;
+				invertedMatrix.Raws[0][1] = (Raws[0][2] * Raws[2][1] - Raws[0][1] * Raws[2][2]) * id;
+				invertedMatrix.Raws[0][2] = (Raws[0][1] * Raws[1][2] - Raws[0][2] * Raws[1][1]) * id;
+				invertedMatrix.Raws[1][0] = (Raws[1][2] * Raws[2][0] - Raws[1][0] * Raws[2][2]) * id;
+				invertedMatrix.Raws[1][1] = (Raws[0][0] * Raws[2][2] - Raws[0][2] * Raws[2][0]) * id;
+				invertedMatrix.Raws[1][2] = (Raws[1][0] * Raws[0][2] - Raws[0][0] * Raws[1][2]) * id;
+				invertedMatrix.Raws[2][0] = (Raws[1][0] * Raws[2][1] - Raws[2][0] * Raws[1][1]) * id;
+				invertedMatrix.Raws[2][1] = (Raws[2][0] * Raws[0][1] - Raws[0][0] * Raws[2][1]) * id;
+				invertedMatrix.Raws[2][2] = (Raws[0][0] * Raws[1][1] - Raws[1][0] * Raws[0][1]) * id;
+
+				return invertedMatrix;
+			}
+		}
+
 		FORCEINLINE Vector2 Translation() const noexcept;
 		FORCEINLINE void Translation(Vector2& InVector) { Raws[2].X = InVector.X; Raws[2].Y = InVector.Y; }
 		FORCEINLINE Vector2 Up() const noexcept { return Vector2(Raws[1].X, Raws[1].Y); };

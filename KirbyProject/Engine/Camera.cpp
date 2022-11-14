@@ -7,8 +7,18 @@
 #include "MeshRenderer.h"
 #include "Engine.h"
 
+Matrix3x3 Camera::S_MatProjection;
+Matrix3x3 Camera::S_MatView;
 
+Camera::Camera() : Component(COMPONENT_TYPE::CAMERA)
+{
 
+}
+
+Camera::~Camera()
+{
+
+}
 
 void Camera::FinalUpdate()
 {

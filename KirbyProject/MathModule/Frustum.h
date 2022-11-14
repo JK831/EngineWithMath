@@ -1,7 +1,7 @@
 #pragma once
 
 
-	struct Frustum
+	class Frustum
 	{
 		// »ý¼ºÀÚ
 		FORCEINLINE constexpr Frustum() = default;

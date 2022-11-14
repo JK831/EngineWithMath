@@ -1,7 +1,7 @@
 #pragma once
 
 
-struct Vector2
+class Vector2
 {
 public:
 	FORCEINLINE constexpr Vector2() = default;

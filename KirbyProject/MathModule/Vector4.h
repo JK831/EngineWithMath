@@ -1,7 +1,7 @@
 #pragma once
 
 
-	struct Vector4
+	class Vector4
 	{
 	public:
 		// »ý¼ºÀÚ 

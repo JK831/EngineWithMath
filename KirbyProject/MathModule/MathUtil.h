@@ -1,14 +1,17 @@
 #pragma once
 
 
-	struct Math
+	class Math
 	{
+	public:
 		static constexpr float PI = { 3.14159265358979323846f };
 		static constexpr float TwoPI = { 2.f * PI };
 		static constexpr float HalfPI = { 1.57079632679f };
 		static constexpr float InvPI = { 0.31830988618f };
 		static constexpr char InvalidHashName[] = "!@JK_INVALIDHASH#$";
 		static const std::size_t InvalidHash;
+
+	public:
 
 		FORCEINLINE static constexpr int TruncToInt(float InFloat)
 		{

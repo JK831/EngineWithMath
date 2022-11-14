@@ -29,6 +29,11 @@ void Texture::CreateTexture(const wstring& path)
 
 	FILE* texture = NULL;
 
+	if (0 != _wfopen_s(&texture, path.c_str(), L"rb"))
+	{
+		return;
+	}
+
 	if (ext == L".dds" || ext == L".DDS")
 		return;
 	else if (ext == L".tga" || ext == L".TGA")

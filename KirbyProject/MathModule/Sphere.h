@@ -1,7 +1,7 @@
 #pragma once
 
 
-	struct Sphere
+	class Sphere
 	{
 	public:
 		FORCEINLINE constexpr Sphere() = default;

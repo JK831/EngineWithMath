@@ -45,7 +45,7 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 
 	MSG msg;
 
-	GWindowInfo.width = 800;
+	GWindowInfo.width = 1200;
 	GWindowInfo.height = 600;
 	GWindowInfo.windowed = true;
 

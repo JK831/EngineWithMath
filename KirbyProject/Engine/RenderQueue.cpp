@@ -15,13 +15,23 @@ RenderQueue::~RenderQueue()
 
 void RenderQueue::Init(const WindowInfo& info)
 {
-	_RSIPtr = make_unique<WindowsRSI>();
-	_RSIPtr->Init(info);
+	if (_RSIPtr == NULL)
+		_RSIPtr = make_unique<WindowsRSI>();
+	bool tof = _RSIPtr->Init(info);
 }
 
 void RenderQueue::Render()
 {
+	_RSIPtr->FillBuffer(_backGroundColor.ToColor32());
+	_RSIPtr->ClearDepthBuffer();
 	GET_SINGLE(SceneManager)->Render();
+	_RSIPtr->EndFrame();
+}
+
+void RenderQueue::ResizeWindow(const WindowInfo& info)
+{
+	
+	_RSIPtr->Init(info);
 }
 
 uint16 RenderQueue::PushMaterial(uint16 InIndexNum, Material& InMaterial)
@@ -32,13 +42,16 @@ uint16 RenderQueue::PushMaterial(uint16 InIndexNum, Material& InMaterial)
 	{
 		uint16 indexNum;
 		_materialQueue.push_back(make_shared<Material>(InMaterial));
-		indexNum = (uint16)_materialQueue.size();
+		indexNum = (uint16)_materialQueue.size() - 1;
 		InMaterial.SetIndexNum(indexNum);
 		return indexNum;
 	}
 	else
-		return InIndexNum - 1;
+	{
+		assert(_materialQueue.size() > InIndexNum);
 
+		return InIndexNum;
+	}
 }
 
 void RenderQueue::DrawIndexedInstance(const ::std::vector<Vertex>& InVertexBuffer, const ::std::vector<uint32>& InIndexBuffer, const Matrix3x3& InMatrix, uint16 InBufferIndex)
@@ -55,7 +68,7 @@ void RenderQueue::DrawIndexedInstance(const ::std::vector<Vertex>& InVertexBuffe
 	for (int ti = 0; ti < triangleCount; ++ti)
 	{
 		int bi0 = ti * 3, bi1 = ti * 3 + 1, bi2 = ti * 3 + 2;
-		std::vector<Vertex> tvs = { InVertexBuffer[InIndexBuffer[bi0]] , InVertexBuffer[InIndexBuffer[bi1]] , InVertexBuffer[InIndexBuffer[bi2]] };
+		std::vector<Vertex> tvs = { worldCoordination[InIndexBuffer[bi0]] , worldCoordination[InIndexBuffer[bi1]] , worldCoordination[InIndexBuffer[bi2]] };
 		DrawTriangle2D(tvs, shader, texture);
 	}
 }

@@ -10,7 +10,11 @@
 void Engine::Init(const WindowInfo& info)
 {
 	_renderQueue = make_shared<RenderQueue>();
-	_renderQueue->Init(info);
+
+	ResizeWindow(info);
+
+	GET_SINGLE(Input)->Init(info.hwnd);
+	GET_SINGLE(Timer)->Init();
 }
 
 void Engine::Update()
@@ -21,7 +25,7 @@ void Engine::Update()
 
 	_renderQueue->Render();
 
-	ShowFps();
+	//ShowFps();
 }
 
 void Engine::Render()
@@ -36,8 +40,13 @@ void Engine::RenderEnd()
 {
 }
 
-void Engine::ResizeWindow(int32 width, int32 height)
+void Engine::ResizeWindow(const WindowInfo& info)
 {
+	_renderQueue->Init(info);
+
+	RECT rect = { 0, 0, info.width, info.height };
+	::AdjustWindowRect(&rect, WS_OVERLAPPEDWINDOW, false);
+	bool tof = ::SetWindowPos(_renderQueue->GetWindow().hwnd, 0, 400, 400, info.width, info.height, 0);
 }
 
 WindowInfo& Engine::GetWindow()

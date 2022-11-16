@@ -31,7 +31,7 @@ FORCEINLINE std::vector<Vertex> VertexShader2D(const std::vector<Vertex>& InVert
 	newVertices = InVertices;
 
 	// 위치 값에 최종 행렬을 적용해 변환
-	for (Vertex v : newVertices)
+	for (Vertex& v : newVertices)
 	{
 		v.pos *= InMatrix;
 	}

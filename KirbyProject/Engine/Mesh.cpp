@@ -13,10 +13,10 @@ Mesh::~Mesh()
 
 }
 
-void Mesh::Init(const vector<Vertex>& inVertices, const vector<uint32>& inIndices)
+void Mesh::Init(const vector<Vertex>& InVertices, const vector<uint32>& InIndices)
 {
-	_vertexBuffer = inVertices;
-	_indexBuffer = inIndices;
+	CreateVertexBuffer(InVertices);
+	CreateIndexBuffer(InIndices);
 }
 
 void Mesh::Render(const Matrix3x3& InMatrix, uint16 InBufferIndex)

@@ -78,7 +78,7 @@
 
 	FORCEINLINE bool WindowsGDI::IsInScreen(const ScreenPoint& InPos) const
 	{
-		if ((InPos.X < 0 || InPos.X >= _ScreenSize.X) || (InPos.Y < 0 || InPos.Y >= _ScreenSize.Y))
+		if ((InPos.X < 0 || InPos.X >= _window.width) || (InPos.Y < 0 || InPos.Y >= _window.height))
 		{
 			return false;
 		}
@@ -88,7 +88,7 @@
 
 	FORCEINLINE int WindowsGDI::GetScreenBufferIndex(const ScreenPoint& InPos) const
 	{
-		return InPos.Y * _ScreenSize.X + InPos.X;
+		return InPos.Y * _window.width + InPos.X;
 	}
 
 	FORCEINLINE LinearColor WindowsGDI::GetPixel(const ScreenPoint& InPos)

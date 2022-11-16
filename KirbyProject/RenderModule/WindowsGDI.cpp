@@ -8,10 +8,12 @@ bool WindowsGDI::InitializeGDI(const WindowInfo& windowInfo)
 {
 	ReleaseGDI();
 
-	if (_Handle == 0)
+	_window = windowInfo;
+
+	if (_window.hwnd == 0)
 	{
-		_Handle = ::GetActiveWindow();
-		if (_Handle == 0)
+		_window.hwnd = ::GetActiveWindow();
+		if (_window.hwnd == 0)
 		{
 			return false;
 		}
@@ -21,11 +23,11 @@ bool WindowsGDI::InitializeGDI(const WindowInfo& windowInfo)
 	{
 		DeleteObject(_DefaultBitmap);
 		DeleteObject(DIBitmap);
-		ReleaseDC(_Handle, _ScreenDC);
-		ReleaseDC(_Handle, _MemoryDC);
+		ReleaseDC(_window.hwnd, _ScreenDC);
+		ReleaseDC(_window.hwnd, _MemoryDC);
 	}
 
-	_ScreenDC = GetDC(_Handle);
+	_ScreenDC = GetDC(_window.hwnd);
 	if (_ScreenDC == NULL)
 	{
 		return false;
@@ -37,14 +39,13 @@ bool WindowsGDI::InitializeGDI(const WindowInfo& windowInfo)
 		return false;
 	}
 
-	_window = windowInfo;
 
 	// Color & Bitmap Setting
 	BITMAPINFO bmi;
 	memset(&bmi, 0, sizeof(BITMAPINFO));
 	bmi.bmiHeader.biSize = sizeof(BITMAPINFOHEADER);
-	bmi.bmiHeader.biWidth = _ScreenSize.X;
-	bmi.bmiHeader.biHeight = -_ScreenSize.Y;
+	bmi.bmiHeader.biWidth = _window.width;
+	bmi.bmiHeader.biHeight = -_window.height;
 	bmi.bmiHeader.biPlanes = 1;
 	bmi.bmiHeader.biBitCount = 32;
 	bmi.bmiHeader.biCompression = BI_RGB;
@@ -74,8 +75,8 @@ void WindowsGDI::ReleaseGDI()
 	{
 		DeleteObject(_DefaultBitmap);
 		DeleteObject(DIBitmap);
-		ReleaseDC(_Handle, _ScreenDC);
-		ReleaseDC(_Handle, _MemoryDC);
+		ReleaseDC(_window.hwnd, _ScreenDC);
+		ReleaseDC(_window.hwnd, _MemoryDC);
 	}
 
 	if (_DepthBuffer != nullptr)
@@ -96,7 +97,7 @@ void WindowsGDI::FillBuffer(Color32 InColor)
 	}
 
 	Color32* dest = _ScreenBuffer;
-	UINT32 totalCount = _ScreenSize.X * _ScreenSize.Y;
+	UINT32 totalCount = _window.width * _window.height;
 	CopyBuffer<Color32>(_ScreenBuffer, &InColor, totalCount);
 	return;
 }
@@ -166,14 +167,14 @@ void WindowsGDI::SwapBuffer()
 	}
 
 	DrawStatisticTexts();
-	BitBlt(_ScreenDC, 0, 0, _ScreenSize.X, _ScreenSize.Y, _MemoryDC, 0, 0, SRCCOPY);
+	BitBlt(_ScreenDC, 0, 0, _window.width, _window.height, _MemoryDC, 0, 0, SRCCOPY);
 
 	_StatisticTexts.clear();
 }
 
 void WindowsGDI::CreateDepthBuffer()
 {
-	_DepthBuffer = new float[_ScreenSize.X * _ScreenSize.Y];
+	_DepthBuffer = new float[_window.width * _window.height];
 }
 
 void WindowsGDI::ClearDepthBuffer()
@@ -182,7 +183,7 @@ void WindowsGDI::ClearDepthBuffer()
 	{
 		float* dest = _DepthBuffer;
 		static float defValue = INFINITY;
-		UINT32 totalCount = _ScreenSize.X * _ScreenSize.Y;
+		UINT32 totalCount = _window.width * _window.height;
 		CopyBuffer<float>(_DepthBuffer, &defValue, totalCount);
 	}
 }

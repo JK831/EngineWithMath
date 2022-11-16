@@ -134,9 +134,9 @@
 	{
 		Matrix3x3 transposedMatrix = InMatrix.Transpose();
 		return Matrix3x3(
-			Vector3(Raws[0].Dot(transposedMatrix[0]), Raws[1].Dot(transposedMatrix[0]), Raws[2].Dot(transposedMatrix[0])),
-			Vector3(Raws[0].Dot(transposedMatrix[1]), Raws[1].Dot(transposedMatrix[1]), Raws[2].Dot(transposedMatrix[1])),
-			Vector3(Raws[0].Dot(transposedMatrix[2]), Raws[1].Dot(transposedMatrix[2]), Raws[2].Dot(transposedMatrix[2]))
+			Vector3(Raws[0].Dot(transposedMatrix[0]), Raws[0].Dot(transposedMatrix[1]), Raws[0].Dot(transposedMatrix[2])),
+			Vector3(Raws[1].Dot(transposedMatrix[0]), Raws[1].Dot(transposedMatrix[1]), Raws[1].Dot(transposedMatrix[2])),
+			Vector3(Raws[2].Dot(transposedMatrix[0]), Raws[2].Dot(transposedMatrix[1]), Raws[2].Dot(transposedMatrix[2]))
 		);
 
 	}
@@ -144,9 +144,9 @@
 	FORCEINLINE Matrix3x3& Matrix3x3::operator*=(const Matrix3x3& InMatrix)
 	{
 		Matrix3x3 transposedMatrix = InMatrix.Transpose();
-		Raws[0] = Vector3(Raws[0].Dot(transposedMatrix[0]), Raws[1].Dot(transposedMatrix[0]), Raws[2].Dot(transposedMatrix[0]));
-		Raws[1] = Vector3(Raws[0].Dot(transposedMatrix[1]), Raws[1].Dot(transposedMatrix[1]), Raws[2].Dot(transposedMatrix[1]));
-		Raws[2] = Vector3(Raws[0].Dot(transposedMatrix[2]), Raws[1].Dot(transposedMatrix[2]), Raws[2].Dot(transposedMatrix[2]));
+		Raws[0] = Vector3(Raws[0].Dot(transposedMatrix[0]), Raws[0].Dot(transposedMatrix[1]), Raws[0].Dot(transposedMatrix[2]));
+		Raws[1] = Vector3(Raws[1].Dot(transposedMatrix[0]), Raws[1].Dot(transposedMatrix[1]), Raws[1].Dot(transposedMatrix[2]));
+		Raws[2] = Vector3(Raws[2].Dot(transposedMatrix[0]), Raws[2].Dot(transposedMatrix[1]), Raws[2].Dot(transposedMatrix[2]));
 
 		return *this;
 	}

@@ -26,5 +26,5 @@
 	private:
 		shared_ptr<Shader> _shader;
 		array<shared_ptr<Texture>, MATERIAL_TEXTURE_COUNT> _textures;
-		uint16 _indexNum = 0;
+		uint16 _indexNum;
 	};

@@ -62,8 +62,9 @@ shared_ptr<Scene> SceneManager::LoadTestScene()
 	{
 		shared_ptr<GameObject> rectangle = make_shared<GameObject>();
 		rectangle->AddComponent(make_shared<Transform>());
-		rectangle->GetTransform()->SetLocalScale(Vector2(1.f, 1.f));
+		rectangle->GetTransform()->SetLocalScale(Vector2(300.f, 300.f));
 		rectangle->GetTransform()->SetLocalPosition(Vector2(0.f, 0.f));
+		rectangle->GetTransform()->SetLocalRotation(45.f);
 
 		shared_ptr<MeshRenderer> meshRenderer = make_shared<MeshRenderer>();
 		{

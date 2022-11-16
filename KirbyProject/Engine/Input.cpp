@@ -14,9 +14,6 @@ void Input::Update()
 	{
 		for (uint32 key = 0; key < KEY_TYPE_COUNT; key++)
 		{
-			if (_states[key] == KEY_STATE::PRESS || _states[key] == KEY_STATE::DOWN)
-				_states[key] = KEY_STATE::UP;
-			else
 				_states[key] = KEY_STATE::NONE;
 		}
 

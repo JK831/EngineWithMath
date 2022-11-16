@@ -5,7 +5,7 @@
 
 	Material::Material() : Object(OBJECT_TYPE::MATERIAL)
 	{
-
+		_indexNum = 0;
 	}
 
 	Material::~Material()

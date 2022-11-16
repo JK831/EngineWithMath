@@ -13,6 +13,7 @@ public:
 	~RenderQueue();
 	void Init(const WindowInfo& info);
 	void Render();
+	void ResizeWindow(const WindowInfo& info);
 	std::vector<Vertex> VertexShading(const::std::vector<Vertex>& InVertexBuffer, const Matrix3x3& InMatrix);
 	LinearColor PixelShading(LinearColor UVColor);
 	void DrawMesh();
@@ -23,6 +24,7 @@ public:
 	WindowInfo& GetWindow() { return _RSIPtr->GetWindow(); }
 private:
 	unique_ptr <WindowsRSI> _RSIPtr;
+	LinearColor _backGroundColor = LinearColor::Black;
 	std::vector<::std::shared_ptr<Material>> _materialQueue;
 
 };

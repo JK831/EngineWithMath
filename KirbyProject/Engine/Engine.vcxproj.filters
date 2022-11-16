@@ -89,12 +89,14 @@
       <Filter>Object\2D</Filter>
     </ClInclude>
     <ClInclude Include="RenderQueue.h" />
-    <ClInclude Include="Material.h" />
     <ClInclude Include="Shader.h">
       <Filter>Object\2D</Filter>
     </ClInclude>
     <ClInclude Include="TestCameraScript.h">
       <Filter>Object\Test</Filter>
+    </ClInclude>
+    <ClInclude Include="Material.h">
+      <Filter>Object\2D</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -150,12 +152,14 @@
       <Filter>Object\2D</Filter>
     </ClCompile>
     <ClCompile Include="RenderQueue.cpp" />
-    <ClCompile Include="Material.cpp" />
     <ClCompile Include="Shader.cpp">
       <Filter>Object\2D</Filter>
     </ClCompile>
     <ClCompile Include="TestCameraScript.cpp">
       <Filter>Object\Test</Filter>
+    </ClCompile>
+    <ClCompile Include="Material.cpp">
+      <Filter>Object\2D</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

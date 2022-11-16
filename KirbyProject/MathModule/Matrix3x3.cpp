@@ -31,12 +31,12 @@ Matrix3x3 Matrix3x3::CreateRotationZ(float InRadian)
 
 	Math::GetSinCos(sinVal, cosVal, InRadian);
 
-	return Matrix3x3(Vector3(cosVal, sinVal, 0), Vector3(sinVal, -cosVal, 0), Vector3::UnitZ);
+	return Matrix3x3(Vector3(cosVal, -sinVal, 0), Vector3(sinVal, cosVal, 0), Vector3::UnitZ);
 }
 
 Matrix3x3 Matrix3x3::CreateTranslation(Vector2 InPosition)
 {
-	return Matrix3x3(Vector3::Zero, Vector3::Zero, Vector3(InPosition));
+	return Matrix3x3(Vector3::UnitX, Vector3::UnitY, Vector3(InPosition));
 }
 
 std::vector<std::string> Matrix3x3::ToStrings() const

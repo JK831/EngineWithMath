@@ -113,7 +113,7 @@ LinearColor Texture::GetSample(Vector2 InUV) const
 
 	int x = Math::FloorToInt(InUV.X * _Width) % _Width;
 	int y = Math::FloorToInt(InUV.Y * _Height) % _Height;
-	int index = _Width * (_Height - (1 + y)) + x;
+	int index = _Width * y + x;
 	if (index >= _Buffer.size())
 	{
 		return LinearColor::Error;

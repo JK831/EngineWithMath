@@ -12,6 +12,8 @@
 #include "TestCameraScript.h"
 #include "Resources.h"
 
+#include "tinyxml2.h"
+
 void SceneManager::Update()
 {
 	if (_activeScene == nullptr)
@@ -37,9 +39,38 @@ void SceneManager::Render()
 	}
 }
 
-void SceneManager::LoadScene(wstring sceneName)
+void SceneManager::LoadScene(wstring InSceneName)
 {
-	_activeScene = LoadTestScene();
+	if (InSceneName._Equal(L"TestScene"))
+		_activeScene = LoadTestScene();
+	else
+	{
+		shared_ptr<Scene> scene = make_shared<Scene>();
+
+		string sceneName;
+		sceneName.assign(InSceneName.begin(), InSceneName.end());
+		sceneName.append(".xml");
+
+		tinyxml2::XMLDocument sceneFile;
+		sceneFile.LoadFile(sceneName.c_str());
+
+		// Load scene information 
+		tinyxml2::XMLElement* root = sceneFile.RootElement();
+		tinyxml2::XMLElement* gameObjects = root->FirstChildElement("GameObject");
+		for (tinyxml2::XMLElement* nextGO = gameObjects; nextGO != NULL; nextGO->NextSiblingElement())
+		{
+			shared_ptr<GameObject> go = make_shared<GameObject>();
+
+			tinyxml2::XMLElement* component = nextGO->FirstChildElement("Component");
+			for (tinyxml2::XMLElement* nextComponent = component; nextComponent != NULL; nextComponent->NextSiblingElement())
+			{
+				const char* componentName = nextComponent->Attribute("Name");
+				go->AddComponent(componentName);
+			}
+
+			scene->AddGameObject(go);
+		}
+	}
 
 	_activeScene->Awake();
 	_activeScene->Start();

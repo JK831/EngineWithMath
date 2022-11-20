@@ -54,23 +54,65 @@ void SceneManager::LoadScene(wstring InSceneName)
 		tinyxml2::XMLDocument sceneFile;
 		sceneFile.LoadFile(sceneName.c_str());
 
+		map<string, shared_ptr<Component>> fileMap;
+
 		// Load scene information 
 		tinyxml2::XMLElement* root = sceneFile.RootElement();
-		tinyxml2::XMLElement* gameObjects = root->FirstChildElement("GameObject");
-		for (tinyxml2::XMLElement* nextGO = gameObjects; nextGO != NULL; nextGO->NextSiblingElement())
+		tinyxml2::XMLElement* object = root->FirstChildElement();
+		for (tinyxml2::XMLElement* nextObj = object; nextObj != NULL; nextObj->NextSiblingElement())
 		{
-			shared_ptr<GameObject> go = make_shared<GameObject>();
+			shared_ptr<Object> obj;
+			uint8 objType = std::stoi(string(nextObj->Attribute("Object_Type")));
 
-			tinyxml2::XMLElement* component = nextGO->FirstChildElement("Component");
+			switch (static_cast<OBJECT_TYPE>(objType))
+			{
+			case OBJECT_TYPE::GAMEOBJECT:
+			{
+				obj = make_shared<GameObject>();
+			}
+			case OBJECT_TYPE::MATERIAL:
+			{
+				obj = make_shared<Material>();
+			}
+			case OBJECT_TYPE::MESH:
+			{
+				obj = make_shared<Mesh>();
+			}
+			case OBJECT_TYPE::SHADER:
+			{
+				obj = make_shared<Shader>();
+			}
+			case  OBJECT_TYPE::COMPONENT:
+			{
+				obj = make_shared<Component>();
+			}
+			case OBJECT_TYPE::SPRITE:
+			{
+				
+			}
+			case OBJECT_TYPE::TEXTURE:
+			{
+				obj = make_shared<Texture>();
+			}
+			}
+			string name = nextObj->Attribute("m_Name");
+			wstring wName = wName.assign(name.begin(), name.end());
+			obj->SetName(wName);
+
+			tinyxml2::XMLElement* component = nextObj->FirstChildElement("m_Component");
 			for (tinyxml2::XMLElement* nextComponent = component; nextComponent != NULL; nextComponent->NextSiblingElement())
 			{
-				const char* componentName = nextComponent->Attribute("Name");
-				go->AddComponent(componentName);
+				const char* componentID = nextComponent->Attribute("FileID");
+				
+				go->AddComponentID(componentID);
+
 			}
 
 			scene->AddGameObject(go);
 		}
 	}
+
+	for (tinyxml2::XMLElement* nextComponent = )
 
 	_activeScene->Awake();
 	_activeScene->Start();

@@ -47,6 +47,8 @@ void SceneManager::LoadScene(wstring InSceneName)
 	{
 		shared_ptr<Scene> scene = make_shared<Scene>();
 
+		unordered_map<wstring, vector<string>> componentMap;
+
 		string sceneName;
 		sceneName.assign(InSceneName.begin(), InSceneName.end());
 		sceneName.append(".xml");
@@ -54,7 +56,6 @@ void SceneManager::LoadScene(wstring InSceneName)
 		tinyxml2::XMLDocument sceneFile;
 		sceneFile.LoadFile(sceneName.c_str());
 
-		map<string, shared_ptr<Component>> fileMap;
 
 		// Load scene information 
 		tinyxml2::XMLElement* root = sceneFile.RootElement();
@@ -69,10 +70,22 @@ void SceneManager::LoadScene(wstring InSceneName)
 			case OBJECT_TYPE::GAMEOBJECT:
 			{
 				obj = make_shared<GameObject>();
+
+				string name = nextObj->Attribute("m_Name");
+				wstring wName = wName.assign(name.begin(), name.end());
+				obj->SetName(wName);
+				
+				vector<string> componentIDs;
+				for (tinyxml2::XMLElement* nextComponent = nextObj->FirstChildElement("m_Component"); nextComponent != NULL; nextComponent->NextSiblingElement())
+				{
+					componentIDs.push_back(nextComponent->Attribute("FileID"));
+				}
+				componentMap.insert(make_pair(wName, componentIDs)); // = componentMap[wName] = componentIDs;
 			}
 			case OBJECT_TYPE::MATERIAL:
 			{
 				obj = make_shared<Material>();
+
 			}
 			case OBJECT_TYPE::MESH:
 			{
@@ -85,6 +98,7 @@ void SceneManager::LoadScene(wstring InSceneName)
 			case  OBJECT_TYPE::COMPONENT:
 			{
 				obj = make_shared<Component>();
+
 			}
 			case OBJECT_TYPE::SPRITE:
 			{
@@ -95,9 +109,7 @@ void SceneManager::LoadScene(wstring InSceneName)
 				obj = make_shared<Texture>();
 			}
 			}
-			string name = nextObj->Attribute("m_Name");
-			wstring wName = wName.assign(name.begin(), name.end());
-			obj->SetName(wName);
+			
 
 			tinyxml2::XMLElement* component = nextObj->FirstChildElement("m_Component");
 			for (tinyxml2::XMLElement* nextComponent = component; nextComponent != NULL; nextComponent->NextSiblingElement())

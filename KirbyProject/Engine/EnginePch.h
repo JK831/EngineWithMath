@@ -109,4 +109,7 @@ public:							\
 #define INPUT		GET_SINGLE(Input)
 #define DELTA_TIME	GET_SINGLE(Timer)->GetDeltaTime()
 
+#define GENERATE_TYPE_INFO	\
+
+
 extern unique_ptr<class Engine> GEngine;

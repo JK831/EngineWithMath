@@ -3,12 +3,17 @@
 
 
 
-	class MonoBehaviour : public Component
-	{
-	public:
-		MonoBehaviour();
-		virtual ~MonoBehaviour();
+class MonoBehaviour : public Component
+{
+public:
+	MonoBehaviour();
+	virtual ~MonoBehaviour();
 
-	public:
+public:
+	template<typename T>
+	shared_ptr<MonoBehaviour> CreateInstance() { return make_shared(T); }
 
-	};
+private:
+	string guid;
+	
+};

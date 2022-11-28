@@ -1,6 +1,7 @@
 #pragma once
 
-class MonoBehaviour;
+class Object;
+class Component;
 
 class DataManager
 {
@@ -10,9 +11,9 @@ public:
 	DataManager();
 	~DataManager();
 
-	template<typename T>
-	void Register(T& InMono, string InGuid);
+
+	void Register();
 
 private:
-	map<string, shared_ptr<MonoBehaviour>(*)()> _monoMap;
+	map<string, Component> _ComponentMap;
 };

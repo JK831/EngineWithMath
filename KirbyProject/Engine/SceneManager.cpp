@@ -9,6 +9,7 @@
 #include "Transform.h"
 #include "Camera.h"
 
+#include "DataManager.h"
 #include "TestCameraScript.h"
 #include "Resources.h"
 
@@ -62,29 +63,29 @@ void SceneManager::LoadScene(wstring InSceneName)
 		tinyxml2::XMLElement* object = root->FirstChildElement();
 		for (tinyxml2::XMLElement* nextObj = object; nextObj != NULL; nextObj->NextSiblingElement())
 		{
-			shared_ptr<Object> obj;
 			uint8 objType = std::stoi(string(nextObj->Attribute("Object_Type")));
 
 			switch (static_cast<OBJECT_TYPE>(objType))
 			{
 			case OBJECT_TYPE::GAMEOBJECT:
 			{
-				obj = make_shared<GameObject>();
+				shared_ptr<GameObject> gameObj = make_shared<GameObject>();
+				static_pointer_cast<GameObject>(obj);
 
 				string name = nextObj->Attribute("m_Name");
 				wstring wName = wName.assign(name.begin(), name.end());
-				obj->SetName(wName);
+				gameObj->SetName(wName);
 				
-				vector<string> componentIDs;
 				for (tinyxml2::XMLElement* nextComponent = nextObj->FirstChildElement("m_Component"); nextComponent != NULL; nextComponent->NextSiblingElement())
 				{
-					componentIDs.push_back(nextComponent->Attribute("FileID"));
+					gameObj->AddComponent(GET_SINGLE(DataManager)->GetComponentByID(nextComponent->GetText()));
 				}
-				componentMap.insert(make_pair(wName, componentIDs)); // = componentMap[wName] = componentIDs;
+				scene->AddGameObject(gameObj);
 			}
 			case OBJECT_TYPE::MATERIAL:
 			{
-				obj = make_shared<Material>();
+				shared_ptr<Material> mat = make_shared<Material>();
+
 
 			}
 			case OBJECT_TYPE::MESH:
@@ -111,14 +112,7 @@ void SceneManager::LoadScene(wstring InSceneName)
 			}
 			
 
-			tinyxml2::XMLElement* component = nextObj->FirstChildElement("m_Component");
-			for (tinyxml2::XMLElement* nextComponent = component; nextComponent != NULL; nextComponent->NextSiblingElement())
-			{
-				const char* componentID = nextComponent->Attribute("FileID");
-				
-				go->AddComponentID(componentID);
-
-			}
+			
 
 			scene->AddGameObject(go);
 		}

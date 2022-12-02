@@ -15,7 +15,7 @@ void ParseSceneFiles(string InPath, string& InToInclude, string& InFileWrite);
 int main()
 {
 	string scenePath = "..\\Resources\\Scenes";
-	string toInclude = "#include \"pch.h\"\n#include \"DataManager.h\"\n";
+	string toInclude = "#include \"pch.h\"\n#include \"DataManager.h\"\n#include \"Material.h\"\n#include \"Mesh.h\"\n#include \"Shader.h\"\n#include \"Component.h\"\n#include \"Texture.h\"\n";
 	string toWrite = "";
 	SearchingDir(scenePath, toInclude, toWrite);
 	string fileFormat = toInclude + "\nDataManager::DataManager()\n{\n}\n\nDataManager::~DataManager()\n{\n}\n\nvoid DataManager::Register()\n{\n";
@@ -85,6 +85,8 @@ void ParseSceneFiles(string InPath, string& InToInclude, string& InFileWrite)
 	tinyxml2::XMLDocument sceneFile;
 	tinyxml2::XMLError error = sceneFile.LoadFile(InPath.c_str());
 
+	// TODO: 애셋들을 데이터베이스에 파일ID와 함께 경로 저장, 그 후 씬에서 각 오브젝트 별로 데이터를 불러올 수 있게 한다, 컴포넌트는 id를 오브젝트 맵에 저장 후
+	// 데이터매니저의 register가 호출될 때 이 컴포넌트들의 객체 생성후 컴포넌트 맵에 등록될 수 있도록 datamanager 생성하게 한다.
 
 	// Load scene information 
 	tinyxml2::XMLNode* root = sceneFile.FirstChild();
@@ -103,12 +105,20 @@ void ParseSceneFiles(string InPath, string& InToInclude, string& InFileWrite)
 		}
 		case OBJECT_TYPE::MATERIAL:
 		{
-
+			InFileWrite.append("\t_ObjectMap.insert(make_pair(");
+			InFileWrite += nextObj->Attribute("FileID");
+			InFileWrite.append(", make_pair(");
+			InFileWrite += nextObj->Attribute("Object_Type");
+			InFileWrite.append(", new Material())));\n");
 			break;
 		}
 		case OBJECT_TYPE::MESH:
 		{
-
+			InFileWrite.append("\t_ObjectMap.insert(make_pair(");
+			InFileWrite += nextObj->Attribute("FileID");
+			InFileWrite.append(", make_pair(");
+			InFileWrite += nextObj->Attribute("Object_Type");
+			InFileWrite.append(", new Mesh())));\n");
 			break;
 		}
 		case OBJECT_TYPE::SHADER:
@@ -119,13 +129,13 @@ void ParseSceneFiles(string InPath, string& InToInclude, string& InFileWrite)
 		case OBJECT_TYPE::COMPONENT:
 		{
 			InToInclude.append("#include \"");
-			InToInclude += nextObj->FirstChildElement("Component_Type")->GetText();
+			InToInclude += nextObj->FirstChildElement("Component_Name")->GetText();
 			InToInclude.append("\"\n");
 
 			InFileWrite.append("\t_ComponentMap.insert(make_pair(");
 			InFileWrite += nextObj->Attribute("FileID");
 			InFileWrite.append(", new ");
-			InFileWrite += nextObj->FirstChildElement("Component_Type")->GetText(); // Transform, MonoBehaviour etc.
+			InFileWrite += nextObj->FirstChildElement("Component_Name")->GetText(); // Transform, MonoBehaviour etc.
 			InFileWrite.append("()));\n");
 			break;
 		}
@@ -135,6 +145,11 @@ void ParseSceneFiles(string InPath, string& InToInclude, string& InFileWrite)
 		}
 		case OBJECT_TYPE::TEXTURE:
 		{
+			InFileWrite.append("\t_ObjectMap.insert(make_pair(");
+			InFileWrite += nextObj->Attribute("FileID");
+			InFileWrite.append(", make_pair(");
+			InFileWrite += nextObj->Attribute("Object_Type");
+			InFileWrite.append(", new Texture())));\n");
 			break;
 		}
 		}

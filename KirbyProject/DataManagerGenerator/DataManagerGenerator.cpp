@@ -8,9 +8,7 @@
 #include <io.h>
 #include "tinyxml2.h"
 
-void SearchingDir(string path, string& InToInclude, string& InToWrite, char InToParse);
-bool IsFileOrDir(_finddata_t fd);
-void ParseAssetFiles(string InPath, string& InToInclude, string& InFileWrite);
+
 void ParseSceneFiles(string InPath, string& InToInclude, string& InFileWrite);
 
 int main()

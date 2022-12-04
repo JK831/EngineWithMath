@@ -43,13 +43,13 @@ bool DirectoryExplorer::SearchingDir(string InPath)
 		if (checkDirFile == 0 && fd.name[0] != '.')
 		{
 			//디렉토리일 때의 로직
-			SearchingDir(InPath + "\\" + fd.name, InToInclude, InToWrite);//재귀적 호출
+			SearchingDir(InPath + "\\" + fd.name);//재귀적 호출
 		}
 		else if (checkDirFile == 1 && fd.name[0] != '.')
 		{
 			//파일일 때의 로직
 			fdlist.push_back(fd);
-			ParseAssetFiles(InPath + "\\" + fd.name, InToInclude, InToWrite);
+			ParseAssetFiles(InPath + "\\" + fd.name);
 		}
 
 	} while (_findnext(handle, &fd) == 0);

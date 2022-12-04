@@ -36,6 +36,8 @@ private:
 
 private:
 	uint8 _fileIDSize = sizeof(uint16) * 8;
+	using PathMap = std::map<wstring, wstring>;
+	array<PathMap, OBJECT_TYPE_COUNT> _path;
 	using KeyObjMap = std::map<wstring/*key*/, shared_ptr<Object>>;
 	array<KeyObjMap, OBJECT_TYPE_COUNT> _resources;
 };

@@ -8,19 +8,22 @@
 #include <io.h>
 #include "tinyxml2.h"
 
-void SearchingDir(string path, string& InToInclude, string& InToWrite);
+void SearchingDir(string path, string& InToInclude, string& InToWrite, char InToParse);
 bool IsFileOrDir(_finddata_t fd);
+void ParseAssetFiles(string InPath, string& InToInclude, string& InFileWrite);
 void ParseSceneFiles(string InPath, string& InToInclude, string& InFileWrite);
 
 int main()
 {
+	string assetPath = "..\\Resources";
 	string scenePath = "..\\Resources\\Scenes";
 	string toInclude = "#include \"pch.h\"\n#include \"DataManager.h\"\n#include \"Material.h\"\n#include \"Mesh.h\"\n#include \"Shader.h\"\n#include \"Component.h\"\n#include \"Texture.h\"\n";
 	string toWrite = "";
-	SearchingDir(scenePath, toInclude, toWrite);
-	string fileFormat = toInclude + "\nDataManager::DataManager()\n{\n}\n\nDataManager::~DataManager()\n{\n}\n\nvoid DataManager::Register()\n{\n";
+	SearchingDir(assetPath, toInclude, toWrite, 'A');
+	SearchingDir(scenePath, toInclude, toWrite, 'S');
+	string fileFormat = toInclude + "\nDataManager::DataManager()\n{\n";
 	fileFormat += toWrite;
-	fileFormat += "}\n";
+	fileFormat += "}\n\nDataManager::~DataManager()\n{\n}\n";
 	std::cout << fileFormat;
 
 	std::ofstream ofs("../Engine/DataManager.cpp", std::ios::out | std::ios::trunc);
@@ -34,7 +37,7 @@ int main()
 	ofs.close();
 }
 
-void SearchingDir(string InPath, string& InToInclude, string& InToWrite)
+void SearchingDir(string InPath, string& InToInclude, string& InToWrite, char InToParse)
 {
 	int checkDirFile = 0;
 	string dirPath = InPath + "\\*.*";
@@ -49,24 +52,53 @@ void SearchingDir(string InPath, string& InToInclude, string& InToWrite)
 		return;
 	}
 
-	do //폴더 탐색 반복 시작
+	if (InToParse == 'A')
 	{
-		checkDirFile = IsFileOrDir(fd);//현재 객체 종류 확인(파일 or 디렉토리)
-		if (checkDirFile == 0 && fd.name[0] != '.') {
-			//디렉토리일 때의 로직
-			cout << "Dir  : " << InPath + "\\" << fd.name << endl;
-			SearchingDir(InPath + "\\" + fd.name, InToInclude, InToWrite);//재귀적 호출
-		}
-		else if (checkDirFile == 1 && fd.name[0] != '.') {
-			//파일일 때의 로직
-			cout << "File : " << InPath + "\\" << fd.name << endl;
-			fdlist.push_back(fd);
-			ParseSceneFiles(InPath + "\\" + fd.name, InToInclude, InToWrite);
-		}
+		do //폴더 탐색 반복 시작 (씬 제외)
+		{
+			checkDirFile = IsFileOrDir(fd);//현재 객체 종류 확인(파일 or 디렉토리)
+			if (checkDirFile == 0 && fd.name[0] != '.')
+			{
+				//디렉토리일 때의 로직
+				if (string(fd.name).compare("Scenes"))
+					continue;
 
-	} while (_findnext(handle, &fd) == 0);
+				cout << "Dir  : " << InPath + "\\" << fd.name << endl;
+				SearchingDir(InPath + "\\" + fd.name, InToInclude, InToWrite);//재귀적 호출
+			}
+			else if (checkDirFile == 1 && fd.name[0] != '.')
+			{
+				//파일일 때의 로직
+				cout << "File : " << InPath + "\\" << fd.name << endl;
+				fdlist.push_back(fd);
+				ParseAssetFiles(InPath + "\\" + fd.name, InToInclude, InToWrite);
+			}
+
+		} while (_findnext(handle, &fd) == 0);
+	}
+	else if (InToParse == 'S')
+	{
+		do //폴더 탐색 반복 시작 (씬 제외)
+		{
+			checkDirFile = IsFileOrDir(fd);//현재 객체 종류 확인(파일 or 디렉토리)
+			if (checkDirFile == 0 && fd.name[0] != '.')
+			{
+				cout << "Dir  : " << InPath + "\\" << fd.name << endl;
+				SearchingDir(InPath + "\\" + fd.name, InToInclude, InToWrite, InToParse);//재귀적 호출
+			}
+			else if (checkDirFile == 1 && fd.name[0] != '.')
+			{
+				//파일일 때의 로직
+				cout << "File : " << InPath + "\\" << fd.name << endl;
+				fdlist.push_back(fd);
+				ParseSceneFiles(InPath + "\\" + fd.name, InToInclude, InToWrite);
+			}
+
+		} while (_findnext(handle, &fd) == 0);
+	}
 	_findclose(handle);
 }
+
 
 bool IsFileOrDir(_finddata_t fd)
 //파일인지 디렉토리인지 판별
@@ -79,81 +111,76 @@ bool IsFileOrDir(_finddata_t fd)
 
 }
 
-void ParseSceneFiles(string InPath, string& InToInclude, string& InFileWrite)
+void ParseAssetFiles(string InPath, string& InToInclude, string& InFileWrite)
 {
+	//tinyxml2::XMLNode* root = sceneFile.FirstChild();
+	//tinyxml2::XMLElement* object = root->FirstChildElement("Object");
+	//for (tinyxml2::XMLElement* nextObj = object; nextObj != NULL; nextObj = nextObj->NextSiblingElement())
+	//{
 
-	tinyxml2::XMLDocument sceneFile;
-	tinyxml2::XMLError error = sceneFile.LoadFile(InPath.c_str());
+	//	uint8 objType = std::stoi(string(nextObj->Attribute("Object_Type")));
 
-	// TODO: 애셋들을 데이터베이스에 파일ID와 함께 경로 저장, 그 후 씬에서 각 오브젝트 별로 데이터를 불러올 수 있게 한다, 컴포넌트는 id를 오브젝트 맵에 저장 후
-	// 데이터매니저의 register가 호출될 때 이 컴포넌트들의 객체 생성후 컴포넌트 맵에 등록될 수 있도록 datamanager 생성하게 한다.
 
-	// Load scene information 
-	tinyxml2::XMLNode* root = sceneFile.FirstChild();
-	tinyxml2::XMLElement* object = root->FirstChildElement("Object");
-	for (tinyxml2::XMLElement* nextObj = object; nextObj != NULL; nextObj = nextObj->NextSiblingElement())
-	{
+	//	switch (static_cast<OBJECT_TYPE>(objType))
+	//	{
+	//	case OBJECT_TYPE::GAMEOBJECT:
+	//	{
 
-		uint8 objType = std::stoi(string(nextObj->Attribute("Object_Type")));
+	//		break;
+	//	}
+	//	case OBJECT_TYPE::MATERIAL:
+	//	{
+	//		InFileWrite.append("\t_ObjectMap.insert(make_pair(");
+	//		InFileWrite += nextObj->Attribute("FileID");
+	//		InFileWrite.append(", make_pair(");
+	//		InFileWrite += InPath;
+	//		InFileWrite.append("));\n");
+	//		break;
+	//	}
+	//	case OBJECT_TYPE::MESH:
+	//	{
+	//		InFileWrite.append("\t_ObjectMap.insert(make_pair(");
+	//		InFileWrite += nextObj->Attribute("FileID");
+	//		InFileWrite.append(", ");
+	//		InFileWrite += InPath;
+	//		InFileWrite.append("));\n");
+	//		break;
+	//	}
+	//	case OBJECT_TYPE::SHADER:
+	//	{
 
-		switch (static_cast<OBJECT_TYPE>(objType))
-		{
-		case OBJECT_TYPE::GAMEOBJECT:
-		{
+	//		break;
+	//	}
+	//	case OBJECT_TYPE::COMPONENT:
+	//	{
+	//		InToInclude.append("#include \"");
+	//		InToInclude += nextObj->FirstChildElement("Component_Name")->GetText();
+	//		InToInclude.append("\"\n");
 
-			break;
-		}
-		case OBJECT_TYPE::MATERIAL:
-		{
-			InFileWrite.append("\t_ObjectMap.insert(make_pair(");
-			InFileWrite += nextObj->Attribute("FileID");
-			InFileWrite.append(", make_pair(");
-			InFileWrite += nextObj->Attribute("Object_Type");
-			InFileWrite.append(", new Material())));\n");
-			break;
-		}
-		case OBJECT_TYPE::MESH:
-		{
-			InFileWrite.append("\t_ObjectMap.insert(make_pair(");
-			InFileWrite += nextObj->Attribute("FileID");
-			InFileWrite.append(", make_pair(");
-			InFileWrite += nextObj->Attribute("Object_Type");
-			InFileWrite.append(", new Mesh())));\n");
-			break;
-		}
-		case OBJECT_TYPE::SHADER:
-		{
-
-			break;
-		}
-		case OBJECT_TYPE::COMPONENT:
-		{
-			InToInclude.append("#include \"");
-			InToInclude += nextObj->FirstChildElement("Component_Name")->GetText();
-			InToInclude.append("\"\n");
-
-			InFileWrite.append("\t_ComponentMap.insert(make_pair(");
-			InFileWrite += nextObj->Attribute("FileID");
-			InFileWrite.append(", new ");
-			InFileWrite += nextObj->FirstChildElement("Component_Name")->GetText(); // Transform, MonoBehaviour etc.
-			InFileWrite.append("()));\n");
-			break;
-		}
-		case OBJECT_TYPE::SPRITE:
-		{
-			break;
-		}
-		case OBJECT_TYPE::TEXTURE:
-		{
-			InFileWrite.append("\t_ObjectMap.insert(make_pair(");
-			InFileWrite += nextObj->Attribute("FileID");
-			InFileWrite.append(", make_pair(");
-			InFileWrite += nextObj->Attribute("Object_Type");
-			InFileWrite.append(", new Texture())));\n");
-			break;
-		}
-		}
-	}
+	//		InFileWrite.append("\t_ComponentMap.insert(make_pair(");
+	//		InFileWrite += nextObj->Attribute("FileID");
+	//		InFileWrite.append(", new ");
+	//		InFileWrite += nextObj->FirstChildElement("Component_Name")->GetText(); // Transform, MonoBehaviour etc.
+	//		InFileWrite.append("()));\n");
+	//		break;
+	//	}
+	//	case OBJECT_TYPE::SPRITE:
+	//	{
+	//		break;
+	//	}
+	//	case OBJECT_TYPE::TEXTURE:
+	//	{
+	//		InFileWrite.append("\t_ObjectMap.insert(make_pair(");
+	//		InFileWrite += nextObj->Attribute("FileID");
+	//		InFileWrite.append(", make_pair(");
+	//		InFileWrite += nextObj->Attribute("Object_Type");
+	//		InFileWrite.append(", new Texture())));\n");
+	//		break;
+	//	}
+	//	}
+	//}
+	//
+	//InFileWrite.append("_SceneMap.insert(");
 }
 // Run program: Ctrl + F5 or Debug > Start Without Debugging menu
 // Debug program: F5 or Debug > Start Debugging menu

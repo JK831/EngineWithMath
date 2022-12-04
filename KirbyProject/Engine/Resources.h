@@ -5,13 +5,15 @@
 #include "Mesh.h"
 #include "Shader.h"
 #include "Texture.h"
-
+#include "DirectoryExplorer.h"
 
 class Resources
 {
 	DECLARE_SINGLE(Resources);
 
 public:
+	void RegisterAssets();
+
 	template<typename T>
 	shared_ptr<T> Load(const wstring& key, const wstring& path);
 
@@ -28,9 +30,16 @@ public:
 	shared_ptr<Mesh> LoadCircleMesh();
 
 private:
+	bool IsFileOrDir(_finddata_t fd);
+	bool SearchingDir(string path);
+	void ParseAssetFiles(fs::path InPath);
+
+private:
+	uint8 _fileIDSize = sizeof(uint16) * 8;
 	using KeyObjMap = std::map<wstring/*key*/, shared_ptr<Object>>;
 	array<KeyObjMap, OBJECT_TYPE_COUNT> _resources;
 };
+
 
 template<typename T>
 inline shared_ptr<T> Resources::Load(const wstring& key, const wstring& path)

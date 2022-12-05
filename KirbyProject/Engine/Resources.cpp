@@ -1,17 +1,72 @@
 #include "pch.h"
 #include "Resources.h"
 
-void Resources::RegisterAssets()
+void Resources::RegisterAssets(wstring assetPath)
 {
-	wstring assetPath = L"..\\Resources";
 
-	fs::directory_iterator itr(assetPath);
+	fs::recursive_directory_iterator itr(assetPath);
 	while (itr != fs::end(itr))
 	{
 		const fs::directory_entry& entry = *itr;
-		if (fs::is_directory(entry.path()))
+		if (fs::is_regular_file(entry.path()))
 			ParseAssetFiles(entry.path());
 		itr++;
+	}
+}
+
+void Resources::CheckAssets(wstring assetPath)
+{
+	{
+		std::map<std::wstring, std::wstring>::iterator itr = _IDPathMap.begin();
+
+		while (itr != _IDPathMap.end())
+		{
+			if (fs::exists(fs::path(itr->second)) == false)
+			{
+				_IDPathMap.erase(itr);
+				_pathIDMap.erase(itr->second);
+			}
+			itr++;
+		}
+	}
+	{
+		fs::recursive_directory_iterator itr(assetPath);
+		while (itr != fs::end(itr))
+		{
+			const fs::directory_entry& entry = *itr;
+			if (_pathIDMap.find(entry.path()) == _pathIDMap.end())
+			{
+				ParseAssetFiles(entry.path());
+			}
+			
+			itr++;
+		}
+	}
+}
+
+uint8 Resources::GetObjectTypeByExt(wstring& filePath)
+{
+	wstring ext = fs::path(filePath).extension();
+	
+	if (ext == L".mat")
+	{
+		return static_cast<uint8>(OBJECT_TYPE::MATERIAL);
+	}
+	else if (ext == L".fbx" || ext == L".mesh")
+	{
+		return static_cast<uint8>(OBJECT_TYPE::MESH);
+	}
+	else if (ext == L".hlsl" || ext == L".hlsli")
+	{
+		return static_cast<uint8>(OBJECT_TYPE::SHADER);
+	}
+	else if (ext == L".h")
+	{
+		return static_cast<uint8>(OBJECT_TYPE::COMPONENT);
+	}
+	else if (ext != L".xml")
+	{
+		return static_cast<uint8>(OBJECT_TYPE::MATERIAL);
 	}
 }
 
@@ -19,40 +74,16 @@ void Resources::ParseAssetFiles(fs::path InPath)
 {
 	wstring ext = InPath.extension();
 
-	FILE* texture = NULL;
 
-	if (0 != _wfopen_s(&texture, InPath.c_str(), L"rb"))
-	{
-		return;
-	}
-
-	uint32 key;
+	uint32 objectType;
 	uint16 objectID;
 
-	if (ext == L".mat")
-	{
-		key = static_cast<uint8>(OBJECT_TYPE::MATERIAL);
-	}
-	else if (ext == L".fbx" || ext == L".mesh")
-	{
-		key = static_cast<uint8>(OBJECT_TYPE::MESH);
-	}
-	else if (ext == L".hlsl" || ext == L".hlsli")
-	{
-		key = static_cast<uint8>(OBJECT_TYPE::SHADER);
-	}
-	else if (ext == L".h")
-	{
-		key = static_cast<uint8>(OBJECT_TYPE::COMPONENT);
-	}
-	else if (ext != L".xml")
-	{
-		key = static_cast<uint8>(OBJECT_TYPE::MATERIAL);
-	}
+	objectType = GetObjectTypeByExt(ext);
 
-	objectID = _path[key].size() + 1; // 해당 오브젝트 맵의 사이즈를 기반으로 ID 부여
-	wstring stringKey = to_wstring((key << _fileIDSize) + objectID);
-	_path[key][stringKey] = InPath;
+	objectID = _objectCount[objectType]++; // 해당 오브젝트 맵의 사이즈를 기반으로 ID 부여
+	wstring stringKey = to_wstring((objectType << _fileIDSize) + objectID);
+	_IDPathMap[stringKey] = InPath;
+	_pathIDMap[InPath] = stringKey;
 }
 
 shared_ptr<Mesh> Resources::LoadRectangleMesh()

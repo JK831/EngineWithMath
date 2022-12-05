@@ -12,7 +12,9 @@ class Resources
 	DECLARE_SINGLE(Resources);
 
 public:
-	void RegisterAssets();
+	void RegisterAssets(wstring assetPath);
+	void CheckAssets(wstring assetPath);
+	uint8 GetObjectTypeByExt(wstring& filePath)
 
 	template<typename T>
 	shared_ptr<T> Load(const wstring& key, const wstring& path);
@@ -36,8 +38,11 @@ private:
 
 private:
 	uint8 _fileIDSize = sizeof(uint16) * 8;
-	using PathMap = std::map<wstring, wstring>;
-	array<PathMap, OBJECT_TYPE_COUNT> _path;
+
+	uint16 _objectCount[OBJECT_TYPE_COUNT];
+	std::map<wstring, wstring> _pathIDMap;
+	std::map<wstring, wstring> _IDPathMap;
+
 	using KeyObjMap = std::map<wstring/*key*/, shared_ptr<Object>>;
 	array<KeyObjMap, OBJECT_TYPE_COUNT> _resources;
 };

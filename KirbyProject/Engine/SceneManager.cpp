@@ -46,9 +46,11 @@ void SceneManager::LoadScene(wstring InSceneName)
 		_activeScene = LoadTestScene();
 	else
 	{
+
 		shared_ptr<Scene> scene = make_shared<Scene>();
 
-		unordered_map<wstring, vector<string>> componentMap;
+		unordered_map<wstring, vector<wstring>> goComponentMap;
+		unordered_map<wstring, shared_ptr<Object>> componentMap;
 
 		string sceneName;
 		sceneName.assign(InSceneName.begin(), InSceneName.end());
@@ -62,56 +64,49 @@ void SceneManager::LoadScene(wstring InSceneName)
 		tinyxml2::XMLElement* root = sceneFile.RootElement();
 		tinyxml2::XMLElement* object = root->FirstChildElement();
 		for (tinyxml2::XMLElement* nextObj = object; nextObj != NULL; nextObj->NextSiblingElement())
-		{
-			uint8 objType = std::stoi(string(nextObj->Attribute("Object_Type")));
+		{	
 
+			uint8 objType = std::stoi(string(nextObj->Attribute("Object_Type")));
+			
 			switch (static_cast<OBJECT_TYPE>(objType))
 			{
 			case OBJECT_TYPE::GAMEOBJECT:
 			{
-				shared_ptr<GameObject> gameObj = make_shared<GameObject>();
-				static_pointer_cast<GameObject>(obj);
+				shared_ptr<GameObject> go = make_shared<GameObject>();
 
-				string name = nextObj->Attribute("m_Name");
-				wstring wName = wName.assign(name.begin(), name.end());
-				gameObj->SetName(wName);
-				
-				for (tinyxml2::XMLElement* nextComponent = nextObj->FirstChildElement("m_Component"); nextComponent != NULL; nextComponent->NextSiblingElement())
+				for (tinyxml2::XMLElement* nextComponent = nextObj->FirstChildElement("m_Component"); nextComponent != NULL; nextComponent->NextSiblingElement("m_Component"))
 				{
-					gameObj->AddComponent(GET_SINGLE(DataManager)->GetComponentByID(nextComponent->GetText()));
+					// map에 gameobject id, component id 등록 (component가 이미 있을 시 찾아서 넣는다)
+					string componentID = nextComponent->GetText();
+					wstring wComponentID = wComponentID.assign(componentID.begin(), componentID.end());
+					if (goComponentMap.find(wComponentID) != goComponentMap.end())
+					{
+						go->AddComponent((GET_SINGLE(Resources)->LoadRegisteredAsset<Component>(wComponentID)));
+					}
 				}
-				scene->AddGameObject(gameObj);
 			}
 			case OBJECT_TYPE::MATERIAL:
 			{
-				shared_ptr<Material> mat = make_shared<Material>();
-
-
+				// TODO
 			}
 			case OBJECT_TYPE::MESH:
 			{
-				obj = make_shared<Mesh>();
+				// TODO
 			}
 			case OBJECT_TYPE::SHADER:
 			{
-				obj = make_shared<Shader>();
+				// TODO
 			}
-			case  OBJECT_TYPE::COMPONENT:
+			case OBJECT_TYPE::COMPONENT:
 			{
-				obj = make_shared<Component>();
+				// TODO
+			}
 
 			}
-			case OBJECT_TYPE::SPRITE:
-			{
-				
-			}
-			case OBJECT_TYPE::TEXTURE:
-			{
-				obj = make_shared<Texture>();
-			}
-			}
+
+			// objType에 따라 Resources::Load 호출
+
 			
-
 			
 
 			scene->AddGameObject(go);

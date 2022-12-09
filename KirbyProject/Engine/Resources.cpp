@@ -3,6 +3,7 @@
 
 void Resources::RegisterAssets(wstring assetPath)
 {
+	// TODO: 파일 읽어오기
 
 	fs::recursive_directory_iterator itr(assetPath);
 	while (itr != fs::end(itr))
@@ -44,29 +45,29 @@ void Resources::CheckAssets(wstring assetPath)
 	}
 }
 
-uint8 Resources::GetObjectTypeByExt(wstring& filePath)
+OBJECT_TYPE Resources::GetObjectTypeByExt(wstring& filePath)
 {
 	wstring ext = fs::path(filePath).extension();
 	
 	if (ext == L".mat")
 	{
-		return static_cast<uint8>(OBJECT_TYPE::MATERIAL);
+		return OBJECT_TYPE::MATERIAL;
 	}
 	else if (ext == L".fbx" || ext == L".mesh")
 	{
-		return static_cast<uint8>(OBJECT_TYPE::MESH);
+		return OBJECT_TYPE::MESH;
 	}
 	else if (ext == L".hlsl" || ext == L".hlsli")
 	{
-		return static_cast<uint8>(OBJECT_TYPE::SHADER);
+		return OBJECT_TYPE::SHADER;
 	}
 	else if (ext == L".h")
 	{
-		return static_cast<uint8>(OBJECT_TYPE::COMPONENT);
+		return OBJECT_TYPE::COMPONENT;
 	}
 	else if (ext != L".xml")
 	{
-		return static_cast<uint8>(OBJECT_TYPE::MATERIAL);
+		return OBJECT_TYPE::TEXTURE;
 	}
 }
 
@@ -75,15 +76,39 @@ void Resources::ParseAssetFiles(fs::path InPath)
 	wstring ext = InPath.extension();
 
 
-	uint32 objectType;
+	OBJECT_TYPE objectType;
 	uint16 objectID;
 
 	objectType = GetObjectTypeByExt(ext);
 
-	objectID = _objectCount[objectType]++; // 해당 오브젝트 맵의 사이즈를 기반으로 ID 부여
-	wstring stringKey = to_wstring((objectType << _fileIDSize) + objectID);
+	objectID = _objectCount[static_cast<uint8>(objectType)]++; // 해당 오브젝트 맵의 사이즈를 기반으로 ID 부여
+	wstring stringKey = to_wstring((static_cast<uint32>(objectType) << _fileIDSize) + objectID);
 	_IDPathMap[stringKey] = InPath;
 	_pathIDMap[InPath] = stringKey;
+
+	switch (objectType)
+	{
+	case OBJECT_TYPE::MATERIAL:
+	{
+		Add(stringKey, make_shared<Material>());
+	}
+	case OBJECT_TYPE::MESH:
+	{
+		_resources[static_cast<uint8>(objectType)][stringKey] = make_shared<Mesh>();
+	}
+	case OBJECT_TYPE::SHADER:
+	{
+		_resources[static_cast<uint8>(objectType)][stringKey] = make_shared<Shader>();
+	}
+	case OBJECT_TYPE::COMPONENT:
+	{
+		_resources[static_cast<uint8>(objectType)][stringKey] = make_shared<Material>();
+	}
+	case OBJECT_TYPE::TEXTURE:
+	{
+		_resources[static_cast<uint8>(objectType)][stringKey] = make_shared<Texture>();
+	}
+	}
 }
 
 shared_ptr<Mesh> Resources::LoadRectangleMesh()

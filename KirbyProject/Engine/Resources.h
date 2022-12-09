@@ -14,7 +14,10 @@ class Resources
 public:
 	void RegisterAssets(wstring assetPath);
 	void CheckAssets(wstring assetPath);
-	uint8 GetObjectTypeByExt(wstring& filePath)
+	OBJECT_TYPE GetObjectTypeByExt(wstring& filePath);
+	wstring GetPathByKey(wstring key);
+	template<typename T>
+	shared_ptr<T> LoadRegisteredAsset(wstring key);
 
 	template<typename T>
 	shared_ptr<T> Load(const wstring& key, const wstring& path);
@@ -47,7 +50,27 @@ private:
 	array<KeyObjMap, OBJECT_TYPE_COUNT> _resources;
 };
 
+// Possibility to generate exception
+inline wstring Resources::GetPathByKey(wstring key)
+{
+	if (_IDPathMap.find(key) == _IDPathMap.end())
+		return L"Wrong Key";
+	return _IDPathMap[key];
+}
 
+template<typename T>
+shared_ptr<T> Resources::LoadRegisteredAsset(wstring key)
+{
+	for (int i = 0; i < OBJECT_TYPE_COUNT; i++)
+	{
+		KeyObjMap& keyObjMap = _resources[i];
+		if (keyObjMap.find(key) != keyObjMap.end())
+			return keyObjMap[key];
+	}
+	return nullptr;
+}
+
+// Key를 부여하면서 Load하고 싶을 때
 template<typename T>
 inline shared_ptr<T> Resources::Load(const wstring& key, const wstring& path)
 {

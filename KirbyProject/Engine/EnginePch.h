@@ -90,6 +90,19 @@ enum
 	MAIN_TEXTURE_NUM = 0
 };
 
+template<typename T>
+wstring IntToBinary(T num)
+{
+	wstring bin;
+	while (num > 0)
+	{
+		bin += to_wstring(num % 2);
+		num /= 2;
+	}
+	bin = wstring.assign(bin.rbegin(), bin.rend());
+	return bin;
+}
+
 
 #define DECLARE_SINGLE(type)	\
 private:						\

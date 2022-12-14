@@ -50,7 +50,7 @@ void SceneManager::LoadScene(wstring InSceneName)
 		shared_ptr<Scene> scene = make_shared<Scene>();
 
 		unordered_map<wstring, vector<wstring>> goComponentMap;
-		unordered_map<wstring, shared_ptr<Object>> componentMap;
+		unordered_map<wstring, shared_ptr<GameObject>> componentGOMap;
 
 		string sceneName;
 		sceneName.assign(InSceneName.begin(), InSceneName.end());
@@ -65,13 +65,20 @@ void SceneManager::LoadScene(wstring InSceneName)
 		tinyxml2::XMLElement* object = root->FirstChildElement();
 		for (tinyxml2::XMLElement* nextObj = object; nextObj != NULL; nextObj->NextSiblingElement())
 		{	
-
+			string objID = nextObj->Attribute("FildID");
+			wstring wObjID = wObjID.assign(objID.begin(), objID.end());
 			uint8 objType = std::stoi(string(nextObj->Attribute("Object_Type")));
 			
 			switch (static_cast<OBJECT_TYPE>(objType))
 			{
 			case OBJECT_TYPE::GAMEOBJECT:
 			{
+				/*if (goComponentMap.find(wObjID) == goComponentMap.end())
+				{
+					vector<wstring> componentVector;
+					goComponentMap[wObjID] = componentVector;
+				}*/
+					
 				shared_ptr<GameObject> go = make_shared<GameObject>();
 
 				for (tinyxml2::XMLElement* nextComponent = nextObj->FirstChildElement("m_Component"); nextComponent != NULL; nextComponent->NextSiblingElement("m_Component"))
@@ -79,9 +86,21 @@ void SceneManager::LoadScene(wstring InSceneName)
 					// map에 gameobject id, component id 등록 (component가 이미 있을 시 찾아서 넣는다)
 					string componentID = nextComponent->GetText();
 					wstring wComponentID = wComponentID.assign(componentID.begin(), componentID.end());
-					if (goComponentMap.find(wComponentID) != goComponentMap.end())
+					
+					bool flag = true;
+					for (int i = 0; i < goComponentMap[wObjID].size(); i++)
 					{
-						go->AddComponent((GET_SINGLE(Resources)->LoadRegisteredAsset<Component>(wComponentID)));
+						if (goComponentMap[wObjID][i] == wComponentID)
+						{
+							go->AddComponent((GET_SINGLE(Resources)->LoadRegisteredAsset<Component>(wComponentID)));
+							flag = false;
+							break;
+						}
+					}
+					if (flag)
+					{
+						goComponentMap[wObjID].push_back(wComponentID);
+						componentGOMap[wComponentID] = go;
 					}
 				}
 			}
@@ -99,7 +118,46 @@ void SceneManager::LoadScene(wstring InSceneName)
 			}
 			case OBJECT_TYPE::COMPONENT:
 			{
-				// TODO
+				// resource manager에서 id로 데이터 가져온 후
+				// Component type 별로 component 설정.
+				shared_ptr<Component> com;
+				
+				uint8 componentType = std::stoi(nextObj->FirstChildElement("m_ComponentType")->GetText());
+
+				switch (static_cast<COMPONENT_TYPE>(componentType))
+				{
+				case COMPONENT_TYPE::TRANSFORM:
+				{
+					tinyxml2::XMLElement* positionElement = nextObj->FirstChildElement("Position");
+					tinyxml2::XMLElement* rotationElement = nextObj->FirstChildElement("Rotation");
+					float px = std::stod(positionElement->FirstChildElement("X")->GetText());
+					float py = std::stod(positionElement->FirstChildElement("Y")->GetText());
+					float pz = std::stod(positionElement->FirstChildElement("Z")->GetText());
+					float rx = std::stod(rotationElement->FirstChildElement("X")->GetText());
+					float ry = std::stod(rotationElement->FirstChildElement("Y")->GetText());
+					float rz = std::stod(rotationElement->FirstChildElement("Z")->GetText());
+					
+					shared_ptr<Transform> transform;
+					transform->SetLocalPosition(Vector2(px, py));
+					transform->SetLocalRotation();
+					com = transform;
+				}
+				case COMPONENT_TYPE::MONO_BEHAVIOUR:
+				{
+					com = GET_SINGLE(Resources)->LoadRegisteredAsset<MonoBehaviour>(wObjID)
+				}
+				}
+
+				if (componentGOMap.find(wObjID) != componentGOMap.end())
+				{
+					componentGOMap[wObjID]->AddComponent((GET_SINGLE(Resources)->LoadRegisteredAsset<Component>(wObjID)));
+				}
+				else
+				{
+					string goID = nextObj->FirstChildElement("m_GameObject")->GetText();
+					wstring wGameObjectID = wGameObjectID.assign(goID.begin(), goID.end());
+					goComponentMap[wGameObjectID].push_back(wObjID);
+				}
 			}
 
 			}

@@ -102,7 +102,7 @@ void Resources::ParseAssetFiles(fs::path InPath)
 	}
 	case OBJECT_TYPE::COMPONENT:
 	{
-		_resources[static_cast<uint8>(objectType)][stringKey] = make_shared<Material>();
+		_resources[static_cast<uint8>(objectType)][stringKey] = make_shared<MonoBehaviour>();
 	}
 	case OBJECT_TYPE::TEXTURE:
 	{

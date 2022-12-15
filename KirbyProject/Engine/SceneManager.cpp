@@ -9,7 +9,6 @@
 #include "Transform.h"
 #include "Camera.h"
 
-#include "DataManager.h"
 #include "TestCameraScript.h"
 #include "Resources.h"
 
@@ -49,7 +48,7 @@ void SceneManager::LoadScene(wstring InSceneName)
 
 		shared_ptr<Scene> scene = make_shared<Scene>();
 
-		unordered_map<wstring, vector<wstring>> goComponentMap;
+		unordered_map<wstring, unordered_map<wstring, shared_ptr<Component>>> goComponentMap;
 		unordered_map<wstring, shared_ptr<GameObject>> componentGOMap;
 
 		string sceneName;
@@ -88,21 +87,19 @@ void SceneManager::LoadScene(wstring InSceneName)
 					wstring wComponentID = wComponentID.assign(componentID.begin(), componentID.end());
 					
 					bool flag = true;
-					for (int i = 0; i < goComponentMap[wObjID].size(); i++)
+					if (goComponentMap[wObjID].find(wComponentID) != goComponentMap[wObjID].end())
 					{
-						if (goComponentMap[wObjID][i] == wComponentID)
-						{
-							go->AddComponent((GET_SINGLE(Resources)->LoadRegisteredAsset<Component>(wComponentID)));
-							flag = false;
-							break;
-						}
+						go->AddComponent((GET_SINGLE(Resources)->LoadRegisteredAsset<Component>(wComponentID)));
+						flag = false;
+						break;
 					}
 					if (flag)
 					{
-						goComponentMap[wObjID].push_back(wComponentID);
+						// 나중에 component가 자신의 정보를 등록하는 시점에 componentGOMap에 저장되어 있는 go에 AddComponent 수행
 						componentGOMap[wComponentID] = go;
 					}
 				}
+				scene->AddGameObject(go);
 			}
 			case OBJECT_TYPE::MATERIAL:
 			{
@@ -144,34 +141,29 @@ void SceneManager::LoadScene(wstring InSceneName)
 				}
 				case COMPONENT_TYPE::MONO_BEHAVIOUR:
 				{
-					com = GET_SINGLE(Resources)->LoadRegisteredAsset<MonoBehaviour>(wObjID)
+					com = GET_SINGLE(Resources)->LoadRegisteredAsset<MonoBehaviour>(wObjID);
 				}
 				}
 
 				if (componentGOMap.find(wObjID) != componentGOMap.end())
 				{
-					componentGOMap[wObjID]->AddComponent((GET_SINGLE(Resources)->LoadRegisteredAsset<Component>(wObjID)));
+					componentGOMap[wObjID]->AddComponent(com);
 				}
 				else
 				{
 					string goID = nextObj->FirstChildElement("m_GameObject")->GetText();
 					wstring wGameObjectID = wGameObjectID.assign(goID.begin(), goID.end());
-					goComponentMap[wGameObjectID].push_back(wObjID);
+					goComponentMap[wGameObjectID][wObjID] = com;
 				}
 			}
 
 			}
 
 			// objType에 따라 Resources::Load 호출
-
 			
-			
-
-			scene->AddGameObject(go);
 		}
 	}
 
-	for (tinyxml2::XMLElement* nextComponent = )
 
 	_activeScene->Awake();
 	_activeScene->Start();

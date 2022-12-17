@@ -1,7 +1,7 @@
 #include "pch.h"
 #include "Resources.h"
 
-void Resources::RegisterAssets(wstring assetPath)
+void Resources::Init(wstring assetPath)
 {
 	// TODO: 파일 읽어오기
 

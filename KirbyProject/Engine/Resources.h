@@ -12,7 +12,7 @@ class Resources
 	DECLARE_SINGLE(Resources);
 
 public:
-	void RegisterAssets(wstring assetPath);
+	void Init(wstring assetPath);
 	void CheckAssets(wstring assetPath);
 	OBJECT_TYPE GetObjectTypeByExt(wstring& filePath);
 	wstring GetPathByKey(wstring key);

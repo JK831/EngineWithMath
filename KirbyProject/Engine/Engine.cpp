@@ -5,6 +5,7 @@
 #include "Engine.h"
 #include "Input.h"
 #include "Timer.h"
+#include "Resources.h"
 #include "SceneManager.h"
 
 void Engine::Init(const WindowInfo& info)
@@ -15,6 +16,7 @@ void Engine::Init(const WindowInfo& info)
 
 	GET_SINGLE(Input)->Init(info.hwnd);
 	GET_SINGLE(Timer)->Init();
+	GET_SINGLE(Resources)->Init(L"../Resources/");
 }
 
 void Engine::Update()

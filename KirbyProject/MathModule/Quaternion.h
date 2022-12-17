@@ -266,29 +266,30 @@
 
 	FORCEINLINE Vector3 Quaternion::ToEulerAngle(Vector3& InVector)
 	{
+		Vector3 result;
 		float sinrCosp = 2 * (W * Z + X * Y);
 		float cosrCosp = 1 - 2 * (Z * Z + X * X);
-		result.Roll = Math::Rad2Deg(atan2f(sinrCosp, cosrCosp));
+		result.Y = Math::Rad2Deg(atan2f(sinrCosp, cosrCosp));
 
 		float pitchTest = W * X - Y * Z;
 		float asinThreshold = 0.4999995f;
 		float sinp = 2 * pitchTest;
 		if (pitchTest < -asinThreshold)
 		{
-			result.Pitch = -90.f;
+			result.X = -90.f;
 		}
 		else if (pitchTest > asinThreshold)
 		{
-			result.Pitch = 90.f;
+			result.X = 90.f;
 		}
 		else
 		{
-			result.Pitch = Math::Rad2Deg(asinf(sinp));
+			result.X = Math::Rad2Deg(asinf(sinp));
 		}
 
 		float sinyCosp = 2 * (W * Y + X * Z);
 		float cosyCosp = 1.f - 2 * (X * X + Y * Y);
-		result.Yaw = Math::Rad2Deg(atan2f(sinyCosp, cosyCosp));
+		result.Z = Math::Rad2Deg(atan2f(sinyCosp, cosyCosp));
 
 		return result;
 	}

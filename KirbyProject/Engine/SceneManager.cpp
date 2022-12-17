@@ -50,6 +50,7 @@ void SceneManager::LoadScene(wstring InSceneName)
 
 		unordered_map<wstring, unordered_map<wstring, shared_ptr<Component>>> goComponentMap;
 		unordered_map<wstring, shared_ptr<GameObject>> componentGOMap;
+		unordered_map<string, shared_ptr<Transform>> transformMap;
 
 		string sceneName;
 		sceneName.assign(InSceneName.begin(), InSceneName.end());
@@ -136,7 +137,24 @@ void SceneManager::LoadScene(wstring InSceneName)
 					
 					shared_ptr<Transform> transform;
 					transform->SetLocalPosition(Vector2(px, py));
-					transform->SetLocalRotation();
+					transform->SetLocalRotation(rz);
+
+					transformMap[wObjID] = transform;
+
+					// 부모, 자식 transform이 있다면 이미 등록되어 있는지 체크 후 등록되어 있다면 자신에게 SetParent를, 자식에게 SetParent(자신)을 해준다.
+					tinyxml2::XMLElement* parentTransform = nextObj->FirstChildElement("m_Parent");
+					if (parentTransform != NULL)
+					{
+						if (transformMap.find(parentTransform->Attribute("FileID")) != transformMap.end())
+							transform->SetParent(transformMap[parentTransform->Attribute("FileID")]);
+					}
+
+					for (tinyxml2::XMLElement* childTransform = nextObj->FirstChildElement("m_Childeren"); childTransform = childTransform->NextSiblingElement(); childTransform != NULL)
+					{
+						if (transformMap.find(childTransform->Attribute("FileID")) != transformMap.end())
+							transformMap[childTransform->Attribute("FileID")]->SetParent(transform);
+					}
+
 					com = transform;
 				}
 				case COMPONENT_TYPE::MONO_BEHAVIOUR:

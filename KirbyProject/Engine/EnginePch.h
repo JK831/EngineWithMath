@@ -103,6 +103,7 @@ wstring IntToBinary(T num)
 	return bin;
 }
 
+wstring InitAssetPath = L"../Resources/";
 
 #define DECLARE_SINGLE(type)	\
 private:						\

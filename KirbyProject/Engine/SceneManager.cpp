@@ -180,6 +180,7 @@ void SceneManager::LoadScene(wstring InSceneName)
 			// objType에 따라 Resources::Load 호출
 			
 		}
+		_activeScene = scene;
 	}
 
 

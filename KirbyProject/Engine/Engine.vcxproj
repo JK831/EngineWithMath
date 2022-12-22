@@ -158,7 +158,6 @@
   <ItemGroup>
     <ClInclude Include="Camera.h" />
     <ClInclude Include="Component.h" />
-    <ClInclude Include="DirectoryExplorer.h" />
     <ClInclude Include="Engine.h" />
     <ClInclude Include="EnginePch.h" />
     <ClInclude Include="framework.h" />

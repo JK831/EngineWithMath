@@ -98,7 +98,6 @@
     <ClInclude Include="Material.h">
       <Filter>Object\2D</Filter>
     </ClInclude>
-    <ClInclude Include="DirectoryExplorer.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Engine.cpp">

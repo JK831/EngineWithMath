@@ -5,7 +5,6 @@
 #include "Mesh.h"
 #include "Shader.h"
 #include "Texture.h"
-#include "DirectoryExplorer.h"
 
 class Resources
 {
@@ -35,8 +34,6 @@ public:
 	shared_ptr<Mesh> LoadCircleMesh();
 
 private:
-	bool IsFileOrDir(_finddata_t fd);
-	bool SearchingDir(string path);
 	void ParseAssetFiles(fs::path InPath);
 
 private:

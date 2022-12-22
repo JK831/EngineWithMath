@@ -1,11 +1,13 @@
 // SceneEditor.cpp : Defines the entry point for the application.
 //
 
+#include "pch.h"
 #include "framework.h"
 #include "SceneEditor.h"
 
 
 #define MAX_LOADSTRING 100
+#define ID_LISTBOX 100
 
 // Global Variables:
 WindowInfo SEWindowInfo;
@@ -13,6 +15,12 @@ WindowInfo SEWindowInfo;
 HINSTANCE hInst;                                // current instance
 WCHAR szTitle[MAX_LOADSTRING];                  // The title bar text
 WCHAR szWindowClass[MAX_LOADSTRING];            // the main window class name
+
+HWND hList;
+
+WCHAR Items[][15] = { L"Apple", L"Orange", L"Melon", L"Graph", L"Strawberry" };
+WCHAR str[128];
+LPCTSTR lpszClass = TEXT("Menu");
 
 // Forward declarations of functions included in this code module:
 ATOM                MyRegisterClass(HINSTANCE hInstance);
@@ -25,15 +33,23 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
                      _In_ LPWSTR    lpCmdLine,
                      _In_ int       nCmdShow)
 {
-    UNREFERENCED_PARAMETER(hPrevInstance);
-    UNREFERENCED_PARAMETER(lpCmdLine);
+    MSG msg;
+    WNDCLASS WndClass;
+    hInst = hInstance;
 
-    // TODO: Place code here.
+    WndClass.cbClsExtra = 0;
+    WndClass.cbWndExtra = 0;
+    WndClass.hbrBackground = (HBRUSH)GetStockObject(WHITE_BRUSH);
+    //WndClass.hbrBackground = (HBRUSH)(COLOR_BTNFACE + 1);
+    WndClass.hCursor = LoadCursor(NULL, IDC_ARROW);
+    WndClass.hIcon = LoadIcon(NULL, IDI_APPLICATION);
+    WndClass.hInstance = hInstance;
+    WndClass.lpfnWndProc = (WNDPROC)WndProc;
+    WndClass.lpszClassName = lpszClass;
+    WndClass.lpszMenuName = NULL;
+    WndClass.style = CS_HREDRAW | CS_VREDRAW;
+    RegisterClass(&WndClass);
 
-    // Initialize global strings
-    LoadStringW(hInstance, IDS_APP_TITLE, szTitle, MAX_LOADSTRING);
-    LoadStringW(hInstance, IDC_SCENEEDITOR, szWindowClass, MAX_LOADSTRING);
-    MyRegisterClass(hInstance);
 
     // Perform application initialization:
     if (!InitInstance (hInstance, nCmdShow))
@@ -42,8 +58,6 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
     }
 
     HACCEL hAccelTable = LoadAccelerators(hInstance, MAKEINTRESOURCE(IDC_SCENEEDITOR));
-
-    MSG msg;
 
     // Main message loop:
     while (GetMessage(&msg, nullptr, 0, 0))
@@ -100,8 +114,9 @@ BOOL InitInstance(HINSTANCE hInstance, int nCmdShow)
 {
    hInst = hInstance; // Store instance handle in our global variable
 
-   HWND hWnd = CreateWindowW(szWindowClass, szTitle, WS_OVERLAPPEDWINDOW,
-      CW_USEDEFAULT, 0, CW_USEDEFAULT, 0, nullptr, nullptr, hInstance, nullptr);
+   HWND hWnd = CreateWindow(lpszClass, lpszClass, WS_OVERLAPPEDWINDOW,
+       CW_USEDEFAULT, CW_USEDEFAULT, CW_USEDEFAULT, CW_USEDEFAULT,
+       NULL, (HMENU)NULL, hInstance, NULL);
 
    if (!hWnd)
    {
@@ -126,40 +141,31 @@ BOOL InitInstance(HINSTANCE hInstance, int nCmdShow)
 //
 LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 {
-    switch (message)
-    {
+    int i;
+    switch (message) {
+    case WM_CREATE:
+        hList = CreateWindow(L"listbox", NULL, WS_CHILD | WS_VISIBLE | WS_BORDER |
+            LBS_NOTIFY, 10, 10, 400, 800, hWnd, (HMENU)ID_LISTBOX, hInst, NULL);
+        for (i = 0; i < 5; i++)
+            SendMessage(hList, LB_ADDSTRING, 0, (LPARAM)Items[i]);
+        return 0;
     case WM_COMMAND:
-        {
-            int wmId = LOWORD(wParam);
-            // Parse the menu selections:
-            switch (wmId)
-            {
-            case IDM_ABOUT:
-                DialogBox(hInst, MAKEINTRESOURCE(IDD_ABOUTBOX), hWnd, About);
+        switch (LOWORD(wParam)) {
+        case ID_LISTBOX:
+            switch (HIWORD(wParam)) {
+            case LBN_SELCHANGE:
+                i = SendMessage(hList, LB_GETCURSEL, 0, 0);
+                SendMessage(hList, LB_GETTEXT, i, (LPARAM)str);
+                SetWindowText(hWnd, str);
                 break;
-            case IDM_EXIT:
-                DestroyWindow(hWnd);
-                break;
-            default:
-                return DefWindowProc(hWnd, message, wParam, lParam);
             }
         }
-        break;
-    case WM_PAINT:
-        {
-            PAINTSTRUCT ps;
-            HDC hdc = BeginPaint(hWnd, &ps);
-            // TODO: Add any drawing code that uses hdc here...
-            EndPaint(hWnd, &ps);
-        }
-        break;
+        return 0;
     case WM_DESTROY:
         PostQuitMessage(0);
-        break;
-    default:
-        return DefWindowProc(hWnd, message, wParam, lParam);
+        return 0;
     }
-    return 0;
+    return(DefWindowProc(hWnd, message, wParam, lParam));
 }
 
 // Message handler for about box.

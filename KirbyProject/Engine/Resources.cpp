@@ -88,25 +88,26 @@ void Resources::ParseAssetFiles(fs::path InPath)
 
 	switch (objectType)
 	{
+		bool tof;
 	case OBJECT_TYPE::MATERIAL:
 	{
-		Add(stringKey, make_shared<Material>());
+		tof = Add(stringKey, make_shared<Material>());
 	}
 	case OBJECT_TYPE::MESH:
 	{
-		_resources[static_cast<uint8>(objectType)][stringKey] = make_shared<Mesh>();
+		tof = Add(stringKey, make_shared<Mesh>());
 	}
 	case OBJECT_TYPE::SHADER:
 	{
-		_resources[static_cast<uint8>(objectType)][stringKey] = make_shared<Shader>();
+		tof = Add(stringKey, make_shared<Shader>());
 	}
 	case OBJECT_TYPE::COMPONENT:
 	{
-		_resources[static_cast<uint8>(objectType)][stringKey] = make_shared<MonoBehaviour>();
+		tof = Add(stringKey, make_shared<MonoBehaviour>());
 	}
 	case OBJECT_TYPE::TEXTURE:
 	{
-		_resources[static_cast<uint8>(objectType)][stringKey] = make_shared<Texture>();
+		tof = Add(stringKey, make_shared<Texture>());
 	}
 	}
 }

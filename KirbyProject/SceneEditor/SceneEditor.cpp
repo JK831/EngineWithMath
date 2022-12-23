@@ -146,8 +146,9 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
     case WM_CREATE:
         hList = CreateWindow(L"listbox", NULL, WS_CHILD | WS_VISIBLE | WS_BORDER |
             LBS_NOTIFY, 10, 10, 400, 800, hWnd, (HMENU)ID_LISTBOX, hInst, NULL);
-        for (i = 0; i < 5; i++)
-            SendMessage(hList, LB_ADDSTRING, 0, (LPARAM)Items[i]);
+
+        /*for (i = 0; i < 5; i++)
+            SendMessage(hList, LB_ADDSTRING, 0, (LPARAM)Items[i]);*/
         return 0;
     case WM_COMMAND:
         switch (LOWORD(wParam)) {

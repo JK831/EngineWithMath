@@ -1,5 +1,6 @@
 #include "pch.h"
 #include "Resources.h"
+#include "tinyxml2.h"
 
 void Resources::Init(wstring assetPath)
 {
@@ -11,6 +12,7 @@ void Resources::Init(wstring assetPath)
 		const fs::directory_entry& entry = *itr;
 		if (fs::is_regular_file(entry.path()))
 			ParseAssetFiles(entry.path());
+		// TODO: AssetFile이 meta 파일이 없을 시 만들어주기
 		itr++;
 	}
 }
@@ -45,6 +47,11 @@ void Resources::CheckAssets(wstring assetPath)
 	}
 }
 
+void Resources::MakeMetaFile(wstring assetPath)
+{
+
+}
+
 OBJECT_TYPE Resources::GetObjectTypeByExt(wstring& filePath)
 {
 	wstring ext = fs::path(filePath).extension();
@@ -75,6 +82,12 @@ void Resources::ParseAssetFiles(fs::path InPath)
 {
 	wstring ext = InPath.extension();
 
+	if (ext != L".meta")
+		return;
+
+
+	/*tinyxml2::XMLElement* root = sceneName.RootElement();
+	tinyxml2::XMLElement* object = root->FirstChildElement();*/
 
 	OBJECT_TYPE objectType;
 	uint16 objectID;
@@ -95,19 +108,28 @@ void Resources::ParseAssetFiles(fs::path InPath)
 	}
 	case OBJECT_TYPE::MESH:
 	{
-		tof = Add(stringKey, make_shared<Mesh>());
+		MakeMetaFile(InPath);
+		shared_ptr<Mesh> mesh = make_shared<Mesh>();
+		// meta파일로부터 데이터를 읽어와 초기 설정 후 Add
+		tof = Add(stringKey, mesh);
 	}
 	case OBJECT_TYPE::SHADER:
 	{
-		tof = Add(stringKey, make_shared<Shader>());
+		MakeMetaFile(InPath);
+		shared_ptr<Shader> shader = make_shared<Shader>();
+		tof = Add(stringKey, shader);
 	}
 	case OBJECT_TYPE::COMPONENT:
 	{
-		tof = Add(stringKey, make_shared<MonoBehaviour>());
+		MakeMetaFile(InPath);
+		shared_ptr<MonoBehaviour> monoBehaviour = make_shared<MonoBehaviour>();
+		tof = Add(stringKey, monoBehaviour);
 	}
 	case OBJECT_TYPE::TEXTURE:
 	{
-		tof = Add(stringKey, make_shared<Texture>());
+		MakeMetaFile(InPath);
+		shared_ptr<Texture> texture = make_shared<Texture>();
+		tof = Add(stringKey, texture);
 	}
 	}
 }

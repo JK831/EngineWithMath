@@ -21,7 +21,9 @@ public:
 	uint16 PushMaterial(uint16 InIndexNum, Material& InMaterial);
 	void DrawIndexedInstance(const ::std::vector<Vertex>& InVertexBuffer, const std::vector<uint32>& InIndexBuffer, const Matrix3x3& InMatrix, uint16 InBufferIndex);
 
+
 	WindowInfo& GetWindow() { return _RSIPtr->GetWindow(); }
+	HWND& GetHwnd() { return GetWindow().hwnd; }
 private:
 	unique_ptr <WindowsRSI> _RSIPtr;
 	LinearColor _backGroundColor = LinearColor::Black;

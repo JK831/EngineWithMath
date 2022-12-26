@@ -10,7 +10,7 @@ public:
 	virtual ~MonoBehaviour();
 
 private:
-	virtual void RegisterToDataManager();
+	//virtual void RegisterToDataManager();
 
 public:
 	template<typename T>

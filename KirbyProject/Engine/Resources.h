@@ -5,6 +5,7 @@
 #include "Mesh.h"
 #include "Shader.h"
 #include "Texture.h"
+#include "MonoBehaviour.h"
 
 class Resources
 {
@@ -13,6 +14,7 @@ class Resources
 public:
 	void Init(wstring assetPath);
 	void CheckAssets(wstring assetPath);
+	void MakeMetaFile(wstring assetPath);
 	OBJECT_TYPE GetObjectTypeByExt(wstring& filePath);
 	wstring GetPathByKey(wstring key);
 	template<typename T>
@@ -39,7 +41,7 @@ private:
 private:
 	uint8 _fileIDSize = sizeof(uint16) * 8;
 
-	uint16 _objectCount[OBJECT_TYPE_COUNT];
+	uint16 _objectCount[OBJECT_TYPE_COUNT] = { 0, };
 	std::map<wstring, wstring> _pathIDMap;
 	std::map<wstring, wstring> _IDPathMap;
 
@@ -62,7 +64,7 @@ shared_ptr<T> Resources::LoadRegisteredAsset(wstring key)
 	{
 		KeyObjMap& keyObjMap = _resources[i];
 		if (keyObjMap.find(key) != keyObjMap.end())
-			return keyObjMap[key];
+			return static_pointer_cast<T>(keyObjMap[key]);
 	}
 	return nullptr;
 }

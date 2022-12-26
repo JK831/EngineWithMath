@@ -34,7 +34,7 @@ public:
 
 private:
 	// Parent ±‚¡ÿ
-	Vector2 _localPosition = {};
+	Vector2 _localPosition = Vector2(0.f, 0.f);
 	float _localRotation = 0;
 	Vector2 _localScale = Vector2(1.f, 1.f);
 

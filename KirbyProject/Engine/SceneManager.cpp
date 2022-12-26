@@ -45,7 +45,9 @@ void SceneManager::LoadScene(wstring InSceneName)
 		_activeScene = LoadTestScene();
 	else
 	{
-
+#pragma region SceneLoading
+		// 모두 씬 파일 내 FileID를 통해 각자를 식별
+		// 엔진 내에서 정의된 데이터가 아닌 데이터(texture, mesh 등)은 추후 GUID를 통해 실제 데이터를 불러오도록 한다.
 		shared_ptr<Scene> scene = make_shared<Scene>();
 
 		unordered_map<wstring, unordered_map<wstring, shared_ptr<Component>>> goComponentMap;
@@ -139,7 +141,7 @@ void SceneManager::LoadScene(wstring InSceneName)
 					transform->SetLocalPosition(Vector2(px, py));
 					transform->SetLocalRotation(rz);
 
-					transformMap[wObjID] = transform;
+					transformMap[objID] = transform;
 
 					// 부모, 자식 transform이 있다면 이미 등록되어 있는지 체크 후 등록되어 있다면 자신에게 SetParent를, 자식에게 SetParent(자신)을 해준다.
 					tinyxml2::XMLElement* parentTransform = nextObj->FirstChildElement("m_Parent");
@@ -149,17 +151,19 @@ void SceneManager::LoadScene(wstring InSceneName)
 							transform->SetParent(transformMap[parentTransform->Attribute("FileID")]);
 					}
 
-					for (tinyxml2::XMLElement* childTransform = nextObj->FirstChildElement("m_Childeren"); childTransform = childTransform->NextSiblingElement(); childTransform != NULL)
+					for (tinyxml2::XMLElement* childTransform = nextObj->FirstChildElement("m_Childeren"); childTransform != NULL; childTransform = childTransform->NextSiblingElement())
 					{
 						if (transformMap.find(childTransform->Attribute("FileID")) != transformMap.end())
 							transformMap[childTransform->Attribute("FileID")]->SetParent(transform);
 					}
 
 					com = transform;
+					break;
 				}
 				case COMPONENT_TYPE::MONO_BEHAVIOUR:
 				{
 					com = GET_SINGLE(Resources)->LoadRegisteredAsset<MonoBehaviour>(wObjID);
+					break;
 				}
 				}
 
@@ -181,6 +185,7 @@ void SceneManager::LoadScene(wstring InSceneName)
 			
 		}
 		_activeScene = scene;
+#pragma endregion
 	}
 
 
@@ -229,5 +234,38 @@ shared_ptr<Scene> SceneManager::LoadTestScene()
 	}
 #pragma endregion
 
+#pragma region Rectangle2
+	{
+		shared_ptr<GameObject> rectangle = make_shared<GameObject>();
+		rectangle->AddComponent(make_shared<Transform>());
+		rectangle->GetTransform()->SetLocalScale(Vector2(300.f, 300.f));
+		rectangle->GetTransform()->SetLocalPosition(Vector2(100.f, 100.f));
+		rectangle->GetTransform()->SetLocalRotation(0.f);
+
+		shared_ptr<MeshRenderer> meshRenderer = make_shared<MeshRenderer>();
+		{
+			shared_ptr<Mesh> rectangleMesh = GET_SINGLE(Resources)->LoadRectangleMesh();
+			meshRenderer->SetMesh(rectangleMesh);
+		}
+		{
+			shared_ptr<Shader> shader = make_shared<Shader>();
+			shared_ptr<Texture> texture = make_shared<Texture>();
+			shader->Init(L"Default 2D Shader");
+			texture->Init(L"..\\Resources\\Texture\\Kirby.png");
+			shared_ptr<Material> material = make_shared<Material>();
+			material->SetShader(shader);
+			material->SetTexture(0, texture);
+			meshRenderer->SetMaterial(material);
+		}
+		rectangle->AddComponent(meshRenderer);
+		scene->AddGameObject(rectangle);
+	}
+#pragma endregion
+
 	return scene;
+}
+
+shared_ptr<Scene> SceneManager::LoadMainScene()
+{
+	return nullptr;
 }

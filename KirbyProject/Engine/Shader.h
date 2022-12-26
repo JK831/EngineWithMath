@@ -1,7 +1,7 @@
 #pragma once
 #include "Object.h"
 
-class Shader : Object
+class Shader : public Object
 {
 public:
 	Shader();
@@ -33,7 +33,8 @@ FORCEINLINE std::vector<Vertex> VertexShader2D(const std::vector<Vertex>& InVert
 	// 위치 값에 최종 행렬을 적용해 변환
 	for (Vertex& v : newVertices)
 	{
-		v.pos *= InMatrix;
+		Vector3 newVector(v.pos);
+		v.pos = (newVector * InMatrix).ToVector2();
 	}
 	return newVertices;
 }

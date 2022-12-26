@@ -75,7 +75,6 @@ void RenderQueue::DrawIndexedInstance(const ::std::vector<Vertex>& InVertexBuffe
 
 void RenderQueue::DrawTriangle2D(const ::std::vector<Vertex>& InTvs, shared_ptr<Shader> InShader, shared_ptr<Texture> InTexture)
 {
-
 	// 삼각형 칠하기
 	// 삼각형의 영역 설정
 	Vector2 minPos(Math::Min3(InTvs[0].pos.X, InTvs[1].pos.X, InTvs[2].pos.X), Math::Min3(InTvs[0].pos.Y, InTvs[1].pos.Y, InTvs[2].pos.Y));
@@ -99,13 +98,15 @@ void RenderQueue::DrawTriangle2D(const ::std::vector<Vertex>& InTvs, shared_ptr<
 
 	float invDenominator = 1.f / denominator;
 
-	ScreenPoint lowerLeftPoint = ScreenPoint::ToScreenCoordinate(_RSIPtr->GetWindow().ToScreenPoint(), minPos);
-	ScreenPoint upperRightPoint = ScreenPoint::ToScreenCoordinate(_RSIPtr->GetWindow().ToScreenPoint(), maxPos);
+	WindowInfo& CurWnd = GetWindow();
+
+	ScreenPoint lowerLeftPoint = ScreenPoint::ToScreenCoordinate(CurWnd.ToScreenPoint(), minPos);
+	ScreenPoint upperRightPoint = ScreenPoint::ToScreenCoordinate(CurWnd.ToScreenPoint(), maxPos);
 
 	// 두 점이 화면 밖을 벗어나는 경우 클리핑 처리
 	lowerLeftPoint.X = Math::Max((int32)0, lowerLeftPoint.X);
-	lowerLeftPoint.Y = Math::Min(_RSIPtr->GetWindow().height, lowerLeftPoint.Y);
-	upperRightPoint.X = Math::Min(_RSIPtr->GetWindow().width, upperRightPoint.X);
+	lowerLeftPoint.Y = Math::Min(CurWnd.height, lowerLeftPoint.Y);
+	upperRightPoint.X = Math::Min(CurWnd.width, upperRightPoint.X);
 	upperRightPoint.Y = Math::Max((int32)0, upperRightPoint.Y);
 
 	// 삼각형 영역 내 모든 점을 점검하고 색칠
@@ -114,7 +115,7 @@ void RenderQueue::DrawTriangle2D(const ::std::vector<Vertex>& InTvs, shared_ptr<
 		for (int y = upperRightPoint.Y; y <= lowerLeftPoint.Y; ++y)
 		{
 			ScreenPoint fragment = ScreenPoint(x, y);
-			Vector2 pointToTest = fragment.ToCartesianCoordinate(_RSIPtr->GetWindow().ToScreenPoint());
+			Vector2 pointToTest = fragment.ToCartesianCoordinate(CurWnd.ToScreenPoint());
 			Vector2 w = pointToTest - InTvs[0].pos;
 			float wdotu = w.Dot(u);
 			float wdotv = w.Dot(v);

@@ -16,6 +16,7 @@ class Scene; // 전방선언
 
 	private:
 		shared_ptr<Scene> LoadTestScene();
+		shared_ptr<Scene> LoadMainScene();
 
 	private:
 		shared_ptr<Scene> _activeScene;

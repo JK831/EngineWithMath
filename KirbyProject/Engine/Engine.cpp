@@ -16,7 +16,7 @@ void Engine::Init(const WindowInfo& info)
 
 	GET_SINGLE(Input)->Init(info.hwnd);
 	GET_SINGLE(Timer)->Init();
-	GET_SINGLE(Resources)->Init(InitAssetPath);
+	//GET_SINGLE(Resources)->Init(InitAssetPath);
 }
 
 void Engine::Update()
@@ -27,7 +27,7 @@ void Engine::Update()
 
 	_renderQueue->Render();
 
-	//ShowFps();
+	ShowFps();
 }
 
 void Engine::Render()
@@ -58,4 +58,9 @@ WindowInfo& Engine::GetWindow()
 
 void Engine::ShowFps()
 {
+	uint32 fps = GET_SINGLE(Timer)->GetFps();
+
+	WCHAR text[100] = L"";
+	::wsprintf(text, L"FPS : %d", fps);
+	::SetWindowText(_renderQueue->GetHwnd(), text);
 }

@@ -80,7 +80,7 @@
 
 		static Matrix3x3 CreateRotationZ(float InRadian);
 		static Matrix3x3 CreateTranslation(Vector2 InPosition);
-		static Matrix3x3 CreateScale(Vector2 InScale) { return Matrix3x3(Vector3(InScale.X, 0, 0), Vector3(0, InScale.Y, 0), Vector3::Zero); }
+		static Matrix3x3 CreateScale(Vector2 InScale) { return Matrix3x3(Vector3(InScale.X, 0, 0), Vector3(0, InScale.Y, 0), Vector3::UnitZ); }
 
 		// 정적멤버변수 
 		static const Matrix3x3 Identity;

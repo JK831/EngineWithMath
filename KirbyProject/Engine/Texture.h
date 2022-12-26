@@ -1,7 +1,7 @@
 #pragma once
 #include "Object.h"
 
-	class Texture : Object
+	class Texture : public Object
 	{
 	public:
 		Texture();

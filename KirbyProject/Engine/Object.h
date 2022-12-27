@@ -12,6 +12,9 @@
 		void SetName(const wstring& name) { _name = name; }
 		const wstring& GetName() { return _name; }
 
+		template <typename T>
+		static T Instantiate(const T& original) { T newObject = original; return newObject; }
+
 	protected:
 		friend class Resources;
 		virtual void Load(const wstring& path) {}

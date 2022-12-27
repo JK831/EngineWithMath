@@ -14,6 +14,7 @@ class Resources
 public:
 	void Init(wstring assetPath);
 	void CheckAssets(wstring assetPath);
+	void MakeMeta(wstring assetPath);
 	void MakeMetaFile(wstring assetPath);
 	OBJECT_TYPE GetObjectTypeByExt(wstring& filePath);
 	wstring GetPathByKey(wstring key);

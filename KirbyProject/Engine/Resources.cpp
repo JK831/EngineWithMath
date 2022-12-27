@@ -1,6 +1,8 @@
 #include "pch.h"
 #include "Resources.h"
 #include "tinyxml2.h"
+#include "guid.hpp"
+#include <fstream>
 
 void Resources::Init(wstring assetPath)
 {
@@ -47,9 +49,74 @@ void Resources::CheckAssets(wstring assetPath)
 	}
 }
 
+void Resources::MakeMeta(wstring assetPath)
+{
+	fs::recursive_directory_iterator itr(assetPath);
+	while (itr != fs::end(itr))
+	{
+		const fs::directory_entry& entry = *itr;
+		if (fs::is_regular_file(entry.path()))
+		{
+			wstring ext = fs::path(assetPath).extension();
+			if (ext == L".meta")
+				continue;
+			MakeMetaFile(entry.path());
+		}
+		// TODO: AssetFile이 meta 파일이 없을 시 만들어주기
+		itr++;
+	}
+}
+
 void Resources::MakeMetaFile(wstring assetPath)
 {
+	wstring metaPath = assetPath + L".meta";
+	if (fs::exists(fs::path(metaPath)))
+		return;
+	wstring ext = fs::path(assetPath).extension();
+	string sFileName = sFileName.assign(assetPath.begin() + assetPath.find_last_of(L"/"), assetPath.end());
+	const char* fileName = sFileName.c_str();
 
+	xg::Guid guid = xg::newGuid();
+	string stringGuid = guid.str();
+	const char* charGuid = stringGuid.c_str();
+
+	tinyxml2::XMLDocument newMetaFile;
+	tinyxml2::XMLNode* firstNode = newMetaFile.NewElement("Meta");
+	newMetaFile.InsertFirstChild(firstNode);
+	
+	tinyxml2::XMLElement* guidElement = newMetaFile.NewElement("GUID");
+	guidElement->SetValue(charGuid);
+
+
+	/*std::ofstream write;
+	write.open(fileName);
+
+	assert(write.is_open());
+
+	write.write(stringGuid, stringGuid.size());*/
+
+	if (ext == L".mat")
+	{
+		
+	}
+	else if (ext == L".fbx" || ext == L".mesh")
+	{
+
+	}
+	else if (ext == L".hlsl" || ext == L".hlsli")
+	{
+		
+	}
+	else if (ext == L".h")
+	{
+		
+	}
+	else if (ext != L".xml")
+	{
+		
+	}
+
+	tinyxml2::XMLError error = newMetaFile.SaveFile(fileName);
 }
 
 OBJECT_TYPE Resources::GetObjectTypeByExt(wstring& filePath)

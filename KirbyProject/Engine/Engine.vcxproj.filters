@@ -164,5 +164,8 @@
     <ClCompile Include="..\Library\Include\tinyxml2.cpp">
       <Filter>Utils</Filter>
     </ClCompile>
+    <ClCompile Include="..\Library\Include\guid.cpp">
+      <Filter>Utils</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

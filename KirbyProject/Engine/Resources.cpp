@@ -2,7 +2,20 @@
 #include "Resources.h"
 #include "tinyxml2.h"
 #include "guid.hpp"
+#include <combaseapi.h>
 #include <fstream>
+
+enum class ImporterType
+{
+	DEFAULT = 1,
+	MONO,
+};
+
+struct MetaFormat
+{
+	GUID guid;
+	ImporterType _ImporterType;
+};
 
 void Resources::Init(wstring assetPath)
 {
@@ -57,7 +70,7 @@ void Resources::MakeMeta(wstring assetPath)
 		const fs::directory_entry& entry = *itr;
 		if (fs::is_regular_file(entry.path()))
 		{
-			wstring ext = fs::path(assetPath).extension();
+			wstring ext = fs::path(entry.path()).extension();
 			if (ext == L".meta")
 				continue;
 			MakeMetaFile(entry.path());
@@ -73,20 +86,49 @@ void Resources::MakeMetaFile(wstring assetPath)
 	if (fs::exists(fs::path(metaPath)))
 		return;
 	wstring ext = fs::path(assetPath).extension();
-	string sFileName = sFileName.assign(assetPath.begin() + assetPath.find_last_of(L"/"), assetPath.end());
+	string sFileName;
+	sFileName.assign(assetPath.begin() + assetPath.find_last_of(L"\\") + 1, assetPath.end());
 	const char* fileName = sFileName.c_str();
 
-	xg::Guid guid = xg::newGuid();
-	string stringGuid = guid.str();
-	const char* charGuid = stringGuid.c_str();
+	GUID guid;
+	HRESULT result = CoCreateGuid(&guid);
 
-	tinyxml2::XMLDocument newMetaFile;
-	tinyxml2::XMLNode* firstNode = newMetaFile.NewElement("Meta");
-	newMetaFile.InsertFirstChild(firstNode);
-	
-	tinyxml2::XMLElement* guidElement = newMetaFile.NewElement("GUID");
-	guidElement->SetValue(charGuid);
+	if (result != S_OK)
+	{
+		return;
+	}
 
+	// wstring인 Guid를 string(char)로 변환
+	wchar_t wstringGuid[129];
+	StringFromGUID2(guid, wstringGuid, 128);
+	// Guid의 크기가 128바이트 인 걸 알고 있으니 아래 코드 필요 X
+	// int wstrSize = WideCharToMultiByte(CP_ACP, 0, wstringGuid, -1, NULL, 0, NULL, NULL);
+	// char* charGuid = new char[128];
+	char charGuid[129];
+	WideCharToMultiByte(CP_ACP, 0, wstringGuid, -1, charGuid, 129, 0, 0);
+
+
+	// TODO: 테스트
+	//
+	//
+	//
+
+	MetaFormat metaFile;
+	metaFile.guid = guid;
+
+	string filePath;
+	filePath.assign(assetPath.begin(), assetPath.begin() + assetPath.find_last_of(L"\\"));
+	std::ofstream binOs(filePath + ".meta", std::ios::binary);
+
+
+	//tinyxml2::XMLDocument newMetaFile;
+	//tinyxml2::XMLNode* firstNode = newMetaFile.NewElement("Meta");
+	//newMetaFile.InsertFirstChild(firstNode);
+	//
+	//tinyxml2::XMLElement* guidElement = newMetaFile.NewElement("GUID");
+	//guidElement->SetValue(charGuid);
+
+	//tinyxml2::XMLElement* importerElement = newMetaFile.NewElement("Importer");
 
 	/*std::ofstream write;
 	write.open(fileName);
@@ -97,26 +139,29 @@ void Resources::MakeMetaFile(wstring assetPath)
 
 	if (ext == L".mat")
 	{
-		
+		metaFile._ImporterType = ImporterType::DEFAULT;
 	}
 	else if (ext == L".fbx" || ext == L".mesh")
 	{
-
+		metaFile._ImporterType = ImporterType::DEFAULT;
 	}
 	else if (ext == L".hlsl" || ext == L".hlsli")
 	{
-		
+		metaFile._ImporterType = ImporterType::DEFAULT;
 	}
 	else if (ext == L".h")
 	{
-		
+		metaFile._ImporterType = ImporterType::MONO;
 	}
 	else if (ext != L".xml")
 	{
-		
+		metaFile._ImporterType = ImporterType::DEFAULT;
 	}
 
-	tinyxml2::XMLError error = newMetaFile.SaveFile(fileName);
+	write_typed_data(binOs, metaFile);
+	binOs.close();
+
+	/*tinyxml2::XMLError error = newMetaFile.SaveFile(fileName);*/
 }
 
 OBJECT_TYPE Resources::GetObjectTypeByExt(wstring& filePath)

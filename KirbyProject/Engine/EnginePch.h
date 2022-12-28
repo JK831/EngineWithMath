@@ -103,6 +103,16 @@ wstring IntToBinary(T num)
 	return bin;
 }
 
+// 바이너리 파일 save, load를 위한 함수
+template<typename T>
+std::ostream& write_typed_data(std::ostream& stream, const T& value) {
+	return stream.write(reinterpret_cast<const char*>(&value), sizeof(T));
+}
+template<typename T>
+std::istream& read_typed_data(std::istream& stream, T& value) {
+	return stream.read(reinterpret_cast<char*>(&value), sizeof(T));
+}
+
 #define DECLARE_SINGLE(type)	\
 private:						\
 	type() {}					\

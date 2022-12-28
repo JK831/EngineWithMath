@@ -59,6 +59,8 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 
     HACCEL hAccelTable = LoadAccelerators(hInstance, MAKEINTRESOURCE(IDC_SCENEEDITOR));
 
+    GET_SINGLE(Resources)->MakeMeta(L"..\\Resources\\");
+
     // Main message loop:
     while (GetMessage(&msg, nullptr, 0, 0))
     {

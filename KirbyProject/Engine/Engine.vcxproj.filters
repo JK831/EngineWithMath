@@ -167,5 +167,8 @@
     <ClCompile Include="..\Library\Include\guid.cpp">
       <Filter>Utils</Filter>
     </ClCompile>
+    <ClCompile Include="..\Library\Include\jsoncpp.cpp">
+      <Filter>Utils</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

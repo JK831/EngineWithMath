@@ -13,7 +13,8 @@ class Resources
 
 public:
 	void Init(wstring assetPath);
-	void CheckAssets(wstring assetPath);
+	void ParsingGuid(wstring assetPath);
+	void ParsingGuidFromMeta(wstring assetPath);
 	void MakeMeta(wstring assetPath);
 	void MakeMetaFile(wstring assetPath);
 	OBJECT_TYPE GetObjectTypeByExt(wstring& filePath);
@@ -32,6 +33,7 @@ public:
 
 	template<typename T>
 	OBJECT_TYPE GetObjectType();
+	const wstring& GetPathByGuid(string& guid);
 
 	shared_ptr<Mesh> LoadRectangleMesh();
 	shared_ptr<Mesh> LoadCircleMesh();
@@ -48,6 +50,8 @@ private:
 
 	using KeyObjMap = std::map<wstring/*key*/, shared_ptr<Object>>;
 	array<KeyObjMap, OBJECT_TYPE_COUNT> _resources;
+
+	std::map<string, wstring> _GuidPathMap;
 };
 
 // Possibility to generate exception
@@ -133,4 +137,9 @@ FORCEINLINE OBJECT_TYPE Resources::GetObjectType()
 		return OBJECT_TYPE::COMPONENT;
 	else
 		return OBJECT_TYPE::NONE;
+}
+
+const wstring& Resources::GetPathByGuid(string& guid)
+{
+	return _GuidPathMap[guid];
 }

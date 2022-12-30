@@ -12,6 +12,9 @@
 #include "TestCameraScript.h"
 #include "Resources.h"
 
+#include <fstream>
+
+#include "json/json.h"
 #include "tinyxml2.h"
 
 void SceneManager::Update()
@@ -50,13 +53,105 @@ void SceneManager::LoadScene(wstring InSceneName)
 		// 엔진 내에서 정의된 데이터가 아닌 데이터(texture, mesh 등)은 추후 GUID를 통해 실제 데이터를 불러오도록 한다.
 		shared_ptr<Scene> scene = make_shared<Scene>();
 
-		unordered_map<wstring, unordered_map<wstring, shared_ptr<Component>>> goComponentMap;
-		unordered_map<wstring, shared_ptr<GameObject>> componentGOMap;
+		unordered_map<string, vector<string>> goComponentMap;
+		unordered_map<string, shared_ptr<Component>> componentMap;
 		unordered_map<string, shared_ptr<Transform>> transformMap;
 
-		string sceneName;
-		sceneName.assign(InSceneName.begin(), InSceneName.end());
-		sceneName.append(".xml");
+		string scenePath = "..\\Resources\\Scenes\\";
+		scenePath.append(InSceneName.begin(), InSceneName.end());
+		scenePath.append(".scene");
+
+		std::ifstream sceneFile(scenePath);
+		Json::CharReaderBuilder builder;
+		builder["collectComments"] = false;
+
+		Json::Value sceneSetting;
+
+		JSONCPP_STRING errs;
+		bool ok = parseFromStream(builder, sceneFile, &sceneSetting, &errs);
+
+		assert(ok);
+
+		// scene 내 Object parsing
+
+		for (auto it = sceneSetting.begin(); it != sceneSetting.end(); it++)
+		{
+			Json::Value object = *it;
+			string fileId = object["FileID"].asString();
+			uint8 objectType = object["Object_Type"].asUInt();
+			
+			switch (static_cast<OBJECT_TYPE>(objectType))
+			{
+			case OBJECT_TYPE::GAMEOBJECT:
+			{
+				for (auto iit = object["m_Component"].begin(); iit != object["m_component"].end(); iit++)
+				{
+					string componentID = iit->asString();
+					wstring wComponentID(componentID.begin(), componentID.end());
+					goComponentMap[fileId].push_back(componentID);
+				}
+			}
+			case OBJECT_TYPE::MATERIAL:
+			{
+				// TODO
+			}
+			case OBJECT_TYPE::MESH:
+			{
+				// TODO
+			}
+			case OBJECT_TYPE::SHADER:
+			{
+				// TODO
+			}
+			case OBJECT_TYPE::COMPONENT:
+			{
+				// resource manager에서 id로 데이터 가져온 후
+				// Component type 별로 component 설정.
+
+				shared_ptr<Component> com;
+
+				uint8 componentType = object["Component_Type"].asUInt();
+
+				switch (static_cast<COMPONENT_TYPE>(componentType))
+				{
+				case COMPONENT_TYPE::TRANSFORM:
+				{
+					shared_ptr<Transform> transform = make_shared<Transform>();
+					Json::Value position = object["Position"];
+					float px = position[0].asFloat();
+					float py = position[1].asFloat();
+					float pz = position[2].asFloat();
+
+					Json::Value rotation = object["Rotation"];
+					float rx = rotation[0].asFloat();
+					float ry = rotation[1].asFloat();
+					float rz = rotation[2].asFloat();
+
+					transform->SetLocalPosition(Vector2(px, py));
+					transform->SetLocalRotation(rz);
+
+					com = transform;
+					break;
+				}
+				case COMPONENT_TYPE::MONO_BEHAVIOUR:
+				{
+					string guid = object["GUID"].asString();
+					wstring path = GET_SINGLE(Resources)->GetPathByGuid(guid);
+					wstring scriptName(path.begin() + path.find_last_of(L"\\"), path.end());
+					shared_ptr<MonoBehaviour> script = MonoBehaviour::GetScript(scriptName);
+					com = script;
+					break;
+				}
+				}
+				componentMap[fileId] = com;
+			}
+
+		string guid = sceneSetting["GUID"].asString();
+
+		
+		
+		Json::Value gameObjects = sceneSetting["GameObjects"];
+		Json::Value materials = sceneSetting["Materials"];
 
 		tinyxml2::XMLDocument sceneFile;
 		sceneFile.LoadFile(sceneName.c_str());
@@ -174,7 +269,7 @@ void SceneManager::LoadScene(wstring InSceneName)
 				else
 				{
 					string goID = nextObj->FirstChildElement("m_GameObject")->GetText();
-					wstring wGameObjectID = wGameObjectID.assign(goID.begin(), goID.end());
+					wstring wGameObjectID(goID.begin(), goID.end());
 					goComponentMap[wGameObjectID][wObjID] = com;
 				}
 			}
@@ -223,7 +318,7 @@ shared_ptr<Scene> SceneManager::LoadTestScene()
 			shared_ptr<Shader> shader = make_shared<Shader>();
 			shared_ptr<Texture> texture = make_shared<Texture>();
 			shader->Init(L"Default 2D Shader");
-			texture->Init(L"..\\Resources\\Texture\\Kirby.png");
+			texture->Init(L"..\\Resources\\Texture\\Kirby.png"); // guid를 통해 얻은 path로 
 			shared_ptr<Material> material = make_shared<Material>();
 			material->SetShader(shader);
 			material->SetTexture(0, texture);

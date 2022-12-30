@@ -2,6 +2,7 @@
 #include "Resources.h"
 #include "tinyxml2.h"
 #include "guid.hpp"
+#include "json/json.h"
 #include <combaseapi.h>
 #include <fstream>
 
@@ -32,8 +33,16 @@ void Resources::Init(wstring assetPath)
 	}
 }
 
-void Resources::CheckAssets(wstring assetPath)
+void Resources::ParsingGuid(wstring assetPath)
 {
+	fs::recursive_directory_iterator itr(assetPath);
+	while (itr != fs::end(itr))
+	{
+		const fs::directory_entry& entry = *itr;
+		if (entry.path().extension() == ".meta")
+			ParsingGuidFromMeta(entry.path());
+	}
+
 	{
 		std::map<std::wstring, std::wstring>::iterator itr = _IDPathMap.begin();
 
@@ -62,6 +71,29 @@ void Resources::CheckAssets(wstring assetPath)
 	}
 }
 
+void Resources::ParsingGuidFromMeta(wstring metaPath)
+{
+	std::ifstream ifs(metaPath);
+	Json::CharReaderBuilder builder;
+	builder["collectComments"] = false;
+	Json::Value value;
+
+	JSONCPP_STRING errs;
+
+	bool ok = parseFromStream(builder, ifs, &value, &errs);
+	
+	if (ok)
+	{
+		string guid = value.get("GUID", "Er").asString();
+
+		assert(guid == "Er");
+
+		wstring objectPath(metaPath.begin(), metaPath.begin() + metaPath.find_last_of(L".") - 1);
+
+		_GuidPathMap[guid] = objectPath;
+	}
+}
+
 void Resources::MakeMeta(wstring assetPath)
 {
 	fs::recursive_directory_iterator itr(assetPath);
@@ -86,8 +118,7 @@ void Resources::MakeMetaFile(wstring assetPath)
 	if (fs::exists(fs::path(metaPath)))
 		return;
 	wstring ext = fs::path(assetPath).extension();
-	string sFileName;
-	sFileName.assign(assetPath.begin() + assetPath.find_last_of(L"\\") + 1, assetPath.end());
+	string sFileName(assetPath.begin() + assetPath.find_last_of(L"\\") + 1, assetPath.end());
 	const char* fileName = sFileName.c_str();
 
 	GUID guid;
@@ -99,26 +130,39 @@ void Resources::MakeMetaFile(wstring assetPath)
 	}
 
 	// wstring인 Guid를 string(char)로 변환
-	wchar_t wstringGuid[129];
-	StringFromGUID2(guid, wstringGuid, 128);
+	wchar_t wCharGuid[129];
+	StringFromGUID2(guid, wCharGuid, 128); // guid는 중괄호로 감싸여있다.
 	// Guid의 크기가 128바이트 인 걸 알고 있으니 아래 코드 필요 X
 	// int wstrSize = WideCharToMultiByte(CP_ACP, 0, wstringGuid, -1, NULL, 0, NULL, NULL);
 	// char* charGuid = new char[128];
 	char charGuid[129];
-	WideCharToMultiByte(CP_ACP, 0, wstringGuid, -1, charGuid, 129, 0, 0);
+	WideCharToMultiByte(CP_ACP, 0, wCharGuid, -1, charGuid, 129, 0, 0);
 
+	string stringGuid = charGuid;
+	stringGuid.assign(stringGuid.begin() + 1, stringGuid.end() - 1); // 중괄호 제거
+
+	std::ofstream newMeta;
+	newMeta.open(metaPath);
+
+	Json::Value root;
+	root["GUID"] = stringGuid;
+
+	Json::Value importer;
 
 	// TODO: 테스트
 	//
 	//
 	//
 
-	MetaFormat metaFile;
+	
+
+	// binary 파일  저장 코드
+	/*MetaFormat metaFile;
 	metaFile.guid = guid;
 
 	string filePath;
 	filePath.assign(assetPath.begin(), assetPath.begin() + assetPath.find_last_of(L"\\"));
-	std::ofstream binOs(filePath + ".meta", std::ios::binary);
+	std::ofstream binOs(filePath + ".meta", std::ios::binary);*/
 
 
 	//tinyxml2::XMLDocument newMetaFile;
@@ -139,27 +183,39 @@ void Resources::MakeMetaFile(wstring assetPath)
 
 	if (ext == L".mat")
 	{
-		metaFile._ImporterType = ImporterType::DEFAULT;
+		//metaFile._ImporterType = ImporterType::DEFAULT;
+		importer["Type"] = static_cast<uint8>(ImporterType::DEFAULT);
 	}
 	else if (ext == L".fbx" || ext == L".mesh")
 	{
-		metaFile._ImporterType = ImporterType::DEFAULT;
+		//metaFile._ImporterType = ImporterType::DEFAULT;
+		importer["Type"] = static_cast<uint8>(ImporterType::DEFAULT);
 	}
 	else if (ext == L".hlsl" || ext == L".hlsli")
 	{
-		metaFile._ImporterType = ImporterType::DEFAULT;
+		//metaFile._ImporterType = ImporterType::DEFAULT;
+		importer["Type"] = static_cast<uint8>(ImporterType::DEFAULT);
 	}
 	else if (ext == L".h")
 	{
-		metaFile._ImporterType = ImporterType::MONO;
+		//metaFile._ImporterType = ImporterType::MONO;
+		importer["Type"] = static_cast<uint8>(ImporterType::MONO);
 	}
-	else if (ext != L".xml")
+	else
 	{
-		metaFile._ImporterType = ImporterType::DEFAULT;
+		//metaFile._ImporterType = ImporterType::DEFAULT;
+		importer["Type"] = static_cast<uint8>(ImporterType::DEFAULT);
 	}
 
-	write_typed_data(binOs, metaFile);
-	binOs.close();
+	root["Importer"] = importer;
+
+	Json::StreamWriterBuilder builder;
+	builder["commentStyle"] = "None";
+	builder["indentation"] = "\t";
+	unique_ptr<Json::StreamWriter> writer(builder.newStreamWriter());
+
+	writer->write(root, &newMeta);
+	newMeta.close();
 
 	/*tinyxml2::XMLError error = newMetaFile.SaveFile(fileName);*/
 }

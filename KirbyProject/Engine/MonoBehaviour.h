@@ -11,12 +11,12 @@ public:
 
 private:
 	//virtual void RegisterToDataManager();
-
 public:
-	template<typename T>
-	shared_ptr<MonoBehaviour> CreateInstance() { return make_shared(T); }
+	virtual shared_ptr<MonoBehaviour> CreateInstance() = 0;
+	
+	static shared_ptr<MonoBehaviour> GetScript(wstring& scriptName);
 
 private:
-	string guid;
-	
+
+	static std::unordered_map<wstring, shared_ptr<MonoBehaviour>> _MonoTypeMap;
 };

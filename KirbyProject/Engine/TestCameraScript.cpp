@@ -9,6 +9,7 @@
 TestCameraScript::TestCameraScript()
 {
 
+
 }
 
 TestCameraScript::~TestCameraScript()

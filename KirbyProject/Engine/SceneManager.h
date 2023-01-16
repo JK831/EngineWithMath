@@ -9,7 +9,7 @@ class Scene; // 전방선언
 	public:
 		void Update();
 		void Render();
-		void LoadScene(wstring InSceneName);
+		void LoadScene(wstring scenePath);
 
 	public:
 		shared_ptr<Scene> GetActiveScene() { return _activeScene; }

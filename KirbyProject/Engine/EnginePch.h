@@ -131,12 +131,12 @@ public:							\
 #define INPUT		GET_SINGLE(Input)
 #define DELTA_TIME	GET_SINGLE(Timer)->GetDeltaTime()
 
-#define REFLECT(type)											\
-private:														\
-static type _type												\
-type::type()													\
-{																\
-	MonoBehaviour::RegisterScript(L""#type"", make_shared(this));	\
-}																\
+#define REFLECT(type)													\
+public:																	\
+	static type _type													\
+	type::type()														\
+	{																	\
+		MonoBehaviour::RegisterScript(L#type, make_shared(this));	\
+	}																	\
 
 extern unique_ptr<class Engine> GEngine;

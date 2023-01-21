@@ -3,12 +3,13 @@
 
 class TestCameraScript : public MonoBehaviour
 {
+	REFLECT(TestCameraScript);
 public:
-	TestCameraScript();
 	virtual ~TestCameraScript();
 
 	virtual void LateUpdate() override;
 
+	virtual shared_ptr<MonoBehaviour> CreateInstance() override;
 private:
 	float	_speed = 100.f;
 };

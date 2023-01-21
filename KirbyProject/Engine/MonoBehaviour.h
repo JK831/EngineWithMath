@@ -14,7 +14,7 @@ private:
 public:
 	virtual shared_ptr<MonoBehaviour> CreateInstance() = 0;
 	
-	static void RegisterScript(wstring scriptType, shared_ptr<MonoBehaviour> script) { }
+	static void RegisterScript(wstring scriptType, shared_ptr<MonoBehaviour> script) { _MonoTypeMap.insert(make_pair(scriptType, script)); }
 	static shared_ptr<MonoBehaviour> GetScript(wstring& scriptName);
 
 private:

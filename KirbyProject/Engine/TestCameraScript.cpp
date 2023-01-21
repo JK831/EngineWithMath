@@ -6,15 +6,15 @@
 #include "Input.h"
 #include "Timer.h"
 
-TestCameraScript::TestCameraScript()
-{
-
-
-}
 
 TestCameraScript::~TestCameraScript()
 {
 
+}
+
+shared_ptr<MonoBehaviour> TestCameraScript::CreateInstance()
+{
+	return make_shared<TestCameraScript>(this);
 }
 
 void TestCameraScript::LateUpdate()

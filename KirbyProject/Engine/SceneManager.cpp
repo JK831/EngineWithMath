@@ -44,6 +44,17 @@ void SceneManager::Render()
 
 void SceneManager::LoadScene(wstring scenePath)
 {
+#pragma region For Simple Test
+	if (scenePath == L"Test")
+	{
+		_activeScene = LoadTestScene();
+
+		_activeScene->Awake();
+		_activeScene->Start();
+
+		return;
+	}
+#pragma endregion
 	
 #pragma region SceneLoading
 	// 모두 씬 파일 내 FileID를 통해 각자를 식별
@@ -52,7 +63,10 @@ void SceneManager::LoadScene(wstring scenePath)
 
 	unordered_map<string, vector<string>> goComponentMap;
 	unordered_map<string, shared_ptr<Component>> componentMap;
-	unordered_map<string, shared_ptr<Transform>> transformMap;
+
+	unordered_map<string, pair<string, string>> mRContentMap;
+	unordered_map<string, shared_ptr<Mesh>> meshMap;
+	unordered_map<string, shared_ptr<Material>> matMap;
 
 	
 
@@ -71,6 +85,7 @@ void SceneManager::LoadScene(wstring scenePath)
 
 	uint32 objectCount = sceneSetting.size();
 	vector<string> goId(objectCount);
+	vector<string> mRId(objectCount / 2);
 
 	for (auto it = sceneSetting.begin(); it != sceneSetting.end(); it++)
 	{
@@ -94,14 +109,25 @@ void SceneManager::LoadScene(wstring scenePath)
 		case OBJECT_TYPE::MATERIAL:
 		{
 			// TODO
+			shared_ptr<Shader> shader = make_shared<Shader>();
+			shared_ptr<Texture> texture = make_shared<Texture>();
+			shader->Init(L"Default 2D Shader");
+			texture->Init(L"..\\Resources\\Texture\\Kirby.png"); // guid를 통해 얻은 path로 
+			shared_ptr<Material> material = make_shared<Material>();
+			material->SetShader(shader);
+			material->SetTexture(0, texture);
+
+			matMap[fileId] = material;
+
+			break;
 		}
 		case OBJECT_TYPE::MESH:
 		{
 			// TODO
-		}
-		case OBJECT_TYPE::SHADER:
-		{
-			// TODO
+			shared_ptr<Mesh> mesh = make_shared<Mesh>();
+			mesh = GET_SINGLE(Resources)->LoadRectangleMesh(); // 추후 메쉬 파일 직접 읽어오도록 수정 필요
+			meshMap[fileId] = mesh;
+			break;
 		}
 		case OBJECT_TYPE::COMPONENT:
 		{
@@ -133,6 +159,16 @@ void SceneManager::LoadScene(wstring scenePath)
 				com = transform;
 				break;
 			}
+			case COMPONENT_TYPE::MESH_RENDERER:
+			{
+				shared_ptr<MeshRenderer> meshRenderer = make_shared<MeshRenderer>();
+				com = meshRenderer;
+				mRId.push_back(fileId);
+				mRContentMap[fileId].first = object["m_Mesh"].asString();
+				mRContentMap[fileId].second = object["m_Materials"].asString();
+				break;
+			}
+
 			case COMPONENT_TYPE::MONO_BEHAVIOUR:
 			{
 				string guid = object["GUID"].asString();
@@ -144,6 +180,7 @@ void SceneManager::LoadScene(wstring scenePath)
 			}
 			}
 			componentMap[fileId] = com;
+			break;
 		}
 
 		}
@@ -288,6 +325,13 @@ void SceneManager::LoadScene(wstring scenePath)
 			go->AddComponent(componentMap[compo]);
 
 		scene->AddGameObject(go);
+	}
+
+	for (string fileId : mRId)
+	{
+		auto meshRenderer = static_pointer_cast<MeshRenderer>(componentMap[fileId]);
+		meshRenderer->SetMesh(meshMap[mRContentMap[fileId].first]);
+		meshRenderer->SetMaterial(matMap[mRContentMap[fileId].second]);
 	}
 
 	_activeScene = scene;

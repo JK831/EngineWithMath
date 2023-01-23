@@ -133,10 +133,10 @@ public:							\
 
 #define REFLECT(type)													\
 public:																	\
-	static type _type													\
-	type::type()														\
+	type()																\
 	{																	\
-		MonoBehaviour::RegisterScript(L#type, make_shared(this));	\
+		MonoBehaviour::RegisterScript(L#type, type::_staticObject);	\
 	}																	\
+	static type _staticObject;													\
 
 extern unique_ptr<class Engine> GEngine;

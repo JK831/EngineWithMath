@@ -12,12 +12,12 @@ public:
 private:
 	//virtual void RegisterToDataManager();
 public:
-	virtual shared_ptr<MonoBehaviour> CreateInstance() = 0;
+	virtual shared_ptr<MonoBehaviour> CreateInstance() { return make_shared<MonoBehaviour>(MonoBehaviour::_staticObject); };
 	
-	static void RegisterScript(wstring scriptType, shared_ptr<MonoBehaviour> script) { _MonoTypeMap.insert(make_pair(scriptType, script)); }
+	static void RegisterScript(wstring scriptType, MonoBehaviour script) { _MonoTypeMap.insert(make_pair(scriptType, script)); }
 	static shared_ptr<MonoBehaviour> GetScript(wstring& scriptName);
-
+	static MonoBehaviour _staticObject;
 private:
 
-	static std::unordered_map<wstring, shared_ptr<MonoBehaviour>> _MonoTypeMap;
+	static std::unordered_map<wstring, MonoBehaviour> _MonoTypeMap;
 };

@@ -1,0 +1,84 @@
+[
+    {
+        "FileID": "00000000",
+        "Object_Type": 1,
+        "m_Component": [
+            "00000001",
+            "00000002",
+            "00000003"
+        ]
+    },
+
+    {
+        "FileID": "00000001",
+        "Object_Type": 5,
+        "m_GameObject": "00000000",
+        "Component_Type":0,
+        "Position":[
+            0,
+            0,
+            0
+        ],
+        "Rotation":[
+            0,
+            0,
+            0
+        ]
+    },
+
+    {
+        "FileID":"00000002",
+        "Object_Type":5,
+        "m_GameObject":"00000000",
+        "Component_Type":2
+    },
+
+    {
+        "FileID":"00000003",
+        "Object_Type":5,
+        "m_GameObject":"00000000",
+        "Component_Type":3,
+        "GUID":""
+    },
+
+    {
+        "FileID":"00000004",
+        "Object_Type":1,
+        "m_Component":[
+            "00000005",
+            "00000006",
+        ]
+    },
+
+    {
+        "FileID":"00000005",
+        "Object_Type":5,
+        "m_GameObject":"00000004",
+        "m_Mesh":"00000006",
+        "m_Materials":"00000007"
+    },
+
+    {
+        "FileID":"00000006",
+        "Object_Type":3,
+        "GUID":""
+    },
+
+    {
+        "FileID":"00000007",
+        "Object_Type":2,
+        "GUID":""
+    },
+
+    {
+        "FileID":"00000008",
+        "Object_Type":4,
+        "GUID":""
+    },
+
+    {
+        "FileID":"00000009",
+        "Object_Type":7,
+        "GUID":""
+    }
+]

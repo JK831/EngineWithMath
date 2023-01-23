@@ -6,6 +6,7 @@
 #include "Input.h"
 #include "Timer.h"
 
+TestCameraScript TestCameraScript::_staticObject;
 
 TestCameraScript::~TestCameraScript()
 {
@@ -14,7 +15,7 @@ TestCameraScript::~TestCameraScript()
 
 shared_ptr<MonoBehaviour> TestCameraScript::CreateInstance()
 {
-	return make_shared<TestCameraScript>(this);
+	return make_shared<TestCameraScript>(TestCameraScript::_staticObject);
 }
 
 void TestCameraScript::LateUpdate()

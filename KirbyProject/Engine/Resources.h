@@ -139,7 +139,8 @@ FORCEINLINE OBJECT_TYPE Resources::GetObjectType()
 		return OBJECT_TYPE::NONE;
 }
 
-const wstring& Resources::GetPathByGuid(string& guid)
+// A error can occur when a header file defines a function that isn't inline.
+FORCEINLINE const wstring& Resources::GetPathByGuid(string& guid)
 {
 	return _GuidPathMap[guid];
 }

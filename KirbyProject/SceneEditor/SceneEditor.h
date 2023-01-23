@@ -55,10 +55,10 @@ void SceneEditor::ParseSceneFile(wstring& InScenePath)
 	//	{
 	//	case OBJECT_TYPE::GAMEOBJECT:
 	//	{
-	//		/*if (goComponentMap.find(wObjID) == goComponentMap.end())
+	//		/*if (obConcernedMap.find(wObjID) == obConcernedMap.end())
 	//		{
 	//			vector<wstring> componentVector;
-	//			goComponentMap[wObjID] = componentVector;
+	//			obConcernedMap[wObjID] = componentVector;
 	//		}*/
 
 

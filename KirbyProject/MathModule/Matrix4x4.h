@@ -13,18 +13,52 @@
 		FORCEINLINE Vector4& operator[](BYTE InIndex);
 		FORCEINLINE constexpr Matrix4x4 operator*(float InScalar) const;
 		FORCEINLINE constexpr Matrix4x4 operator*(const Matrix4x4& InMatrix) const;
-		FORCEINLINE constexpr Vector4 operator*(const Vector4& InVector) const;
-		FORCEINLINE friend Vector4 operator*=(Vector4& InVector, const Matrix4x4& InMatrix)
+		// FORCEINLINE constexpr Vector4 operator*(const Vector4& InVector) const;
+		FORCEINLINE friend Vector2 operator*(Vector2& InVector2, const Matrix4x4& InMatrix)
 		{
-			InVector = InMatrix * InVector;
+			return InVector2 * InMatrix.ToMatrix3x3();
+		}
+
+		FORCEINLINE friend Vector3 operator*(Vector3& InVector3, const Matrix4x4& InMatrix)
+		{
+			Matrix3x3 transposedMatrix = InMatrix.ToMatrix3x3().Transpose();
+			return Vector3(
+				transposedMatrix[0].Dot(InVector3),
+				transposedMatrix[1].Dot(InVector3),
+				transposedMatrix[2].Dot(InVector3)
+			);
+		}
+
+		FORCEINLINE friend Vector4 operator*(Vector4& InVector4, const Matrix4x4& InMatrix)
+		{
+			Matrix4x4 transposedMatrix = InMatrix.Transpose();
+			return Vector4(
+				transposedMatrix[0].Dot(InVector4),
+				transposedMatrix[1].Dot(InVector4),
+				transposedMatrix[2].Dot(InVector4),
+				transposedMatrix[3].Dot(InVector4)
+			);
+		}
+
+		// 벡터와의 연산을 위한 operator overloading
+		FORCEINLINE friend Vector2& operator*=(Vector2& InVector, const Matrix4x4& InMatrix)
+		{
+			InVector = InVector * InMatrix.ToMatrix3x3();
+			return InVector;
+		}
+
+		FORCEINLINE friend Vector3& operator*=(Vector3& InVector, const Matrix4x4& InMatrix)
+		{
+			InVector = InVector * InMatrix.ToMatrix3x3();
+			return InVector;
+		}
+		FORCEINLINE friend Vector4& operator*=(Vector4& InVector, const Matrix4x4& InMatrix)
+		{
+			InVector = InVector * InMatrix;
 			return InVector;
 		}
 		FORCEINLINE constexpr Vector3 operator*(const Vector3& InVector) const;
-		FORCEINLINE friend Vector3 operator*=(Vector3& InVector, const Matrix4x4& InMatrix)
-		{
-			InVector = InMatrix * InVector;
-			return InVector;
-		}
+
 
 		// 멤버함수 
 		FORCEINLINE Matrix3x3 ToMatrix3x3() const;
@@ -80,16 +114,16 @@
 
 	FORCEINLINE constexpr Matrix4x4 Matrix4x4::operator*(const Matrix4x4& InMatrix) const
 	{
-		Matrix4x4 transposedMatrix = Transpose();
+		Matrix4x4 transposedMatrix = InMatrix.Transpose();
 		return Matrix4x4(
-			Vector4(transposedMatrix[0].Dot(InMatrix[0]), transposedMatrix[1].Dot(InMatrix[0]), transposedMatrix[2].Dot(InMatrix[0]), transposedMatrix[3].Dot(InMatrix[0])),
-			Vector4(transposedMatrix[0].Dot(InMatrix[1]), transposedMatrix[1].Dot(InMatrix[1]), transposedMatrix[2].Dot(InMatrix[1]), transposedMatrix[3].Dot(InMatrix[1])),
-			Vector4(transposedMatrix[0].Dot(InMatrix[2]), transposedMatrix[1].Dot(InMatrix[2]), transposedMatrix[2].Dot(InMatrix[2]), transposedMatrix[3].Dot(InMatrix[2])),
-			Vector4(transposedMatrix[0].Dot(InMatrix[3]), transposedMatrix[1].Dot(InMatrix[3]), transposedMatrix[2].Dot(InMatrix[3]), transposedMatrix[3].Dot(InMatrix[3]))
+			Vector4(Raws[0].Dot(transposedMatrix[0]), Raws[0].Dot(transposedMatrix[1]), Raws[0].Dot(transposedMatrix[2]), Raws[0].Dot(transposedMatrix[3])),
+			Vector4(Raws[1].Dot(transposedMatrix[0]), Raws[1].Dot(transposedMatrix[1]), Raws[1].Dot(transposedMatrix[2]), Raws[1].Dot(transposedMatrix[3])),
+			Vector4(Raws[2].Dot(transposedMatrix[0]), Raws[2].Dot(transposedMatrix[1]), Raws[2].Dot(transposedMatrix[2]), Raws[2].Dot(transposedMatrix[3])),
+			Vector4(Raws[3].Dot(transposedMatrix[0]), Raws[2].Dot(transposedMatrix[1]), Raws[3].Dot(transposedMatrix[2]), Raws[3].Dot(transposedMatrix[3]))
 		);
 	}
 
-	FORCEINLINE constexpr Vector4 Matrix4x4::operator*(const Vector4& InVector) const
+	/*FORCEINLINE constexpr Vector4 Matrix4x4::operator*(const Vector4& InVector) const
 	{
 		Matrix4x4 transposedMatrix = Transpose();
 		return Vector4(
@@ -103,10 +137,10 @@
 	FORCEINLINE constexpr Vector3 Matrix4x4::operator*(const Vector3& InVector) const
 	{
 		Vector4 v4(InVector);
-		Vector4 result = *this * v4;
+		v4 *= *this;
 
-		return Vector3(result.X, result.Y, result.Z);
-	}
+		return Vector3(v4.X, v4.Y, v4.Z);
+	}*/
 
 	FORCEINLINE Matrix3x3 Matrix4x4::ToMatrix3x3() const
 	{

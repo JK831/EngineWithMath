@@ -1,2 +1,2 @@
-# KirbyWithWinAPI
- Kirby imitation project made using C++, Windows ApI
+# Game Engine
+### '이득우의 게임 수학', rookiss님의 인프런 강좌를 수강한 후 배운 내용들을 조합하여 만든 게임 엔진입니다.

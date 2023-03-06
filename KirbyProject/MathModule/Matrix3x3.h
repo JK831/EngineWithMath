@@ -48,7 +48,7 @@
 		FORCEINLINE Matrix2x2 ToMatrix2x2() const;
 		FORCEINLINE void SetIdentity();
 		FORCEINLINE Matrix3x3 Transpose() const;
-		FORCEINLINE Matrix3x3 Invert() //const
+		FORCEINLINE Matrix3x3 Invert() const
 		{
 			/*-------------------------------------------------------------------
 				가우스-요르단 소거법을 사용하여 행렬의 역행렬을 구한다.

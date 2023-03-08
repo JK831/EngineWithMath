@@ -23,7 +23,7 @@ void Shader::Update()
 
 }
 
-std::vector<Vertex> Shader::VertexShading(const std::vector<Vertex>& InVertexBuffer, const Matrix3x3& InMatrix)
+std::vector<Vertex> Shader::VertexShading(const std::vector<Vertex>& InVertexBuffer, const Matrix4x4& InMatrix)
 {
 	return _vertexFunction(InVertexBuffer, InMatrix);
 }
@@ -40,10 +40,10 @@ void Shader::CreateShader(const wstring& path, const string& name, const string&
 
 void Shader::CreateVertexShader(const wstring& path, const string& name, const string& version)
 {
-	_vertexFunction = VertexShader2D;
+	_vertexFunction = VertexShader3D;
 }
 
 void Shader::CreatePixelShader(const wstring& path, const string& name, const string& version)
 {
-	_pixelFunction = FragmentShader2D;
+	_pixelFunction = FragmentShader3D;
 }

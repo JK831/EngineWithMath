@@ -57,7 +57,7 @@
 			InVector = InVector * InMatrix;
 			return InVector;
 		}
-		FORCEINLINE constexpr Vector3 operator*(const Vector3& InVector) const;
+		//FORCEINLINE constexpr Vector3 operator*(const Vector3& InVector) const;
 
 
 		// ¸â¹öÇÔ¼ö 

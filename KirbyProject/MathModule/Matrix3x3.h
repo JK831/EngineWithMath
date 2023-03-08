@@ -224,14 +224,6 @@
 		return *this;
 	}
 
-	FORCEINLINE Vector3 Matrix3x3::operator*(const Vector3& InVector) const
-	{
-		return Vector3(
-			Raws[0].Dot(InVector),
-			Raws[1].Dot(InVector),
-			Raws[2].Dot(InVector)
-		);
-	}
 
 
 	FORCEINLINE Matrix2x2 Matrix3x3::ToMatrix2x2() const

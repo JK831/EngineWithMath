@@ -26,11 +26,11 @@ private:
 	float _fov = Math::PI / 4.f;
 	float _scale = 1.f;
 
-	Matrix3x3 _matView = {};
-	Matrix3x3 _matProjection = {};
+	Matrix4x4 _matView = {};
+	Matrix4x4 _matProjection = {};
 
 public:
 	// TEMP
-	static Matrix3x3 S_MatView;
-	static Matrix3x3 S_MatProjection;
+	static Matrix4x4 S_MatView;
+	static Matrix4x4 S_MatProjection;
 };

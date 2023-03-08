@@ -57,20 +57,7 @@ enum class MESH_TYPE : uint32
 	SKINNED,
 };
 
-struct Vertex
-{
-	Vertex() {}
 
-	Vertex(Vector2 p, Vector2 u, Vector2 n, Vector2 t)
-		: pos(p), uv(u), normal(n), tangent(t)
-	{
-	}
-
-	Vector2 pos;
-	Vector2 uv;
-	Vector2 normal;
-	Vector2 tangent;
-};
 
 enum class TextureFilterMode : UINT32
 {

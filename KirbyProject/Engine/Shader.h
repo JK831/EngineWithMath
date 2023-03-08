@@ -9,7 +9,7 @@ public:
 
 	void Init(const wstring& path);
 	void Update();
-	std::vector<Vertex> VertexShading(const ::std::vector<Vertex>& InVertexBuffer, const Matrix3x3& InMatrix);
+	std::vector<Vertex> VertexShading(const ::std::vector<Vertex>& InVertexBuffer, const Matrix4x4& InMatrix);
 	LinearColor PixelShading(LinearColor UVColor);
 
 private:
@@ -19,28 +19,26 @@ private:
 
 private:
 	LinearColor _ownColor = LinearColor::White;
-	std::vector<Vertex>(*_vertexFunction) (const std::vector<Vertex>& InVertexBuffer, const Matrix3x3& InMatrix);
+	std::vector<Vertex>(*_vertexFunction) (const std::vector<Vertex>& InVertexBuffer, const Matrix4x4& InMatrix);
 	LinearColor(*_pixelFunction) (LinearColor& UVColor, const LinearColor& InColorParam);
 };
 
 
 // 정점 변환 코드
-FORCEINLINE std::vector<Vertex> VertexShader2D(const std::vector<Vertex>& InVertices, const Matrix3x3& InMatrix)
+FORCEINLINE std::vector<Vertex> VertexShader3D(const std::vector<Vertex>& InVertices, const Matrix4x4& InMatrix)
 {
-	std::vector<Vertex> newVertices;
-	newVertices = InVertices;
-
+	std::vector<Vertex> newVertices = InVertices;
 	// 위치 값에 최종 행렬을 적용해 변환
 	for (Vertex& v : newVertices)
 	{
-		Vector3 newVector(v.pos);
-		v.pos = (newVector * InMatrix).ToVector2();
+		v.pos = v.pos * InMatrix;
 	}
+
 	return newVertices;
 }
 
 // 픽셀 변환 코드
-FORCEINLINE LinearColor FragmentShader2D(LinearColor& InColor, const LinearColor& InColorParam)
+FORCEINLINE LinearColor FragmentShader3D(LinearColor& InColor, const LinearColor& InColorParam)
 {
 	return InColor * InColorParam;
 }

@@ -13,20 +13,20 @@ public:
 
 public:
 	// Parent 기준
-	const Vector2& GetLocalPosition() { return _localPosition; }
+	const Vector3& GetLocalPosition() { return _localPosition; }
 	float GetLocalRotation() { return _localRotation; }
-	const Vector2& GetLocalScale() { return _localScale; }
+	const Vector3& GetLocalScale() { return _localScale; }
 
 	const Matrix3x3& GetLocalToWorldMatrix() { return _matWorld; }
-	const Vector2& GetWorldPosition() { return _matWorld.Translation(); }
+	const Vector3& GetWorldPosition() { return _matWorld.Translation(); }
 
-	Vector2 GetRight() { return _matWorld.Right(); }
-	Vector2 GetUp() { return _matWorld.Up(); }
-	Vector2 GetLook() { return -Vector3::UnitZ.ToVector2(); } // = 0 vector
+	Vector3 GetRight() { return _matWorld.Right(); }
+	Vector3 GetUp() { return _matWorld.Up(); }
+	Vector3 GetLook() { return -Vector3::UnitZ.ToVector2(); } // = 0 vector
 
-	void SetLocalPosition(const Vector2& position) { _localPosition = position; }
+	void SetLocalPosition(const Vector3& position) { _localPosition = position; }
 	void SetLocalRotation(float rotation) { _localRotation = rotation; }
-	void SetLocalScale(const Vector2& scale) { _localScale = scale; }
+	void SetLocalScale(const Vector3& scale) { _localScale = scale; }
 
 public:
 	void SetParent(shared_ptr<Transform> parent) { _parent = parent; }
@@ -34,9 +34,9 @@ public:
 
 private:
 	// Parent 기준
-	Vector2 _localPosition = Vector2(0.f, 0.f);
+	Vector3 _localPosition = Vector3(0.f, 0.f, 0.f);
 	float _localRotation = 0;
-	Vector2 _localScale = Vector2(1.f, 1.f);
+	Vector3 _localScale = Vector3(1.f, 1.f, 1.f);
 
 	Matrix3x3 _matLocal = {};
 	Matrix3x3 _matWorld = {};

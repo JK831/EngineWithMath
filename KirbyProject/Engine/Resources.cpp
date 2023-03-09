@@ -302,21 +302,22 @@ void Resources::ParseAssetFiles(fs::path InPath)
 	}
 }
 
-shared_ptr<Mesh> Resources::LoadRectangleMesh()
+shared_ptr<Mesh> Resources::LoadCubeMesh()
 {
-	shared_ptr findMesh = Get<Mesh>(L"Rectangle");
+	shared_ptr findMesh = Get<Mesh>(L"Cube");
 	if (findMesh)
 		return findMesh;
 
 	float halfWidth = 0.5f;
 	float halfHeight = 0.5f;
+	float halfDepth = 0.5f;
 
 	vector<Vertex> vertices(4);
 
-	vertices[0] = Vertex(Vector2(-halfWidth, halfHeight), Vector2(0.f, 0.f), Vector2(0.f, 0.f), Vector2(0.f, 0.f));
-	vertices[1] = Vertex(Vector2(halfWidth, halfHeight), Vector2(1.f, 0.f), Vector2(0.f, 0.f), Vector2(0.f, 0.f));
-	vertices[2] = Vertex(Vector2(halfWidth, -halfHeight), Vector2(1.f, 1.f), Vector2(0.f, 0.f), Vector2(0.f, 0.f));
-	vertices[3] = Vertex(Vector2(-halfWidth, -halfHeight), Vector2(0.f, 1.f), Vector2(0.f, 0.f), Vector2(0.f, 0.f));
+	vertices[0] = Vertex(Vector3(-halfWidth, halfHeight, -halfDepth), Vector2(0.f, 0.f), Vector3(0.f, 0.f), Vector3(0.f, 0.f));
+	vertices[1] = Vertex(Vector3(halfWidth, halfHeight), Vector2(1.f, 0.f), Vector3(0.f, 0.f), Vector3(0.f, 0.f));
+	vertices[2] = Vertex(Vector3(halfWidth, -halfHeight), Vector2(1.f, 1.f), Vector3(0.f, 0.f), Vector3(0.f, 0.f));
+	vertices[3] = Vertex(Vector3(-halfWidth, -halfHeight), Vector2(0.f, 1.f), Vector3(0.f, 0.f), Vector3(0.f, 0.f));
 
 
 	vector<uint32> idx(6);

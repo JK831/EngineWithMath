@@ -17,12 +17,12 @@ public:
 	float GetLocalRotation() { return _localRotation; }
 	const Vector3& GetLocalScale() { return _localScale; }
 
-	const Matrix3x3& GetLocalToWorldMatrix() { return _matWorld; }
+	const Matrix4x4& GetLocalToWorldMatrix() { return _matWorld; }
 	const Vector3& GetWorldPosition() { return _matWorld.Translation(); }
 
 	Vector3 GetRight() { return _matWorld.Right(); }
 	Vector3 GetUp() { return _matWorld.Up(); }
-	Vector3 GetLook() { return -Vector3::UnitZ.ToVector2(); } // = 0 vector
+	Vector3 GetLook() { return _matWorld.Backward(); } // = 0 vector
 
 	void SetLocalPosition(const Vector3& position) { _localPosition = position; }
 	void SetLocalRotation(float rotation) { _localRotation = rotation; }
@@ -38,8 +38,8 @@ private:
 	float _localRotation = 0;
 	Vector3 _localScale = Vector3(1.f, 1.f, 1.f);
 
-	Matrix3x3 _matLocal = {};
-	Matrix3x3 _matWorld = {};
+	Matrix4x4 _matLocal = {};
+	Matrix4x4 _matWorld = {};
 
 	weak_ptr<Transform> _parent;
 };

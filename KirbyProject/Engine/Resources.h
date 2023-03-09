@@ -35,7 +35,7 @@ public:
 	OBJECT_TYPE GetObjectType();
 	const wstring& GetPathByGuid(string& guid);
 
-	shared_ptr<Mesh> LoadRectangleMesh();
+	shared_ptr<Mesh> LoadCubeMesh();
 	shared_ptr<Mesh> LoadCircleMesh();
 
 private:

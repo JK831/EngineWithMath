@@ -125,7 +125,7 @@ void SceneManager::LoadScene(wstring scenePath)
 		{
 			// TODO
 			shared_ptr<Mesh> mesh = make_shared<Mesh>();
-			mesh = GET_SINGLE(Resources)->LoadRectangleMesh(); // 추후 메쉬 파일 직접 읽어오도록 수정 필요
+			mesh = GET_SINGLE(Resources)->LoadCubeMesh(); // 추후 메쉬 파일 직접 읽어오도록 수정 필요
 			meshMap[fileId] = mesh;
 			break;
 		}
@@ -351,50 +351,50 @@ shared_ptr<Scene> SceneManager::LoadTestScene()
 	camera->AddComponent(make_shared<Transform>());
 	camera->AddComponent(make_shared<Camera>()); // Near=1, Far=1000, FOV=45도
 	camera->AddComponent(make_shared<TestCameraScript>());
-	camera->GetTransform()->SetLocalPosition(Vector2(0.f, 0.f));
+	camera->GetTransform()->SetLocalPosition(Vector3::Zero);
 	scene->AddGameObject(camera);
 #pragma endregion
 
-#pragma region Rectangle
+#pragma region Cube
 	{
-		shared_ptr<GameObject> rectangle = make_shared<GameObject>();
-		rectangle->AddComponent(make_shared<Transform>());
-		rectangle->GetTransform()->SetLocalScale(Vector2(300.f, 300.f));
-		rectangle->GetTransform()->SetLocalPosition(Vector2(0.f, 0.f));
-		rectangle->GetTransform()->SetLocalRotation(45.f);
+		shared_ptr<GameObject> cube = make_shared<GameObject>();
+		cube->AddComponent(make_shared<Transform>());
+		cube->GetTransform()->SetLocalScale(Vector3(300.f, 300.f, 300.f));
+		cube->GetTransform()->SetLocalPosition(Vector3::Zero);
+		cube->GetTransform()->SetLocalRotation(45.f);
 
 		shared_ptr<MeshRenderer> meshRenderer = make_shared<MeshRenderer>();
 		{
-			shared_ptr<Mesh> rectangleMesh = GET_SINGLE(Resources)->LoadRectangleMesh();
-			meshRenderer->SetMesh(rectangleMesh);
+			shared_ptr<Mesh> cubeMesh = GET_SINGLE(Resources)->LoadCubeMesh();
+			meshRenderer->SetMesh(cubeMesh);
 		}
 		{
 			shared_ptr<Shader> shader = make_shared<Shader>();
 			shared_ptr<Texture> texture = make_shared<Texture>();
-			shader->Init(L"Default 2D Shader");
+			shader->Init(L"Default 3D Shader");
 			texture->Init(L"..\\Resources\\Texture\\Kirby.png"); // guid를 통해 얻은 path로 
 			shared_ptr<Material> material = make_shared<Material>();
 			material->SetShader(shader);
 			material->SetTexture(0, texture);
 			meshRenderer->SetMaterial(material);
 		}
-		rectangle->AddComponent(meshRenderer);
-		scene->AddGameObject(rectangle);
+		cube->AddComponent(meshRenderer);
+		scene->AddGameObject(cube);
 	}
 #pragma endregion
 
-#pragma region Rectangle2
+#pragma region cube2
 	{
-		shared_ptr<GameObject> rectangle = make_shared<GameObject>();
-		rectangle->AddComponent(make_shared<Transform>());
-		rectangle->GetTransform()->SetLocalScale(Vector2(300.f, 300.f));
-		rectangle->GetTransform()->SetLocalPosition(Vector2(100.f, 100.f));
-		rectangle->GetTransform()->SetLocalRotation(0.f);
+		shared_ptr<GameObject> cube = make_shared<GameObject>();
+		cube->AddComponent(make_shared<Transform>());
+		cube->GetTransform()->SetLocalScale(Vector2(300.f, 300.f));
+		cube->GetTransform()->SetLocalPosition(Vector2(100.f, 100.f));
+		cube->GetTransform()->SetLocalRotation(0.f);
 
 		shared_ptr<MeshRenderer> meshRenderer = make_shared<MeshRenderer>();
 		{
-			shared_ptr<Mesh> rectangleMesh = GET_SINGLE(Resources)->LoadRectangleMesh();
-			meshRenderer->SetMesh(rectangleMesh);
+			shared_ptr<Mesh> cubeMesh = GET_SINGLE(Resources)->LoadcubeMesh();
+			meshRenderer->SetMesh(cubeMesh);
 		}
 		{
 			shared_ptr<Shader> shader = make_shared<Shader>();
@@ -406,8 +406,8 @@ shared_ptr<Scene> SceneManager::LoadTestScene()
 			material->SetTexture(0, texture);
 			meshRenderer->SetMaterial(material);
 		}
-		rectangle->AddComponent(meshRenderer);
-		scene->AddGameObject(rectangle);
+		cube->AddComponent(meshRenderer);
+		scene->AddGameObject(cube);
 	}
 #pragma endregion
 

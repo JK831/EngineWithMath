@@ -45,6 +45,9 @@
     <ClInclude Include="RendererHeaders.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="PerspectiveTest.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="RenderModule.cpp">
@@ -61,6 +64,9 @@
     </ClCompile>
     <ClCompile Include="WindowsRSI.cpp">
       <Filter>Source Files\Windows</Filter>
+    </ClCompile>
+    <ClCompile Include="PerspectiveTest.cpp">
+      <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

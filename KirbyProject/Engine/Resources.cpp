@@ -131,7 +131,7 @@ void Resources::MakeMetaFile(wstring assetPath)
 
 	// wstring인 Guid를 string(char)로 변환
 	wchar_t wCharGuid[129];
-	StringFromGUID2(guid, wCharGuid, 128); // guid는 중괄호로 감싸여있다.
+	StringFromGUIhalfDepth(guid, wCharGuid, 128); // guid는 중괄호로 감싸여있다.
 	// Guid의 크기가 128바이트 인 걸 알고 있으니 아래 코드 필요 X
 	// int wstrSize = WideCharToMultiByte(CP_ACP, 0, wstringGuid, -1, NULL, 0, NULL, NULL);
 	// char* charGuid = new char[128];
@@ -314,16 +314,58 @@ shared_ptr<Mesh> Resources::LoadCubeMesh()
 
 	vector<Vertex> vertices(4);
 
-	vertices[0] = Vertex(Vector3(-halfWidth, halfHeight, -halfDepth), Vector2(0.f, 0.f), Vector3(0.f, 0.f), Vector3(0.f, 0.f));
-	vertices[1] = Vertex(Vector3(halfWidth, halfHeight), Vector2(1.f, 0.f), Vector3(0.f, 0.f), Vector3(0.f, 0.f));
-	vertices[2] = Vertex(Vector3(halfWidth, -halfHeight), Vector2(1.f, 1.f), Vector3(0.f, 0.f), Vector3(0.f, 0.f));
-	vertices[3] = Vertex(Vector3(-halfWidth, -halfHeight), Vector2(0.f, 1.f), Vector3(0.f, 0.f), Vector3(0.f, 0.f));
+	// 앞면
+	vertices[0] = Vertex(Vector3(-halfWidth, -halfHeight, -halfDepth), Vector2(0.f, 0.f), Vector3(0.f, 0.f, -1.0f), Vector3(1.0f, 0.f, 0.f));
+	vertices[1] = Vertex(Vector3(-halfWidth, halfHeight, -halfDepth), Vector2(1.f, 0.f), Vector3(0.f, 0.f, -1.0f), Vector3(1.0f, 0.f, 0.f));
+	vertices[2] = Vertex(Vector3(halfWidth, halfHeight, -halfDepth), Vector2(1.f, 1.f), Vector3(0.f, 0.f, -1.0f), Vector3(1.0f, 0.f, 0.f));
+	vertices[3] = Vertex(Vector3(halfWidth, -halfHeight, -halfDepth), Vector2(0.f, 1.f), Vector3(0.f, 0.f, -1.0f), Vector3(1.0f, 0.f, 0.f));
 
+	// 뒷면
+	vertices[4] = Vertex(Vector3(-halfWidth, -halfHeight, +halfDepth), Vector2(1.0f, 1.0f), Vector3(0.0f, 0.0f, 1.0f), Vector3(-1.0f, 0.0f, 0.0f));
+	vertices[5] = Vertex(Vector3(+halfWidth, -halfHeight, +halfDepth), Vector2(0.0f, 1.0f), Vector3(0.0f, 0.0f, 1.0f), Vector3(-1.0f, 0.0f, 0.0f));
+	vertices[6] = Vertex(Vector3(+halfWidth, +halfHeight, +halfDepth), Vector2(0.0f, 0.0f), Vector3(0.0f, 0.0f, 1.0f), Vector3(-1.0f, 0.0f, 0.0f));
+	vertices[7] = Vertex(Vector3(-halfWidth, +halfHeight, +halfDepth), Vector2(1.0f, 0.0f), Vector3(0.0f, 0.0f, 1.0f), Vector3(-1.0f, 0.0f, 0.0f));
+	// 윗면
+	vertices[8] = Vertex(Vector3(-halfWidth, +halfHeight, -halfDepth), Vector2(0.0f, 1.0f), Vector3(0.0f, 1.0f, 0.0f), Vector3(1.0f, 0.0f, 0.0f));
+	vertices[9] = Vertex(Vector3(-halfWidth, +halfHeight, +halfDepth), Vector2(0.0f, 0.0f), Vector3(0.0f, 1.0f, 0.0f), Vector3(1.0f, 0.0f, 0.0f));
+	vertices[10] = Vertex(Vector3(+halfWidth, +halfHeight, +halfDepth), Vector2(1.0f, 0.0f), Vector3(0.0f, 1.0f, 0.0f), Vector3(1.0f, 0.0f, 0.0f));
+	vertices[11] = Vertex(Vector3(+halfWidth, +halfHeight, -halfDepth), Vector2(1.0f, 1.0f), Vector3(0.0f, 1.0f, 0.0f), Vector3(1.0f, 0.0f, 0.0f));
+	// 아랫면
+	vertices[12] = Vertex(Vector3(-halfWidth, -halfHeight, -halfDepth), Vector2(1.0f, 1.0f), Vector3(0.0f, -1.0f, 0.0f), Vector3(-1.0f, 0.0f, 0.0f));
+	vertices[13] = Vertex(Vector3(+halfWidth, -halfHeight, -halfDepth), Vector2(0.0f, 1.0f), Vector3(0.0f, -1.0f, 0.0f), Vector3(-1.0f, 0.0f, 0.0f));
+	vertices[14] = Vertex(Vector3(+halfWidth, -halfHeight, +halfDepth), Vector2(0.0f, 0.0f), Vector3(0.0f, -1.0f, 0.0f), Vector3(-1.0f, 0.0f, 0.0f));
+	vertices[15] = Vertex(Vector3(-halfWidth, -halfHeight, +halfDepth), Vector2(1.0f, 0.0f), Vector3(0.0f, -1.0f, 0.0f), Vector3(-1.0f, 0.0f, 0.0f));
+	// 왼쪽면
+	vertices[16] = Vertex(Vector3(-halfWidth, -halfHeight, +halfDepth), Vector2(0.0f, 1.0f), Vector3(-1.0f, 0.0f, 0.0f), Vector3(0.0f, 0.0f, -1.0f));
+	vertices[17] = Vertex(Vector3(-halfWidth, +halfHeight, +halfDepth), Vector2(0.0f, 0.0f), Vector3(-1.0f, 0.0f, 0.0f), Vector3(0.0f, 0.0f, -1.0f));
+	vertices[18] = Vertex(Vector3(-halfWidth, +halfHeight, -halfDepth), Vector2(1.0f, 0.0f), Vector3(-1.0f, 0.0f, 0.0f), Vector3(0.0f, 0.0f, -1.0f));
+	vertices[19] = Vertex(Vector3(-halfWidth, -halfHeight, -halfDepth), Vector2(1.0f, 1.0f), Vector3(-1.0f, 0.0f, 0.0f), Vector3(0.0f, 0.0f, -1.0f));
+	// 오른쪽면
+	vertices[20] = Vertex(Vector3(+halfWidth, -halfHeight, -halfDepth), Vector2(0.0f, 1.0f), Vector3(1.0f, 0.0f, 0.0f), Vector3(0.0f, 0.0f, 1.0f));
+	vertices[21] = Vertex(Vector3(+halfWidth, +halfHeight, -halfDepth), Vector2(0.0f, 0.0f), Vector3(1.0f, 0.0f, 0.0f), Vector3(0.0f, 0.0f, 1.0f));
+	vertices[22] = Vertex(Vector3(+halfWidth, +halfHeight, +halfDepth), Vector2(1.0f, 0.0f), Vector3(1.0f, 0.0f, 0.0f), Vector3(0.0f, 0.0f, 1.0f));
+	vertices[23] = Vertex(Vector3(+halfWidth, -halfHeight, +halfDepth), Vector2(1.0f, 1.0f), Vector3(1.0f, 0.0f, 0.0f), Vector3(0.0f, 0.0f, 1.0f));
 
-	vector<uint32> idx(6);
+	vector<uint32> idx(36);
 
-	idx[0] = 0;	idx[1] = 1; idx[2] = 2;
+	// 앞면
+	idx[0] = 0; idx[1] = 1; idx[2] = 2;
 	idx[3] = 0; idx[4] = 2; idx[5] = 3;
+	// 뒷면
+	idx[6] = 4; idx[7] = 5; idx[8] = 6;
+	idx[9] = 4; idx[10] = 6; idx[11] = 7;
+	// 윗면
+	idx[12] = 8; idx[13] = 9; idx[14] = 10;
+	idx[15] = 8; idx[16] = 10; idx[17] = 11;
+	// 아랫면
+	idx[18] = 12; idx[19] = 13; idx[20] = 14;
+	idx[21] = 12; idx[22] = 14; idx[23] = 15;
+	// 왼쪽면
+	idx[24] = 16; idx[25] = 17; idx[26] = 18;
+	idx[27] = 16; idx[28] = 18; idx[29] = 19;
+	// 오른쪽면
+	idx[30] = 20; idx[31] = 21; idx[32] = 22;
+	idx[33] = 20; idx[34] = 22; idx[35] = 23;
 
 	shared_ptr<Mesh> mesh = make_shared<Mesh>();
 	mesh->Init(vertices, idx);

@@ -156,6 +156,7 @@
   <ItemGroup>
     <ClInclude Include="framework.h" />
     <ClInclude Include="pch.h" />
+    <ClInclude Include="PerspectiveTest.h" />
     <ClInclude Include="RendererHeaders.h" />
     <ClInclude Include="Vertex.h" />
     <ClInclude Include="WindowsGDI.h" />
@@ -168,6 +169,7 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
     </ClCompile>
+    <ClCompile Include="PerspectiveTest.cpp" />
     <ClCompile Include="RenderModule.cpp" />
     <ClCompile Include="Vertex.cpp" />
     <ClCompile Include="WindowsGDI.cpp" />

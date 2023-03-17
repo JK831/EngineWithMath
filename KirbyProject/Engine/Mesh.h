@@ -11,7 +11,7 @@ public:
 	virtual ~Mesh();
 
 	void Init(const ::std::vector<Vertex>& inVertices, const ::std::vector<uint32>& inIndices);
-	void Render(const Matrix3x3& InMatrix, uint16 InBufferIndex);
+	void Render(const Matrix4x4& InMatrix, uint16 InBufferIndex);
 
 	void CreateVertexBuffer(const ::std::vector<Vertex>& buffer);
 	void CreateIndexBuffer(const vector<uint32>& buffer);

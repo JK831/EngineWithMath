@@ -18,7 +18,7 @@ MeshRenderer::~MeshRenderer()
 
 void MeshRenderer::Render()
 {
-	const Matrix3x3& finalMatrix = GetTransform()->GetLocalToWorldMatrix() * Camera::S_MatView;
+	const Matrix4x4& finalMatrix = GetTransform()->GetLocalToWorldMatrix() * Camera::S_MatView;
 	uint16 bufferIndex = _material->Update();
 	_mesh->Render(finalMatrix, bufferIndex);
 }

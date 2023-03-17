@@ -19,7 +19,7 @@ void Mesh::Init(const vector<Vertex>& InVertices, const vector<uint32>& InIndice
 	CreateIndexBuffer(InIndices);
 }
 
-void Mesh::Render(const Matrix3x3& InMatrix, uint16 InBufferIndex)
+void Mesh::Render(const Matrix4x4& InMatrix, uint16 InBufferIndex)
 {
 	// Material이 저장된 버퍼의 인덱스를 가지고 물체 그려줌
 	CMD_LIST->DrawIndexedInstance(_vertexBuffer, _indexBuffer, InMatrix, InBufferIndex);

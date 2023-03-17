@@ -153,7 +153,7 @@ void SceneManager::LoadScene(wstring scenePath)
 				float ry = rotation[1].asFloat();
 				float rz = rotation[2].asFloat();
 
-				transform->SetLocalPosition(Vector2(px, py));
+				transform->SetLocalPosition(Vector3(px, py, pz));
 				transform->SetLocalRotation(rz);
 
 				com = transform;
@@ -383,33 +383,33 @@ shared_ptr<Scene> SceneManager::LoadTestScene()
 	}
 #pragma endregion
 
-#pragma region cube2
-	{
-		shared_ptr<GameObject> cube = make_shared<GameObject>();
-		cube->AddComponent(make_shared<Transform>());
-		cube->GetTransform()->SetLocalScale(Vector2(300.f, 300.f));
-		cube->GetTransform()->SetLocalPosition(Vector2(100.f, 100.f));
-		cube->GetTransform()->SetLocalRotation(0.f);
-
-		shared_ptr<MeshRenderer> meshRenderer = make_shared<MeshRenderer>();
-		{
-			shared_ptr<Mesh> cubeMesh = GET_SINGLE(Resources)->LoadcubeMesh();
-			meshRenderer->SetMesh(cubeMesh);
-		}
-		{
-			shared_ptr<Shader> shader = make_shared<Shader>();
-			shared_ptr<Texture> texture = make_shared<Texture>();
-			shader->Init(L"Default 2D Shader");
-			texture->Init(L"..\\Resources\\Texture\\Kirby.png");
-			shared_ptr<Material> material = make_shared<Material>();
-			material->SetShader(shader);
-			material->SetTexture(0, texture);
-			meshRenderer->SetMaterial(material);
-		}
-		cube->AddComponent(meshRenderer);
-		scene->AddGameObject(cube);
-	}
-#pragma endregion
+//#pragma region cube2
+//	{
+//		shared_ptr<GameObject> cube = make_shared<GameObject>();
+//		cube->AddComponent(make_shared<Transform>());
+//		cube->GetTransform()->SetLocalScale(Vector2(300.f, 300.f));
+//		cube->GetTransform()->SetLocalPosition(Vector2(100.f, 100.f));
+//		cube->GetTransform()->SetLocalRotation(0.f);
+//
+//		shared_ptr<MeshRenderer> meshRenderer = make_shared<MeshRenderer>();
+//		{
+//			shared_ptr<Mesh> cubeMesh = GET_SINGLE(Resources)->LoadcubeMesh();
+//			meshRenderer->SetMesh(cubeMesh);
+//		}
+//		{
+//			shared_ptr<Shader> shader = make_shared<Shader>();
+//			shared_ptr<Texture> texture = make_shared<Texture>();
+//			shader->Init(L"Default 2D Shader");
+//			texture->Init(L"..\\Resources\\Texture\\Kirby.png");
+//			shared_ptr<Material> material = make_shared<Material>();
+//			material->SetShader(shader);
+//			material->SetTexture(0, texture);
+//			meshRenderer->SetMaterial(material);
+//		}
+//		cube->AddComponent(meshRenderer);
+//		scene->AddGameObject(cube);
+//	}
+//#pragma endregion
 
 	return scene;
 }

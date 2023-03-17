@@ -131,7 +131,7 @@ void Resources::MakeMetaFile(wstring assetPath)
 
 	// wstring인 Guid를 string(char)로 변환
 	wchar_t wCharGuid[129];
-	StringFromGUIhalfDepth(guid, wCharGuid, 128); // guid는 중괄호로 감싸여있다.
+	StringFromGUID(guid, wCharGuid, 128); // guid는 중괄호로 감싸여있다.
 	// Guid의 크기가 128바이트 인 걸 알고 있으니 아래 코드 필요 X
 	// int wstrSize = WideCharToMultiByte(CP_ACP, 0, wstringGuid, -1, NULL, 0, NULL, NULL);
 	// char* charGuid = new char[128];
@@ -273,6 +273,7 @@ void Resources::ParseAssetFiles(fs::path InPath)
 	case OBJECT_TYPE::MATERIAL:
 	{
 		tof = Add(stringKey, make_shared<Material>());
+		break;
 	}
 	case OBJECT_TYPE::MESH:
 	{
@@ -280,24 +281,28 @@ void Resources::ParseAssetFiles(fs::path InPath)
 		shared_ptr<Mesh> mesh = make_shared<Mesh>();
 		// meta파일로부터 데이터를 읽어와 초기 설정 후 Add
 		tof = Add(stringKey, mesh);
+		break;
 	}
 	case OBJECT_TYPE::SHADER:
 	{
 		MakeMetaFile(InPath);
 		shared_ptr<Shader> shader = make_shared<Shader>();
 		tof = Add(stringKey, shader);
+		break;
 	}
 	case OBJECT_TYPE::COMPONENT:
 	{
 		MakeMetaFile(InPath);
 		shared_ptr<MonoBehaviour> monoBehaviour = make_shared<MonoBehaviour>();
 		tof = Add(stringKey, monoBehaviour);
+		break;
 	}
 	case OBJECT_TYPE::TEXTURE:
 	{
 		MakeMetaFile(InPath);
 		shared_ptr<Texture> texture = make_shared<Texture>();
 		tof = Add(stringKey, texture);
+		break;
 	}
 	}
 }
@@ -316,9 +321,9 @@ shared_ptr<Mesh> Resources::LoadCubeMesh()
 
 	// 앞면
 	vertices[0] = Vertex(Vector3(-halfWidth, -halfHeight, -halfDepth), Vector2(0.f, 0.f), Vector3(0.f, 0.f, -1.0f), Vector3(1.0f, 0.f, 0.f));
-	vertices[1] = Vertex(Vector3(-halfWidth, halfHeight, -halfDepth), Vector2(1.f, 0.f), Vector3(0.f, 0.f, -1.0f), Vector3(1.0f, 0.f, 0.f));
-	vertices[2] = Vertex(Vector3(halfWidth, halfHeight, -halfDepth), Vector2(1.f, 1.f), Vector3(0.f, 0.f, -1.0f), Vector3(1.0f, 0.f, 0.f));
-	vertices[3] = Vertex(Vector3(halfWidth, -halfHeight, -halfDepth), Vector2(0.f, 1.f), Vector3(0.f, 0.f, -1.0f), Vector3(1.0f, 0.f, 0.f));
+	vertices[1] = Vertex(Vector3(-halfWidth, +halfHeight, -halfDepth), Vector2(1.f, 0.f), Vector3(0.f, 0.f, -1.0f), Vector3(1.0f, 0.f, 0.f));
+	vertices[2] = Vertex(Vector3(+halfWidth, +halfHeight, -halfDepth), Vector2(1.f, 1.f), Vector3(0.f, 0.f, -1.0f), Vector3(1.0f, 0.f, 0.f));
+	vertices[3] = Vertex(Vector3(+halfWidth, -halfHeight, -halfDepth), Vector2(0.f, 1.f), Vector3(0.f, 0.f, -1.0f), Vector3(1.0f, 0.f, 0.f));
 
 	// 뒷면
 	vertices[4] = Vertex(Vector3(-halfWidth, -halfHeight, +halfDepth), Vector2(1.0f, 1.0f), Vector3(0.0f, 0.0f, 1.0f), Vector3(-1.0f, 0.0f, 0.0f));
@@ -369,7 +374,7 @@ shared_ptr<Mesh> Resources::LoadCubeMesh()
 
 	shared_ptr<Mesh> mesh = make_shared<Mesh>();
 	mesh->Init(vertices, idx);
-	Add(L"Rectangle", mesh);
+	Add(L"Cube", mesh);
 
 	return mesh;
 }

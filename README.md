@@ -21,4 +21,4 @@
 <hr>
 
 ### ScreenShot
-![ScreenShot](./ReadMe/Screenshot.jpg)
+![ScreenShot](./ReadMe/ScreenShot.jpg)

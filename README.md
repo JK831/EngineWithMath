@@ -4,7 +4,7 @@
 
 ## Main Contents
 - Windows API를 사용하여 Direct X의 작동 흐름과 유사한 Graphics 처리를 하도록 구조를 만들었습니다.
-- Unity의 구조를 따라 Engine이 작동하도록 하였습니다. (Object, GameObject, Component, MeshRenderer 등의 클래스와 상속 관계, Start, Update 등의 멤버 함수)
+- Unity의 구조를 따라 Engine이 작동하도록 만들었습니다. (Object, GameObject, Component, MeshRenderer 등의 클래스와 상속 관계, Start, Update 등의 멤버 함수)
 <hr>
 
 ### Completed tasks

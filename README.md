@@ -1,5 +1,5 @@
 # Game Engine
-### '이득우의 게임 수학', ookiss님의 DirectX 12 강좌를 수강한 후 배운 내용들을 조합하여 만든 게임 엔진입니다.
+### '이득우의 게임 수학', Rookiss님의 DirectX 12 강좌를 통해 배운 내용들을 조합하여 만든 간단한 게임 엔진입니다.
 <br>
 
 ## Main Contents

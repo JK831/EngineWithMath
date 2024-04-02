@@ -80,57 +80,57 @@
 
 			// 1열에 대한 기본 행 연산 -> Raw[0][0] (그대로) & Raw[1][0], Raw[2][0], Raw[3][0] = 0 의 형태가 된다.
 			float record = Raws[1][0] / Raws[0][0];
-			L.Raws[1] += Raws[0] * (-1) * record;
-			U.Raws[1][0] += record; // 기록된 연산 취해준다.
+			L.Raws[1] -= Raws[0] * record;
+			U.Raws[1][0] -= record; // 기록된 연산 취해준다.
 
 			record = Raws[2][0] / Raws[0][0];
-			L.Raws[2] += Raws[0] * (-1) * record;
-			U.Raws[2][0] += record;
+			L.Raws[2] -= Raws[0] * record;
+			U.Raws[2][0] -= record;
 
 			record = Raws[3][0] / Raws[0][0];
-			L.Raws[3] += Raws[0] * (-1) * record;
-			U.Raws[3][0] += record;
+			L.Raws[3] -= Raws[0] * record;
+			U.Raws[3][0] -= record;
 
 			// 2열에 대한 기본 행 연산 -> Raw[0][1], Raw[1][1] (그대로) & Raw[2][1], Raw[3][1] = 0의 형태가 된다.
 			record = Raws[2][1] / Raws[1][1];
-			L.Raws[2] += Raws[1] * (-1) * record;
-			U.Raws[2][1] += record;
+			L.Raws[2] -= Raws[1] * record;
+			U.Raws[2][1] -= record;
 
 			record = Raws[3][1] / Raws[1][1];
-			L.Raws[3] += Raws[1] * (-1) * record;
-			U.Raws[3][1] += record;
+			L.Raws[3] -= Raws[1] * record;
+			U.Raws[3][1] -= record;
 
 			// 3열에 대한 기본 행 연산 ->Raw[0][2], Raw[1][2], Raw[2][2] (그대로) & Raw[3][2] = 0의 형태가 된다.
 			record = Raws[3][2] / Raws[2][2];
-			L.Raws[3] += Raws[2] * (-1) * record;
-			U.Raws[3][2] += record;
+			L.Raws[3] -= Raws[2] * record;
+			U.Raws[3][2] -= record;
 
 			// 1행, 2행, 3행의 4열을 0으로 만들어준다.
 			record = Raws[0][3] / Raws[3][3];
-			L.Raws[0] += Raws[3] * (-1) * record;
-			U.Raws[0][2] += record;
+			L.Raws[0] -= Raws[3] * record;
+			U.Raws[0][2] -= record;
 
 			record = Raws[1][3] / Raws[3][3];
-			L.Raws[1] += Raws[3] * (-1) * record;
-			U.Raws[1][3] += record;
+			L.Raws[1] -= Raws[3] * record;
+			U.Raws[1][3] -= record;
 
 			record = Raws[2][3] / Raws[3][3];
-			L.Raws[2] += Raws[3] * (-1) * record;
-			U.Raws[2][3] += record;
+			L.Raws[2] -= Raws[3] * record;
+			U.Raws[2][3] -= record;
 
 			// 1행, 2행의 3열을 0으로 만들어준다
 			record = Raws[0][2] / Raws[2][2];
-			L.Raws[0] += Raws[2] * (-1) * record;
-			U.Raws[0][2] += record;
+			L.Raws[0] -= Raws[2] * record;
+			U.Raws[0][2] -= record;
 
 			record = Raws[1][2] / Raws[2][2];
-			L.Raws[1] += Raws[2] * (-1) * record;
-			U.Raws[1][2] += record;
+			L.Raws[1] -= Raws[2] * record;
+			U.Raws[1][2] -= record;
 
 			// 1행 2열을 0으로 만들어준다
 			record = Raws[0][1] / Raws[1][1];
-			L.Raws[0] += Raws[1] * (-1) * record;
-			U.Raws[0][1] += record;
+			L.Raws[0] -= Raws[1] * record;
+			U.Raws[0][1] -= record;
 
 			// 대각 성분을 모두 1로 만들어 준다.
 			float inverseOp = 1 / L.Raws[0][0];
